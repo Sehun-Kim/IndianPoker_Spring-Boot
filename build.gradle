@@ -1,0 +1,36 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+version = '1.0.0'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('com.google.guava:guava:27.0.1-jre')
+    compile('org.hibernate:hibernate-java8')
+    compile('pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.1')
+    compile('org.springframework.boot:spring-boot-devtools')
+    runtime('com.h2database:h2')
+    runtime('net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.assertj:assertj-core:3.10.0')
+    testCompile('org.apache.httpcomponents:httpclient:4.5.6')
+}

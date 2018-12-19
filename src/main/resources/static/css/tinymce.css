@@ -1,0 +1,12 @@
+.mce-panel { background: #fff !important; border: 0 !important; }
+.mce-panel.mce-foot { border: 0 solid rgba(0,0,0,.2) !important; }
+.mce-panel.mce-menu { border: 1px solid #cbcbcb !important; }
+.mce-toolbar .mce-btn { background: #fff !important; border: 0 !important; }
+.mce-toolbar .mce-btn i { color: #555 !important; }
+.mce-toolbar .mce-btn:hover i { color: #333 !important; }
+.mce-primary { background: #6ba72b !important; }
+.mce-primary:hover { background: #68a029 !important; }
+.mce-btn-group:not(:first-child) { border-left: 3px solid #fff !important; }
+.mce-menu-item:hover { background: #eee !important; }
+.mce-menu-item.mce-disabled * { color: #ddd !important; }
+.mce-edit-area { border: 0 solid #ddd; border-width: 1px !important; }
