@@ -14,7 +14,7 @@
 ### Requirement
 
 1. 사용자 관리
-    - 로그인
+    - 로그인(추후에 Spring-Security 쓸 것)
     - 프로필 사진 등록
 2. IndianPoker Game
     - auto gamer와 게임
