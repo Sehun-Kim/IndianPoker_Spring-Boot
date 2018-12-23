@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>IndianPoker Game/title>
+    <title>IndianPoker Game</title>
 
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
@@ -28,29 +28,53 @@
     <header class="mdl-layout__header mdl-layout__header--waterfall">
         <div class="mdl-layout__header-row">
             <!-- Title -->
-            <span class="mdl-layout-title">Issue Tracking System</span>
+            <a class="mdl-layout-title" href="/">IndianPoker</a>
             <div class="mdl-layout-spacer"></div>
             <!-- Tabs -->
             <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="/">Issues</a>
-                <a class="mdl-navigation__link" href="/milestone/list.html">Milestones</a>
-                <a class="mdl-navigation__link" href="/user/login.html">login</a>
-                <a class="mdl-navigation__link" href="/user/join.html">join</a>
+                <a class="mdl-navigation__link" href="/indianpoker/start">StartGame</a>
+                <a class="mdl-navigation__link" href="/login">login</a>
+                <a class="mdl-navigation__link" href="/logout">logout</a>
+                <a class="mdl-navigation__link" href="/users/form">join</a>
             </nav>
         </div>
     </header>
     {{/block}}
 
-    {{#block "contents"}}
-    {{/block}}
+    <main class="mdl-layout__content">
 
+        <div class="issues-back">
+            <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon back-btn" title="go back"
+               role="button">
+                <i class="material-icons" role="presentation">arrow_back</i>
+            </a>
+        </div>
+
+        {{#block "contents"}}
+        {{/block}}
+
+        <footer class="mdl-mini-footer">
+            <div class="mdl-mini-footer--left-section">
+                <div class="mdl-logo mdl-color-text--grey-600">Proudly powered by <a
+                        href="https://github.com/Byeol">Byeol</a>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+    <div class="mdl-layout__obfuscator"></div>
 </div>
 {{#block "footer"}}
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-<script
-        src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.3/dialog-polyfill.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.3/dialog-polyfill.min.js"></script>
 <script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
+<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="/js/main.js"></script>
+<script>
+      $('.back-btn').on('click',function(){history.back();})
+
+</script>
 {{/block}}
 </body>
 </html>
