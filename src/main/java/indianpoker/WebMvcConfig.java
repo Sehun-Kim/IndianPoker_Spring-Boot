@@ -1,6 +1,8 @@
 package indianpoker;
 
+import indianpoker.security.AutoPlayerHandlerMethodArgumentResolver;
 import indianpoker.security.BasicAuthInterceptor;
+import indianpoker.security.LoginPlayerHandlerMethodArgumentResolver;
 import indianpoker.security.LoginUserHandlerMethodArgumentResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +30,20 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return new LoginUserHandlerMethodArgumentResolver();
     }
 
+    @Bean
+    public LoginPlayerHandlerMethodArgumentResolver loginPlayerArgumentResolver() {
+        return new LoginPlayerHandlerMethodArgumentResolver();
+    }
+
+    @Bean
+    public AutoPlayerHandlerMethodArgumentResolver autoPlayerArgumentResolver() {
+        return new AutoPlayerHandlerMethodArgumentResolver();
+    }
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(loginUserArgumentResolver());
+        argumentResolvers.add(loginPlayerArgumentResolver());
+        argumentResolvers.add(autoPlayerArgumentResolver());
     }
 }

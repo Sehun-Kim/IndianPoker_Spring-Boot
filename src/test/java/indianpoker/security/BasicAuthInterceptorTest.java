@@ -1,8 +1,7 @@
 package indianpoker.security;
 
 import indianpoker.domain.user.User;
-import indianpoker.domain.user.UserService;
-import indianpoker.exception.UnAuthenticationException;
+import indianpoker.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,8 +14,6 @@ import support.test.BaseTest;
 import java.util.Base64;
 
 import static org.mockito.Mockito.when;
-
-import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BasicAuthInterceptorTest extends BaseTest {

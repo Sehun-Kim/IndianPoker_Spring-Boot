@@ -32,6 +32,11 @@ public class HtmlFormDataBuilder {
         return this;
     }
 
+    public HtmlFormDataBuilder setAutoPlayer() {
+        this.headers.set("autoPlayer", "autoPlayer");
+        return this;
+    }
+
     public HttpEntity<MultiValueMap<String, Object>> build() {
         return new HttpEntity<MultiValueMap<String, Object>>(params, headers);
     }

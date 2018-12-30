@@ -1,5 +1,6 @@
 package indianpoker.domain.user;
 
+import indianpoker.domain.player.HumanPlayer;
 import support.domain.AbstractEntity;
 
 import javax.persistence.Column;
@@ -55,5 +56,9 @@ public class User extends AbstractEntity {
 
     public boolean matchPassword(String otherPassword) {
         return this.password.equals(otherPassword);
+    }
+
+    public HumanPlayer toPlayer() {
+        return new HumanPlayer(this.userId, this.password);
     }
 }

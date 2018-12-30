@@ -1,5 +1,7 @@
-package indianpoker.domain.user;
+package indianpoker.service;
 
+import indianpoker.domain.user.User;
+import indianpoker.domain.user.UserRepository;
 import indianpoker.exception.NonExistDataException;
 import indianpoker.exception.UnAuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ public class UserService {
     public User login(String userId, String password) throws UnAuthenticationException {
         return userRepository.findByUserId(userId)
                 .filter(user -> user.matchPassword(password))
-                .orElseThrow(UnAuthenticationException::new);
+                .orElseThrow(UnAuthenticationException::new)
+                .toPlayer(); // login이 성공하면 Player의 자격이 주어짐
     }
 }
