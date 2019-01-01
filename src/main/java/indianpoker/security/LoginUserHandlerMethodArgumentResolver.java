@@ -6,6 +6,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import support.util.SessionUtil;
 
 // http://addio3305.tistory.com/75
 public class LoginUserHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {

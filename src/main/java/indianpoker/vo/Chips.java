@@ -6,13 +6,13 @@ public class Chips {
     private int numberOfChips;
 
     public Chips(int numberOfChips) {
+        if (numberOfChips < 0)
+            throw new IllegalArgumentException("NOT ENOUGH CHIPS");
         this.numberOfChips = numberOfChips;
     }
 
     public Chips giveChips(int numberOfMinusChips) {
-        if (numberOfChips < numberOfMinusChips) throw new IllegalArgumentException("남은 Chips가 부족합니다.");
-        this.numberOfChips -= numberOfMinusChips;
-        return new Chips(numberOfMinusChips);
+        return new Chips(this.numberOfChips - numberOfMinusChips);
     }
 
     public Chips addChips(Chips otherChips) {

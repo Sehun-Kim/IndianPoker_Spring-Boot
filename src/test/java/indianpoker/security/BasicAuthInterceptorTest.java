@@ -10,6 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
 import support.fixture.UserFixture;
 import support.test.BaseTest;
+import support.util.SessionUtil;
 
 import java.util.Base64;
 

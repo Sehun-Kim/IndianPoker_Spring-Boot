@@ -24,7 +24,6 @@ public class UserService {
     public User login(String userId, String password) throws UnAuthenticationException {
         return userRepository.findByUserId(userId)
                 .filter(user -> user.matchPassword(password))
-                .orElseThrow(UnAuthenticationException::new)
-                .toPlayer(); // login이 성공하면 Player의 자격이 주어짐
+                .orElseThrow(UnAuthenticationException::new);
     }
 }

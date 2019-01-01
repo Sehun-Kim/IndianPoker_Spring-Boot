@@ -39,24 +39,15 @@ public class IndianPokerAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    // 완료한 테스트가 아님
     public void gameStart_login() {
-        htmlFormDataBuilder = HtmlFormDataBuilder.urlEncodedForm()
-                .addParameter("firstBetter", "1")
-                .addParameter("chipsNum", "20")
-                .setAutoPlayer();
-
-        ResponseEntity<String> responseEntity = basicAuthTemplate().postForEntity("/indianpoker/start", htmlFormDataBuilder.build(), String.class);
-        softly.assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.FOUND);
-    }
-
-    @Test
-    public void gameStart_none_exist_player() {
         htmlFormDataBuilder = HtmlFormDataBuilder.urlEncodedForm()
                 .addParameter("firstBetter", "1")
                 .addParameter("chipsNum", "20");
 
         ResponseEntity<String> responseEntity = basicAuthTemplate().postForEntity("/indianpoker/start", htmlFormDataBuilder.build(), String.class);
-        softly.assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        softly.assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.FOUND);
+        softly.assertThat(responseEntity.getHeaders().getLocation().getPath()).startsWith("/api/turn/1");
     }
+
+
 }

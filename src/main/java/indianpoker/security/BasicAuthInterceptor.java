@@ -1,13 +1,13 @@
 package indianpoker.security;
 
-import indianpoker.domain.player.AutoComPlayer;
 import indianpoker.domain.user.User;
-import indianpoker.service.UserService;
 import indianpoker.exception.UnAuthenticationException;
+import indianpoker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import support.util.SessionUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +23,7 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter {
     // 브라우저에서 컨트롤러로 요청이 가기 전, 컨트롤러에서 처리한 응답이 브라우저에 가기 전
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String authorization = setAutoPlayer(request).getHeader("Authorization"); // 요청에 Authorization 이라는 헤더필드의 값
+        String authorization = request.getHeader("Authorization"); // 요청에 Authorization 이라는 헤더필드의 값
         logger.debug("Authorization : {}", authorization);
         if (authorization == null || !authorization.startsWith("Basic")) { // Authorization 헤더의 값이 없거나, 값이 Basic인증으로 시작하지 않을 때
             return true;
@@ -46,10 +46,4 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter {
         }
     }
 
-    public HttpServletRequest setAutoPlayer(HttpServletRequest request) {
-        String player = request.getHeader("autoPlayer");
-        if (player != null)
-            request.getSession().setAttribute(player, new AutoComPlayer(player));
-        return request;
-    }
 }

@@ -1,6 +1,5 @@
 package indianpoker.security;
 
-import indianpoker.exception.NonExistPlayerException;
 import indianpoker.exception.UnAuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +28,6 @@ public class SecurityControllerAdvice {
         logger.debug("UnAuthenticationException is happened!");
         model.addAttribute("errorMessage", "UnAuthentication");
         return "/user/login";
-    }
-
-    @ExceptionHandler(NonExistPlayerException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public String nonExistPlayer() {
-        return "redirect:/indianpoker/init";
     }
 
 }

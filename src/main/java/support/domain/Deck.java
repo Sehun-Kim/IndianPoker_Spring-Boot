@@ -2,25 +2,23 @@ package support.domain;
 
 
 import indianpoker.vo.Card;
+import support.util.CardGenerateUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Deck {
     private List<Card> deck;
 
-    public Deck() {
-        this.deck = this.shuffle(this.init());
+    private Deck(List<Card> deck) {
+        this.deck = deck;
     }
 
-    private List<Card> init(){
-        List<Card> cards = new ArrayList<>();
-        for (int i = 1; i <= 10; i++){
-            cards.add(new Card(i));
-            cards.add(new Card(i));
-        }
-        return cards;
+    public static Deck ofGenerateAuto() {
+        return new Deck(CardGenerateUtil.generateShuffleCards());
+    }
+
+    public static Deck ofGenerateManual(List<Card> cards) {
+        return new Deck(cards);
     }
 
     public Card drawACard() {
@@ -28,15 +26,10 @@ public class Deck {
         return this.deck.remove(0);
     }
 
-    public List<Card> shuffle(List<Card> cards) {
-        Collections.shuffle(cards);
-        return cards;
-    }
-
     @Override
     public String toString() {
         return "Deck{" +
-                "deckSize=" + deck.size() +
+                "deck=" + deck +
                 '}';
     }
 }
