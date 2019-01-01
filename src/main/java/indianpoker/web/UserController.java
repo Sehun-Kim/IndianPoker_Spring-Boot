@@ -1,7 +1,7 @@
 package indianpoker.web;
 
 import indianpoker.domain.user.User;
-import indianpoker.domain.user.UserService;
+import indianpoker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

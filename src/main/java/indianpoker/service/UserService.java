@@ -1,5 +1,7 @@
-package indianpoker.domain.user;
+package indianpoker.service;
 
+import indianpoker.domain.user.User;
+import indianpoker.domain.user.UserRepository;
 import indianpoker.exception.NonExistDataException;
 import indianpoker.exception.UnAuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;

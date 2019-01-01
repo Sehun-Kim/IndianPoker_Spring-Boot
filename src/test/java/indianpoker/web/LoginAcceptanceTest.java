@@ -1,7 +1,7 @@
 package indianpoker.web;
 
 import indianpoker.domain.user.User;
-import indianpoker.domain.user.UserService;
+import indianpoker.service.UserService;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

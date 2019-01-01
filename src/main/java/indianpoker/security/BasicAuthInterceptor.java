@@ -1,12 +1,13 @@
 package indianpoker.security;
 
 import indianpoker.domain.user.User;
-import indianpoker.domain.user.UserService;
 import indianpoker.exception.UnAuthenticationException;
+import indianpoker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import support.util.SessionUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,4 +45,5 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
     }
+
 }

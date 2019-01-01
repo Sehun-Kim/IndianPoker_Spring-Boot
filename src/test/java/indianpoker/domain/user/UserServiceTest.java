@@ -1,6 +1,7 @@
 package indianpoker.domain.user;
 
 import indianpoker.exception.UnAuthenticationException;
+import indianpoker.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -12,8 +13,6 @@ import support.test.BaseTest;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
-
-import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest extends BaseTest {
@@ -46,7 +45,7 @@ public class UserServiceTest extends BaseTest {
         String password = "1234";
         when(userRepository.findByUserId(userId)).thenReturn(Optional.of(UserFixture.getDefaultUser()));
 
-        softly.assertThat(userService.login(userId, password)).isEqualTo(UserFixture.getDefaultUser());
+        softly.assertThat(userService.login(userId, password).getPassword()).isEqualTo(UserFixture.getDefaultUser().getPassword());
     }
 
     @Test(expected = UnAuthenticationException.class)

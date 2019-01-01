@@ -1,11 +1,10 @@
 package indianpoker.web;
 
-import indianpoker.domain.user.UserService;
+import indianpoker.service.UserService;
 import indianpoker.exception.UnAuthenticationException;
-import indianpoker.security.SessionUtil;
+import support.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 

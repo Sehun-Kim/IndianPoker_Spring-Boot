@@ -12,8 +12,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import support.fixture.UserFixture;
 import support.test.BaseTest;
-
-import static org.junit.Assert.*;
+import support.util.SessionUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoginUserHandlerMethodArgumentResolverTest extends BaseTest {
