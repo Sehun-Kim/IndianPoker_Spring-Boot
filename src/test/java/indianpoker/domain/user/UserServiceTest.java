@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import support.fixture.PictureFixture;
 import support.fixture.UserFixture;
 import support.test.BaseTest;
 
@@ -26,8 +27,9 @@ public class UserServiceTest extends BaseTest {
     @Test
     public void add() {
         User tester = UserFixture.getDefaultUser();
+        Picture picture = PictureFixture.getPicture();
         when(userRepository.save(tester)).thenReturn(tester);
-        softly.assertThat(userService.add(tester).getUserId()).isEqualTo(tester.getUserId());
+        softly.assertThat(userService.add(tester, picture).getUserId()).isEqualTo(tester.getUserId());
     }
 
     @Test
