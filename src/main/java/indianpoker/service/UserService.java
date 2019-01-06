@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -17,9 +19,13 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public List<User> findTop10User() {
+        return userRepository.findTop10ByOrderByWinCntDesc();
+    }
 
     public User add(User user, Picture picture) {
         logger.debug("picture name : {}", picture.getFileName());
+        user.setPicture(picture);
         return userRepository.save(user);
     }
 

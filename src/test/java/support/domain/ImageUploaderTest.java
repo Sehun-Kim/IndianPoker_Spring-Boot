@@ -1,4 +1,4 @@
-package indianpoker.service;
+package support.domain;
 
 import indianpoker.domain.user.Picture;
 import indianpoker.exception.NotImageDataException;
@@ -14,33 +14,33 @@ import support.test.BaseTest;
 import java.io.File;
 import java.io.FileInputStream;
 
-public class ImageUploadServiceTest extends BaseTest {
-    private static final Logger logger = LoggerFactory.getLogger(ImageUploadServiceTest.class);
+public class ImageUploaderTest extends BaseTest {
+    private static final Logger logger = LoggerFactory.getLogger(ImageUploaderTest.class);
 
-    private ImageUploadService imageUploadService;
+    private ImageUploader imageUploader;
 
     @Before
     public void setUp() throws Exception {
-        imageUploadService = new ImageUploadService();
-        imageUploadService.setUploadFileDir("./uploads");
+        imageUploader = new ImageUploader();
+        imageUploader.setUploadFileDir("static/uploads");
     }
 
     @Test
     public void extensionCheck() {
         String extension = "jpeg";
-        softly.assertThat(imageUploadService.accept(extension)).isTrue();
+        softly.assertThat(imageUploader.accept(extension)).isTrue();
     }
 
     @Test(expected = NotImageDataException.class)
     public void makeFileName_not_image() {
         String fileName = "test.txt";
-        imageUploadService.makeFileName(fileName);
+        imageUploader.makeFileName(fileName);
     }
 
     @Test
     public void makeFileName() {
         String fileName = "test.jpg";
-        String result = imageUploadService.makeFileName(fileName);
+        String result = imageUploader.makeFileName(fileName);
         softly.assertThat(result.split("_")[0]).isEqualTo(fileName.split("\\.")[0]);
         logger.debug("result : {}", result);
     }
@@ -48,18 +48,18 @@ public class ImageUploadServiceTest extends BaseTest {
     @Test
     public void uploadPic() throws Exception {
         String fileName = "example.jpg";
-        File testImage = new ClassPathResource("./uploads/example.jpeg").getFile();
+        File testImage = new ClassPathResource("static/uploads/example.jpeg").getFile();
         MultipartFile multipartFile = new MockMultipartFile(testImage.getPath(), fileName, null, new FileInputStream(testImage));
         logger.debug(multipartFile.getName());
-        Picture picture = imageUploadService.uploadPic(multipartFile);
-        softly.assertThat(picture.isEmpty()).isFalse();
+        Picture picture = imageUploader.uploadPic(multipartFile);
+        softly.assertThat(picture.getFileName()).startsWith("example");
     }
 
     @Test
     public void uploadPic_isEmpty() throws Exception {
         MultipartFile multipartFile = new MockMultipartFile("test", null, null, new byte[0]);
         logger.debug(multipartFile.getName());
-        Picture picture = imageUploadService.uploadPic(multipartFile);
-        softly.assertThat(picture.isEmpty()).isTrue();
+        Picture picture = imageUploader.uploadPic(multipartFile);
+        softly.assertThat(picture.getFileName()).isEqualTo("example.jpeg");
     }
 }

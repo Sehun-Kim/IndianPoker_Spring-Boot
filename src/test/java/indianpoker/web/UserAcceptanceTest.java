@@ -27,8 +27,9 @@ public class UserAcceptanceTest extends AcceptanceTest {
 
     @Test
     public void create_with_no_picture() {
-        htmlFormDataBuilder = HtmlFormDataBuilder.urlEncodedForm().addParameter("userId", "tester2").addParameter("password", "1234");
-
+        htmlFormDataBuilder = HtmlFormDataBuilder.multipartFormData()
+                .addParameter("userId", "tester2")
+                .addParameter("password", "1234");
         ResponseEntity<String> responseEntity = template().postForEntity("/users", htmlFormDataBuilder.build(), String.class);
 
         softly.assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.FOUND);
@@ -38,7 +39,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
 
     @Test
     public void create_with_picture() {
-        ClassPathResource classPathResource = new ClassPathResource("./uploads/example.jpeg");
+        ClassPathResource classPathResource = new ClassPathResource("static/uploads/example.jpeg");
         htmlFormDataBuilder = HtmlFormDataBuilder.multipartFormData()
                 .addParameter("userId", "tester2")
                 .addParameter("password", "1234")

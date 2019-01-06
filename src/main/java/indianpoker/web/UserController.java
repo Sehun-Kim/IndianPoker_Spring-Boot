@@ -1,8 +1,6 @@
 package indianpoker.web;
 
-import indianpoker.domain.user.Picture;
 import indianpoker.domain.user.User;
-import indianpoker.service.ImageUploadService;
 import indianpoker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import support.domain.ImageUploader;
 
 @Controller
 @RequestMapping("/users")
@@ -24,7 +23,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private ImageUploadService imageUploadService;
+    private ImageUploader imageUploader;
 
     @GetMapping("/form")
     public String createForm() {
@@ -33,8 +32,7 @@ public class UserController {
 
     @PostMapping
     public String create(User user, MultipartFile pic) throws Exception {
-        Picture userPicture = imageUploadService.uploadPic(pic);
-        userService.add(user, userPicture);
+        userService.add(user, imageUploader.uploadPic(pic));
         return "redirect:/login";
     }
 

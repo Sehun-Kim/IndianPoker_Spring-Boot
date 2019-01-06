@@ -1,23 +1,17 @@
 package indianpoker.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import support.domain.AbstractEntity;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
-import javax.persistence.*;
+@Embeddable
+public class Picture {
+    private static final String DEFAULT_PICTURE_NAME = "example.jpeg";
 
-@Entity
-public class Picture extends AbstractEntity {
-    public static final Picture EMPTY_PICTURE = new EmptyPicture();
-
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String fileName;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String fileDownloadUrl;
-
-    @OneToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_picture_user"))
-    private User user;
 
     public Picture() {
     }
@@ -27,29 +21,13 @@ public class Picture extends AbstractEntity {
         this.fileDownloadUrl = fileDownloadUrl;
     }
 
-    @JsonIgnore
-    public boolean isEmpty() {
-        return false;
-    }
-
-    private static class EmptyPicture extends Picture {
-        private static final String EMPTY_PICTURE = "example.jpeg";
-        private static final String EMPTY_PICTURE_URL ="upload/" + EMPTY_PICTURE;
-
-        EmptyPicture() {
-            super(EMPTY_PICTURE, EMPTY_PICTURE_URL);
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return true;
-        }
+    public static Picture getDefaultPicture(String uploadDirUrl) {
+        return new Picture(DEFAULT_PICTURE_NAME, uploadDirUrl + "/" + DEFAULT_PICTURE_NAME);
     }
 
     public String getFileName() {
         return fileName;
     }
-
 
     public String getFileDownloadUrl() {
         return fileDownloadUrl;
