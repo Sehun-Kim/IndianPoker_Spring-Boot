@@ -24,7 +24,7 @@ public class UserService {
     }
 
     public User add(User user, Picture picture) {
-        logger.debug("picture name : {}", picture.getFileName());
+        logger.debug("picture name : {}", picture.getOriginalFileName());
         user.setPicture(picture);
         return userRepository.save(user);
     }

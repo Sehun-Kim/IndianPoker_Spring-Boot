@@ -26,12 +26,12 @@ public class UserServiceTest extends BaseTest {
     @Test
     public void add() {
         User tester = UserFixture.getDefaultUser();
-        Picture picture = Picture.getDefaultPicture("test/");
+        Picture picture = Picture.DEFAULT_PICTURE;
         User result = tester;
         result.setPicture(picture);
         when(userRepository.save(tester)).thenReturn(result);
         softly.assertThat(userService.add(tester, picture).getUserId()).isEqualTo(tester.getUserId());
-        softly.assertThat(userService.add(tester, picture).getPicture().getFileName()).isEqualTo(picture.getFileName());
+        softly.assertThat(userService.add(tester, picture).getPicture().getOriginalFileName()).isEqualTo(picture.getOriginalFileName());
     }
 
     @Test

@@ -5,11 +5,12 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import support.test.AcceptanceTest;
 import support.test.HtmlFormDataBuilder;
+
+import java.io.File;
 
 public class UserAcceptanceTest extends AcceptanceTest {
     private static final Logger logger = LoggerFactory.getLogger(UserAcceptanceTest.class);
@@ -39,11 +40,11 @@ public class UserAcceptanceTest extends AcceptanceTest {
 
     @Test
     public void create_with_picture() {
-        ClassPathResource classPathResource = new ClassPathResource("static/uploads/example.jpeg");
+        File image = new File("/Users/sehun/Desktop/uploads/example.jpeg");
         htmlFormDataBuilder = HtmlFormDataBuilder.multipartFormData()
                 .addParameter("userId", "tester2")
                 .addParameter("password", "1234")
-                .addParameter("pic", classPathResource);
+                .addParameter("pic", image);
 
         ResponseEntity<String> responseEntity = template().postForEntity("/users", htmlFormDataBuilder.build(), String.class);
     }
