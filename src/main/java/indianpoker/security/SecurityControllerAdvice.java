@@ -1,5 +1,6 @@
 package indianpoker.security;
 
+import indianpoker.exception.NotImageDataException;
 import indianpoker.exception.UnAuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,12 @@ public class SecurityControllerAdvice {
         logger.debug("UnAuthenticationException is happened!");
         model.addAttribute("errorMessage", "UnAuthentication");
         return "/user/login";
+    }
+
+    @ExceptionHandler(NotImageDataException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public String reTryJoin() {
+        return "/user/join";
     }
 
 }
