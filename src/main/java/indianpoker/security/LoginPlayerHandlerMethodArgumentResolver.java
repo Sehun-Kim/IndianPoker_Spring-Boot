@@ -9,11 +9,11 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import support.util.SessionUtil;
 
 // http://addio3305.tistory.com/75
-public class LoginUserHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+public class LoginPlayerHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
     // supportParameter의 리턴 값이 true이면 resolveArgument 실행
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(LoginUser.class);
+        return parameter.hasParameterAnnotation(LoginPlayer.class);
     }
 
     @Override

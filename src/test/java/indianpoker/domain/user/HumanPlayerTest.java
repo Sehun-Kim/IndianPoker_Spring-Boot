@@ -1,14 +1,15 @@
 package indianpoker.domain.user;
 
+import indianpoker.domain.humanplayer.HumanPlayer;
 import org.junit.Test;
-import support.fixture.UserFixture;
+import support.fixture.PlayerFixture;
 import support.test.BaseTest;
 
-public class UserTest extends BaseTest {
+public class HumanPlayerTest extends BaseTest {
 
     @Test
     public void matchPassword() {
-        User test = UserFixture.getDefaultUser();
+        HumanPlayer test = PlayerFixture.getDefaultHumanPlayer();
         softly.assertThat(test.matchPassword("1234")).isTrue();
     }
 

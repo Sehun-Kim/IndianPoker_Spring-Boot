@@ -1,4 +1,4 @@
-package indianpoker.domain.user;
+package indianpoker.domain.humanplayer;
 
 import indianpoker.exception.NotImageDataException;
 import org.apache.commons.io.FilenameUtils;

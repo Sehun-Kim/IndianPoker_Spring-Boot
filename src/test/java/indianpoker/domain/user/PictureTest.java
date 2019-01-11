@@ -1,10 +1,9 @@
 package indianpoker.domain.user;
 
+import indianpoker.domain.humanplayer.Picture;
 import indianpoker.exception.NotImageDataException;
 import org.junit.Test;
 import support.test.BaseTest;
-
-import static org.junit.Assert.*;
 
 public class PictureTest extends BaseTest {
 

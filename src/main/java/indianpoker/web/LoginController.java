@@ -1,6 +1,6 @@
 package indianpoker.web;
 
-import indianpoker.service.UserService;
+import indianpoker.service.HumanPlayerService;
 import indianpoker.exception.UnAuthenticationException;
 import support.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +14,17 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     @Autowired
-    private UserService userService;
+    private HumanPlayerService humanPlayerService;
 
     @GetMapping("/login")
     public String form() {
-        return "user/login";
+        return "player/login";
     }
 
     @PostMapping("/login")
     public String login(String userId, String password, HttpSession session) {
         try {
-            session.setAttribute(SessionUtil.USER_SESSION, userService.login(userId, password));
+            session.setAttribute(SessionUtil.PLAYER_SESSION, humanPlayerService.login(userId, password));
             return "redirect:/";
         } catch (UnAuthenticationException e) {
             return "redirect:/login";
@@ -33,7 +33,7 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.removeAttribute(SessionUtil.USER_SESSION);
+        session.removeAttribute(SessionUtil.PLAYER_SESSION);
         return "redirect:/";
     }
 

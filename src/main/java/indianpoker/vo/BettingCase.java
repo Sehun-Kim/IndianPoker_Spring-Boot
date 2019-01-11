@@ -1,7 +1,7 @@
 package indianpoker.vo;
 
 public enum BettingCase {
-    CALL_CASE(1), RAISE_CASE(2), DIE_CASE(3), NONE_CASE(4);
+    CALL_CASE(1), RAISE_CASE(2), DIE_CASE(3);
 
     private int caseNumber;
 
@@ -17,6 +17,5 @@ public enum BettingCase {
         }
         throw new IllegalArgumentException("유효한 베팅이 아닙니다.");
     }
-
 
 }

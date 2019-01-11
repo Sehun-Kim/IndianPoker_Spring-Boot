@@ -1,8 +1,8 @@
 package indianpoker.security;
 
-import indianpoker.domain.user.User;
+import indianpoker.domain.humanplayer.HumanPlayer;
 import indianpoker.exception.UnAuthenticationException;
-import indianpoker.service.UserService;
+import indianpoker.service.HumanPlayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter {
     private static final Logger logger = LoggerFactory.getLogger(BasicAuthInterceptor.class);
 
     @Autowired
-    private UserService userService;
+    private HumanPlayerService humanPlayerService;
 
     // 브라우저에서 컨트롤러로 요청이 가기 전, 컨트롤러에서 처리한 응답이 브라우저에 가기 전
     @Override
@@ -37,9 +37,9 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter {
 
         // login
         try {
-            User loginedUser = userService.login(values[0], values[1]);
-            logger.debug("loginedUser : {}", loginedUser);
-            request.getSession().setAttribute(SessionUtil.USER_SESSION, loginedUser);
+            HumanPlayer loginedHumanPlayer = humanPlayerService.login(values[0], values[1]);
+            logger.debug("loginedHumanPlayer : {}", loginedHumanPlayer);
+            request.getSession().setAttribute(SessionUtil.PLAYER_SESSION, loginedHumanPlayer);
             return true;
         } catch (UnAuthenticationException e) {
             return true;

@@ -1,6 +1,6 @@
 package indianpoker.service;
 
-import indianpoker.domain.user.Picture;
+import indianpoker.domain.humanplayer.Picture;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;

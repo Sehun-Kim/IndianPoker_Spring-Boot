@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
 // http://dukwon.tistory.com/42
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LoginUser {
+public @interface LoginPlayer {
     boolean required() default true;
 }

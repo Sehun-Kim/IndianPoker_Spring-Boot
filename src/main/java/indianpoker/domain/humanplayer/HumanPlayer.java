@@ -1,6 +1,6 @@
-package indianpoker.domain.user;
+package indianpoker.domain.humanplayer;
 
-import support.domain.AbstractEntity;
+import indianpoker.domain.game.player.AbstractPlayer;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -8,11 +8,7 @@ import javax.persistence.Entity;
 import javax.validation.constraints.Size;
 
 @Entity
-public class User extends AbstractEntity {
-
-    @Size(min = 3, max = 20)
-    @Column(unique = true, nullable = false)
-    private String userId;
+public class HumanPlayer extends AbstractPlayer {
 
     @Size(min = 3, max = 20)
     @Column(nullable = false)
@@ -24,20 +20,21 @@ public class User extends AbstractEntity {
     @Embedded
     private Picture picture;
 
-    public User() {
+    public HumanPlayer() {
+        super();
     }
 
-    public User(String userId, String password) {
-        this.userId = userId;
+    public HumanPlayer(String playerName, String password) {
+        super(playerName);
         this.password = password;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public String getPlayerName() {
+        return super.getPlayerName();
     }
 
-    public String getUserId() {
-        return userId;
+    public void setPlayerName(String playerName) {
+        super.setPlayerName(playerName);
     }
 
     public void setPassword(String password) {

@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport"
+    <meta playerName="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>IndianPoker Game</title>
 
@@ -32,14 +32,14 @@
             <div class="mdl-layout-spacer"></div>
             <!-- Tabs -->
             <nav class="mdl-navigation">
-                {{^ loginedUser }}
+                {{^ loginedHumanPlayer }}
                 <a class="mdl-navigation__link" href="/login">login</a>
                 <a class="mdl-navigation__link" href="/users/form">join</a>
-                {{/ loginedUser }}
-                {{# loginedUser }}
+                {{/ loginedHumanPlayer }}
+                {{# loginedHumanPlayer }}
                 <a class="mdl-navigation__link" href="/indianpoker/init">StartGame</a>
                 <a class="mdl-navigation__link" href="/logout">logout</a>
-                {{/ loginedUser }}
+                {{/ loginedHumanPlayer }}
             </nav>
         </div>
     </header>

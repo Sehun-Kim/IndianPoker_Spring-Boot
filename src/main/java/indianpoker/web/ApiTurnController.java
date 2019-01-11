@@ -1,10 +1,9 @@
 package indianpoker.web;
 
-import indianpoker.domain.user.User;
-import indianpoker.security.LoginUser;
-import indianpoker.service.TurnService;
-import org.springframework.beans.factory.annotation.Autowired;
+import indianpoker.domain.humanplayer.HumanPlayer;
+import indianpoker.security.LoginPlayer;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,12 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/turn/{turnId}")
 public class ApiTurnController {
 
-    @Autowired
-    private TurnService turnService;
-
     @GetMapping("/init")
-    public String init(@LoginUser User loginUser) {
-
+    public String init(@PathVariable int turnId, @LoginPlayer HumanPlayer loginHumanPlayer) {
         return "string";
     }
 

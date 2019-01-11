@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta playerName="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>Issue Tracking System</title>
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en'
@@ -24,8 +24,8 @@
             <nav class="mdl-navigation">
                 <a class="mdl-navigation__link" href="/">Issues</a>
                 <a class="mdl-navigation__link" href="/milestone/list.html">Milestones</a>
-                <a class="mdl-navigation__link" href="/user/login.html">login</a>
-                <a class="mdl-navigation__link" href="/user/join.html">join</a>
+                <a class="mdl-navigation__link" href="/humanPlayer/login.html">login</a>
+                <a class="mdl-navigation__link" href="/humanPlayer/join.html">join</a>
             </nav>
         </div>
     </header>
@@ -73,7 +73,7 @@
                     <button id="milestone-menu" class="mdl-button mdl-js-button">
                         Milestone
                     </button>
-                    <!-- indianpoker list -->
+                    <!-- game list -->
                     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
                         for="milestone-menu">
                         <li class="mdl-menu__item mdl-button--accent">
@@ -202,14 +202,14 @@
                 </div>
                 <form action="/issue/1/uploadFile" enctype="multipart/form-data" method="POST">
                     <div style="margin:10px;">
-                        <input type="file" name="file" id="file"/>
+                        <input type="file" playerName="file" id="file"/>
                         <button class="mdl-button" type="submit">upload file</button>
                     </div>
                 </form>
                 <div class="mdl-color-text--primary-contrast mdl-card__supporting-text new-comment">
                     <form action="/issue/1/addComment" method="POST">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <textarea rows=5 class="mdl-textfield__input" id="comment" name="comment"></textarea>
+                            <textarea rows=5 class="mdl-textfield__input" id="comment" playerName="comment"></textarea>
                             <label for="comment" class="mdl-textfield__label">Leave a comment</label>
                         </div>
                         <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
