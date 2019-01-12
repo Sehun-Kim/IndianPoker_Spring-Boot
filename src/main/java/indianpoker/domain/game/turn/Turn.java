@@ -1,6 +1,8 @@
-package indianpoker.domain.game;
+package indianpoker.domain.game.turn;
 
 import indianpoker.domain.game.betting.BettingTable;
+import indianpoker.domain.game.dealer.Dealer;
+import indianpoker.domain.game.poker.IndianPoker;
 import indianpoker.domain.humanplayer.HumanPlayer;
 import support.domain.AbstractEntity;
 

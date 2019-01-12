@@ -13,7 +13,7 @@ public class Picture {
 
     public static final Picture DEFAULT_PICTURE = new DefaultPicture();
 
-    @Column(unique = true)
+    @Column
     private String fileId;
 
     @Column

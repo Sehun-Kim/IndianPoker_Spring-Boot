@@ -22,9 +22,9 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(String userId, String password, HttpSession session) {
+    public String login(String playerName, String password, HttpSession session) {
         try {
-            session.setAttribute(SessionUtil.PLAYER_SESSION, humanPlayerService.login(userId, password));
+            session.setAttribute(SessionUtil.PLAYER_SESSION, humanPlayerService.login(playerName, password));
             return "redirect:/";
         } catch (UnAuthenticationException e) {
             return "redirect:/login";

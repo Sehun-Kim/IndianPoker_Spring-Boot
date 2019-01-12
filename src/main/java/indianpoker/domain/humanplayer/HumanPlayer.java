@@ -1,6 +1,8 @@
 package indianpoker.domain.humanplayer;
 
 import indianpoker.domain.game.player.AbstractPlayer;
+import indianpoker.vo.Chips;
+import support.domain.Deck;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -31,6 +33,13 @@ public class HumanPlayer extends AbstractPlayer {
 
     public String getPlayerName() {
         return super.getPlayerName();
+    }
+
+    public HumanPlayer readyToGame(int playerChipsSize, boolean preemptive) {
+        super.setChips(Chips.ofNumberOfChips(playerChipsSize));
+        super.setFirstBetter(preemptive);
+        super.setDeck(Deck.ofGenerateAuto());
+        return this;
     }
 
     public void setPlayerName(String playerName) {

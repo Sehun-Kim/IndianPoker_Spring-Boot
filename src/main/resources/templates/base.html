@@ -32,14 +32,14 @@
             <div class="mdl-layout-spacer"></div>
             <!-- Tabs -->
             <nav class="mdl-navigation">
-                {{^ loginedHumanPlayer }}
+                {{^ loginedPlayer }}
                 <a class="mdl-navigation__link" href="/login">login</a>
-                <a class="mdl-navigation__link" href="/users/form">join</a>
-                {{/ loginedHumanPlayer }}
-                {{# loginedHumanPlayer }}
-                <a class="mdl-navigation__link" href="/indianpoker/init">StartGame</a>
+                <a class="mdl-navigation__link" href="/players/form">join</a>
+                {{/ loginedPlayer }}
+                {{# loginedPlayer }}
+                <a class="mdl-navigation__link" href="/indianpokers">startGame</a>
                 <a class="mdl-navigation__link" href="/logout">logout</a>
-                {{/ loginedHumanPlayer }}
+                {{/ loginedPlayer }}
             </nav>
         </div>
     </header>
@@ -77,7 +77,6 @@
 <script src="/js/main.js"></script>
 <script>
       $('.back-btn').on('click',function(){history.back();})
-
 </script>
 {{/block}}
 </body>

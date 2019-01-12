@@ -18,7 +18,7 @@ import java.util.Objects;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class AbstractPlayer extends AbstractEntity implements Player, Winner, Loser {
+public abstract class AbstractPlayer extends AbstractEntity implements Player, Winner, Loser {
     @Size(min = 3, max = 20)
     @Column(unique = true, nullable = false)
     private String playerName;
@@ -100,6 +100,18 @@ public class AbstractPlayer extends AbstractEntity implements Player, Winner, Lo
 
     protected void setPlayerName(String playerName) {
         this.playerName = playerName;
+    }
+
+    protected void setDeck(Deck deck) {
+        this.deck = deck;
+    }
+
+    protected void setChips(Chips chips) {
+        this.chips = chips;
+    }
+
+    protected void setFirstBetter(boolean firstBetter) {
+        this.firstBetter = firstBetter;
     }
 
     @Override

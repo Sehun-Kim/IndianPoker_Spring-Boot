@@ -1,4 +1,4 @@
-package indianpoker.domain.game;
+package indianpoker.domain.game.dealer;
 
 import support.domain.AbstractEntity;
 

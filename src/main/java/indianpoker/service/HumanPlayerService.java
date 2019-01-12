@@ -29,12 +29,12 @@ public class HumanPlayerService {
         return humanPlayerRepository.save(humanPlayer);
     }
 
-    public HumanPlayer findById(Long userId) {
-        return humanPlayerRepository.findById(userId).orElseThrow(NonExistDataException::new);
+    public HumanPlayer findById(Long playerId) {
+        return humanPlayerRepository.findById(playerId).orElseThrow(NonExistDataException::new);
     }
 
-    public HumanPlayer login(String userId, String password) throws UnAuthenticationException {
-        return humanPlayerRepository.findByPlayerName(userId)
+    public HumanPlayer login(String playerName, String password) throws UnAuthenticationException {
+        return humanPlayerRepository.findByPlayerName(playerName)
                 .filter(user -> user.matchPassword(password))
                 .orElseThrow(UnAuthenticationException::new);
     }

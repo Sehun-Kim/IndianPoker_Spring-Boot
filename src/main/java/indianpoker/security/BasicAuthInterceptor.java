@@ -32,14 +32,14 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter {
         String base64Credentials = authorization.substring("Basic".length()).trim(); // Basic과 띄어쓰기를 자른 다음 값
         String credentials = new String(Base64.getDecoder().decode(base64Credentials), Charset.forName("UTF-8")); // Base64로 인코딩되어있는 값을 UTF-8 형식으로 디코딩
         final String[] values = credentials.split(":", 2); // id : password 분리
-        logger.debug("username : {}", values[0]);
+        logger.debug("playerName : {}", values[0]);
         logger.debug("password : {}", values[1]);
 
         // login
         try {
-            HumanPlayer loginedHumanPlayer = humanPlayerService.login(values[0], values[1]);
-            logger.debug("loginedHumanPlayer : {}", loginedHumanPlayer);
-            request.getSession().setAttribute(SessionUtil.PLAYER_SESSION, loginedHumanPlayer);
+            HumanPlayer loginedPlayer = humanPlayerService.login(values[0], values[1]);
+            logger.debug("loginedPlayer : {}", loginedPlayer);
+            request.getSession().setAttribute(SessionUtil.PLAYER_SESSION, loginedPlayer);
             return true;
         } catch (UnAuthenticationException e) {
             return true;
