@@ -1,6 +1,6 @@
 package indianpoker.web;
 
-import indianpoker.domain.game.poker.IndianPoker;
+import indianpoker.domain.poker.IndianPoker;
 import indianpoker.domain.humanplayer.HumanPlayer;
 import indianpoker.security.LoginPlayer;
 import indianpoker.service.IndianPokerService;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import support.util.SessionUtil;
 
 import javax.servlet.http.HttpSession;
 
@@ -38,15 +39,15 @@ public class IndianPokerController {
 
     @PostMapping()
     public String create(@LoginPlayer HumanPlayer loginPlayer, String preemptive, int chipsSize) {
-        logger.debug("loginPlayer : {}", loginPlayer);
-        IndianPoker indianPoker = indianPokerService.createGame(loginPlayer, chipsSize, preemptive);
-        logger.debug("loginPlayer : {}", loginPlayer);
+        IndianPoker indianPoker = indianPokerService.createGame(chipsSize, preemptive);
         return "redirect:/indianpokers/" + indianPoker.getId();
     }
 
     @GetMapping("/{id}")
-    public String start(@PathVariable("id") int indianPoker_id, @LoginPlayer HumanPlayer loginPlayer, HttpSession session) {
-        session.setAttribute("gameId", indianPoker_id);
+    public String start(@PathVariable("id") long indianPoker_id, @LoginPlayer HumanPlayer loginPlayer, HttpSession session, Model model) {
+        session.setAttribute(SessionUtil.GAME_ID, indianPoker_id);
+        model.addAttribute("game", indianPokerService.enterPlayer(indianPoker_id, loginPlayer));
+
         return "indianpoker/game";
     }
 

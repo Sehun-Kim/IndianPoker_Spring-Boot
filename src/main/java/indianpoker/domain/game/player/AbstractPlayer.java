@@ -2,6 +2,7 @@ package indianpoker.domain.game.player;
 
 import indianpoker.domain.game.betting.bettingstate.BettingState;
 import indianpoker.domain.game.betting.bettingstate.InitBettingState;
+import indianpoker.dto.ex.PlayerInfoDto;
 import indianpoker.vo.BettingCase;
 import indianpoker.vo.Card;
 import indianpoker.vo.Chips;
@@ -88,10 +89,15 @@ public abstract class AbstractPlayer extends AbstractEntity implements Player, W
         this.firstBetter = true;
     }
 
-//    @Override
-//    public PlayerInfoDto toDto() {
-//        return new PlayerInfoDto(this.playerName, this.chips);
-//    }
+    @Override
+    public PlayerInfoDto toDto() {
+        return new PlayerInfoDto(this.playerName, this.chips);
+    }
+
+    @Override
+    public boolean isGameOver() {
+        return this.chips.isEmpty();
+    }
 
 
     protected String getPlayerName() {

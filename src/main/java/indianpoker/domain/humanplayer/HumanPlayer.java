@@ -73,4 +73,8 @@ public class HumanPlayer extends AbstractPlayer {
     public boolean matchPassword(String otherPassword) {
         return this.password.equals(otherPassword);
     }
+
+    public boolean matchPlayerName(String name) {
+        return getPlayerName().equals(name);
+    }
 }

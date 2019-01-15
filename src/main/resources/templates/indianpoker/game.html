@@ -1,7 +1,57 @@
 {{#partial "contents"}}
 
+<div class="container">
+    {{#loginedPlayer}}
+    <h1 id="gameId">Game No <span>{{gameId}}</span></h1>
+    <div>
+    <a>
+        <img class="mdl-list__item-avatar" height="48" width="48"
+             src="/images/{{picture.fileIdWithExtension}}"
+             alt="{{picture.originalFileName}}">
+    </a>
+    <a href="/players/{{id}}">
+        <strong id="playerName">{{playerName}}</strong>
+    </a>
+    </div>
+    {{/loginedPlayer}}
+</div>
 
+<div class="container">
+    <div id="notice" class="alert alert-info" role="alert">
+        <div id="turnNum" class="container"> Turn<span>1</span></div>
+        <ul style="height:100px; overflow:auto;">
+            <!--Game Notice Area-->
+        </ul>
+    </div>
+</div>
 
+<div class="container">
+    <div id="player">
+        <div class="card mb-4 shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
+                 preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+                <title>Placeholder</title>
+                <rect fill="#55595c" width="100%" height="100%"/>
+                <text id="card" fill="#eceeef" dy=".3em" x="50%" y="50%"></text>
+            </svg>
+            <div class="card-body">
+                <!--Betting Sellect-->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <button id="callBtn" type="button" class="btn btn-sm btn-outline-secondary">Call</button>
+                        <button id="raiseBtn" type="button" class="btn btn-sm btn-outline-secondary">Raise</button>
+                        <button id="dieBtn" type="button" class="btn btn-sm btn-outline-secondary">Die</button>
+                    </div>
+                </div>
+                <!--Input BettingChips Number-->
+                <input id="chipSize" type="text" class="form-control">
+                <button class="bettingChips">Betting</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/socket.js">
 {{/partial}}
 
 {{> base }}
