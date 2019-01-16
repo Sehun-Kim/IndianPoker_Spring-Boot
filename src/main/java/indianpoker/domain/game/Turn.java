@@ -82,13 +82,15 @@ public class Turn {
         return new AllBettingInfoDto(
                 this.turnCount,
                 this.firstPlayer.toDto(),
-                this.lastPlayer.toDto(),
-                this.bettingTable.toDto(this.firstPlayer)
+                this.lastPlayer.toDto()
         );
     }
 
     private SingleBettingInfoDto generateSingleBettingInfo() {
-        return new SingleBettingInfoDto(this.dealer.getOtherPlayerCard(firstPlayer));
+        return new SingleBettingInfoDto(
+                this.bettingTable.toDto(this.firstPlayer),
+                this.dealer.getOtherPlayerCard(firstPlayer)
+        );
     }
 
     public void checkEmptyChipException() {
