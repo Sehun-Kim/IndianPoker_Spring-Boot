@@ -2,8 +2,9 @@ package indianpoker.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import indianpoker.dto.BettingInfoDto;
+import indianpoker.dto.GameInfoDto;
 import indianpoker.dto.GameMessage;
+import indianpoker.dto.RecieveMessageDto;
 import indianpoker.socket.sessions.GameSession;
 import indianpoker.vo.DtoType;
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ public class MessageService {
             sendNotice(gameMessage, sessions);
         }
 
-        if (gameMessage.getType().equals(DtoType.BETTING)) {
+        if (gameMessage.getType().equals(DtoType.GAME_INFO)) {
             sendBettingInfo(gameMessage, sessions);
         }
     }
@@ -42,14 +43,14 @@ public class MessageService {
 
     private void sendBettingInfo(GameMessage gameMessage, GameSession sessions) {
         logger.debug("sendBettingInfo : {}", sessions);
-        BettingInfoDto bettingInfoDto = (BettingInfoDto) gameMessage;
+        GameInfoDto gameInfoDto = (GameInfoDto) gameMessage;
 
         // Announce To all
-        sendToAll(bettingInfoDto.getAllBettingInfoDto(), sessions);
+        sendToAll(gameInfoDto.getTurnInfoDto(), sessions);
 
         // Announce To better
-        WebSocketSession session = sessions.getPlayerSession(bettingInfoDto.getBetterName());
-        send(bettingInfoDto.getSingleBettingInfoDto(), session);
+        WebSocketSession session = sessions.getPlayerSession(gameInfoDto.getBetterName());
+        send(gameInfoDto.getBetterInfoDto(), session);
     }
 
     private void sendToAll(GameMessage gameMessage, GameSession sessions) {
@@ -68,4 +69,14 @@ public class MessageService {
         }
     }
 
+
+    public RecieveMessageDto recieveMessage(TextMessage message) {
+        String payload = message.getPayload();
+        try {
+            return objectMapper.readValue(payload, RecieveMessageDto.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package indianpoker.dto.ex;
+package indianpoker.dto;
 
 import indianpoker.vo.Chips;
 

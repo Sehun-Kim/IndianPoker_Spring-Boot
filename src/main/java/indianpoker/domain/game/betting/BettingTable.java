@@ -1,7 +1,7 @@
 package indianpoker.domain.game.betting;
 
 import indianpoker.domain.game.player.FirstJudgeable;
-import indianpoker.dto.ex.BettingTableDto;
+import indianpoker.dto.BettingTableDto;
 import indianpoker.vo.Chips;
 
 // 턴에서 칩이 쌓이는 곳

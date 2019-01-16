@@ -3,9 +3,9 @@ package indianpoker.domain.game;
 import indianpoker.domain.game.betting.BettingTable;
 import indianpoker.domain.game.player.Player;
 import indianpoker.domain.humanplayer.HumanPlayer;
-import indianpoker.dto.AllBettingInfoDto;
-import indianpoker.dto.BettingInfoDto;
-import indianpoker.dto.SingleBettingInfoDto;
+import indianpoker.dto.TurnInfoDto;
+import indianpoker.dto.GameInfoDto;
+import indianpoker.dto.BetterInfoDto;
 import indianpoker.dto.ex.BettingChipBoundaryDto;
 import indianpoker.dto.ex.TurnResultDto;
 import indianpoker.exception.EmptyChipException;
@@ -72,24 +72,25 @@ public class Turn {
         return this.firstPlayer.isFirst();
     }
 
-    public BettingInfoDto generateBettingInfo() {
-        return new BettingInfoDto(this.firstPlayer.toDto().getName(),
-                generateAllBettingInfo(),
-                generateSingleBettingInfo());
+    public GameInfoDto generateGameInfoDto() {
+        return new GameInfoDto(this.firstPlayer.toDto().getName(),
+                generateTurnInfoDto(),
+                generateBetterInfoDto());
     }
 
-    private AllBettingInfoDto generateAllBettingInfo() {
-        return new AllBettingInfoDto(
+    private TurnInfoDto generateTurnInfoDto() {
+        return new TurnInfoDto(
                 this.turnCount,
                 this.firstPlayer.toDto(),
                 this.lastPlayer.toDto()
         );
     }
 
-    private SingleBettingInfoDto generateSingleBettingInfo() {
-        return new SingleBettingInfoDto(
+    private BetterInfoDto generateBetterInfoDto() {
+        return new BetterInfoDto(
                 this.bettingTable.toDto(this.firstPlayer),
-                this.dealer.getOtherPlayerCard(firstPlayer)
+                this.dealer.getOtherPlayerCard(firstPlayer),
+                generateBettingBoundary()
         );
     }
 
@@ -102,12 +103,12 @@ public class Turn {
         }
     }
 
-    public boolean lastPlayerChipIsEmpty() {
-        return this.lastPlayer.showChips().isEmpty();
-    }
-
     public BettingChipBoundaryDto generateBettingBoundary() {
         return new BettingChipBoundaryDto(bettingTable.calcDiffChips(), firstPlayer.showChips(), lastPlayer.showChips());
+    }
+
+    public boolean lastPlayerChipIsEmpty() {
+        return this.lastPlayer.showChips().isEmpty();
     }
 
     public void raiseBetting(Chips inputChip) {

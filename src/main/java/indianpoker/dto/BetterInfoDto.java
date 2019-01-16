@@ -1,18 +1,20 @@
 package indianpoker.dto;
 
-import indianpoker.dto.ex.BettingTableDto;
+import indianpoker.dto.ex.BettingChipBoundaryDto;
 import indianpoker.vo.Card;
 import indianpoker.vo.DtoType;
 
-public class SingleBettingInfoDto implements GameMessage {
+public class BetterInfoDto implements GameMessage {
     private BettingTableDto currentTableDto;
     private Card otherPlayerCard;
+    private BettingChipBoundaryDto bettingChipBoundaryDto;
     private boolean firstBetting;
     private DtoType type;
 
-    public SingleBettingInfoDto(BettingTableDto currentTableDto, Card otherPlayerCard) {
+    public BetterInfoDto(BettingTableDto currentTableDto, Card otherPlayerCard, BettingChipBoundaryDto bettingChipBoundaryDto) {
         this.currentTableDto = currentTableDto;
         this.otherPlayerCard = otherPlayerCard;
+        this.bettingChipBoundaryDto = bettingChipBoundaryDto;
         this.firstBetting = false;
         this.type = DtoType.BETTER_INFO;
     }
@@ -27,6 +29,10 @@ public class SingleBettingInfoDto implements GameMessage {
 
     public boolean isFirstBetting() {
         return firstBetting;
+    }
+
+    public BettingChipBoundaryDto getBettingChipBoundaryDto() {
+        return bettingChipBoundaryDto;
     }
 
     public void setFirstBetting(boolean firstBetting) {

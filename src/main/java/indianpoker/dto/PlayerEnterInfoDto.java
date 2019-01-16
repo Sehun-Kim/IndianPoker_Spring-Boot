@@ -1,19 +1,18 @@
 package indianpoker.dto;
 
-import indianpoker.dto.ex.PlayerInfoDto;
 import indianpoker.vo.DtoType;
 
-public class GameEnterInfoDto implements GameMessage {
+public class PlayerEnterInfoDto implements GameMessage {
     private static final String ENTER_MESSAGE = "님이 입장하셨습니다.";
 
     private String message;
     private PlayerInfoDto playerInfoDto;
     private DtoType type = DtoType.NOTICE;
 
-    public GameEnterInfoDto() {
+    public PlayerEnterInfoDto() {
     }
 
-    public GameEnterInfoDto(PlayerInfoDto playerInfoDto) {
+    public PlayerEnterInfoDto(PlayerInfoDto playerInfoDto) {
         this.playerInfoDto = playerInfoDto;
         this.message = playerInfoDto.getName() + ENTER_MESSAGE;
     }
@@ -33,7 +32,7 @@ public class GameEnterInfoDto implements GameMessage {
 
     @Override
     public String toString() {
-        return "GameEnterInfoDto{" +
+        return "PlayerEnterInfoDto{" +
                 ", message='" + message + '\'' +
                 ", type=" + type +
                 '}';

@@ -2,7 +2,7 @@ package indianpoker.domain.game;
 
 import indianpoker.domain.humanplayer.HumanPlayer;
 import indianpoker.domain.poker.IndianPoker;
-import indianpoker.dto.BettingInfoDto;
+import indianpoker.dto.GameInfoDto;
 import indianpoker.vo.Chips;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,9 +29,9 @@ public class TurnTest extends BaseTest {
 
     @Test
     public void generateBettingInfo() {
-        BettingInfoDto bettingInfoDto = turn.generateBettingInfo(1L);
-        softly.assertThat(bettingInfoDto.getCurrentTableDto().getOtherChips()).isEqualTo(Chips.ofNumberOfChips(1));
-        logger.debug("otherCard : {}", bettingInfoDto.getOtherPlayerCard());
-        softly.assertThat(bettingInfoDto.getOwnPlayerInfoDto().getRemainChips()).isEqualTo(Chips.ofNumberOfChips(19));
+        GameInfoDto gameInfoDto = turn.generateGameInfoDto(1L);
+        softly.assertThat(gameInfoDto.getCurrentTableDto().getOtherChips()).isEqualTo(Chips.ofNumberOfChips(1));
+        logger.debug("otherCard : {}", gameInfoDto.getOtherPlayerCard());
+        softly.assertThat(gameInfoDto.getOwnPlayerInfoDto().getRemainChips()).isEqualTo(Chips.ofNumberOfChips(19));
     }
 }

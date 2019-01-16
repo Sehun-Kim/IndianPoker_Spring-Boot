@@ -1,7 +1,7 @@
 package indianpoker.socket.sessions;
 
-import indianpoker.dto.GameEnterInfoDto;
-import indianpoker.dto.ex.PlayerInfoDto;
+import indianpoker.dto.PlayerEnterInfoDto;
+import indianpoker.dto.PlayerInfoDto;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.HashMap;
@@ -16,12 +16,12 @@ public class SocketSessions {
         gameSessions = new HashMap<>();
     }
 
-    public GameEnterInfoDto addSession(long gameId, WebSocketSession webSocketSession) {
+    public PlayerEnterInfoDto addSession(long gameId, WebSocketSession webSocketSession) {
         GameSession gameSession = findByGameId(gameId);
         gameSessions.put(gameId, gameSession.addSession(webSocketSession));
 
         PlayerInfoDto playerInfoDto = playerFromSession(webSocketSession).toDto();
-        return new GameEnterInfoDto(playerInfoDto);
+        return new PlayerEnterInfoDto(playerInfoDto);
     }
 
     public GameSession findByGameId(long gameId) {

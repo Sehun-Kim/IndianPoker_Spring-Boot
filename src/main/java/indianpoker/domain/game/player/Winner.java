@@ -1,6 +1,6 @@
 package indianpoker.domain.game.player;
 
-import indianpoker.dto.ex.PlayerInfoDto;
+import indianpoker.dto.PlayerInfoDto;
 import indianpoker.vo.Chips;
 
 public interface Winner {

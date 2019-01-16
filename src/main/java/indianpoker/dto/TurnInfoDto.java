@@ -1,15 +1,14 @@
 package indianpoker.dto;
 
-import indianpoker.dto.ex.PlayerInfoDto;
 import indianpoker.vo.DtoType;
 
-public class AllBettingInfoDto implements GameMessage {
+public class TurnInfoDto implements GameMessage {
     private int turnCount;
     private PlayerInfoDto ownPlayerInfoDto;
     private PlayerInfoDto otherPlayerInfoDto;
     private DtoType type;
 
-    public AllBettingInfoDto(int turnCount, PlayerInfoDto ownPlayerInfoDto, PlayerInfoDto otherPlayerInfoDto) {
+    public TurnInfoDto(int turnCount, PlayerInfoDto ownPlayerInfoDto, PlayerInfoDto otherPlayerInfoDto) {
         this.turnCount = turnCount;
         this.ownPlayerInfoDto = ownPlayerInfoDto;
         this.otherPlayerInfoDto = otherPlayerInfoDto;

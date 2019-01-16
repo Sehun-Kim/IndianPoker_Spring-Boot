@@ -2,7 +2,7 @@ package indianpoker.domain.game.player;
 
 import indianpoker.domain.game.betting.bettingstate.BettingState;
 import indianpoker.domain.game.betting.bettingstate.InitBettingState;
-import indianpoker.dto.ex.PlayerInfoDto;
+import indianpoker.dto.PlayerInfoDto;
 import indianpoker.vo.BettingCase;
 import indianpoker.vo.Card;
 import indianpoker.vo.Chips;

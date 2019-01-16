@@ -1,17 +1,13 @@
 package indianpoker.web.session;
 
-import indianpoker.dto.GameEnterInfoDto;
+import indianpoker.dto.PlayerEnterInfoDto;
 import indianpoker.service.IndianPokerService;
 import indianpoker.service.MessageService;
 import indianpoker.socket.sessions.GameSession;
-import indianpoker.socket.sessions.SocketSessions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.WebSocketSession;
-
-import static indianpoker.socket.util.SocketSessionUtil.gameIdFromSession;
 
 @Component
 public class GameController {
@@ -26,15 +22,9 @@ public class GameController {
     @Autowired
     TurnController turnController;
 
-    public void addPlayerSession(SocketSessions socketSessions, WebSocketSession session) {
-        long gameId = gameIdFromSession(session);
-
-        GameEnterInfoDto gameEnterInfoDto = socketSessions.addSession(gameId, session);
-        logger.debug("gameEnterDto : {}", gameEnterInfoDto);
-        GameSession gameSession = socketSessions.findByGameId(gameId);
-
+    public void initGame(GameSession gameSession, PlayerEnterInfoDto playerEnterInfoDto) {
         // 입장한 session들에게 공지
-        messageService.sendMessage(gameEnterInfoDto, gameSession);
+        messageService.sendMessage(playerEnterInfoDto, gameSession);
         if (gameSession.isStartable()) gameStart(gameSession);
     }
 

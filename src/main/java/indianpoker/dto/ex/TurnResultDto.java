@@ -1,5 +1,6 @@
 package indianpoker.dto.ex;
 
+import indianpoker.dto.PlayerInfoDto;
 import indianpoker.vo.Chips;
 
 import java.util.ArrayList;

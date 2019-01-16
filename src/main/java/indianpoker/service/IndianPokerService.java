@@ -4,7 +4,7 @@ import indianpoker.domain.game.Turn;
 import indianpoker.domain.poker.IndianPoker;
 import indianpoker.domain.poker.IndianPokerRepository;
 import indianpoker.domain.humanplayer.HumanPlayer;
-import indianpoker.dto.BettingInfoDto;
+import indianpoker.dto.GameInfoDto;
 import indianpoker.exception.CannotEnterGameException;
 import indianpoker.exception.NonExistDataException;
 import indianpoker.vo.GameStatus;
@@ -45,10 +45,10 @@ public class IndianPokerService {
         return findByGameId(gameId).getTurn();
     }
 
-    public BettingInfoDto turnFirstRun(Long gameId) {
+    public GameInfoDto turnFirstRun(Long gameId) {
         Turn turn = orderToRun(findTurnByGameId(gameId));
         turn.checkEmptyChipException();
-        return turn.generateBettingInfo().makeFirstBetting();
+        return turn.generateGameInfoDto().makeFirstBetting();
     }
 
     private Turn orderToRun(Turn turn) {
