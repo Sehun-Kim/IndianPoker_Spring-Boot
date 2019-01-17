@@ -2,16 +2,16 @@ package indianpoker.dto;
 
 import indianpoker.vo.DtoType;
 
-public class RecieveMessageDto implements GameMessage {
+public class ReceiveMessageDto implements GameMessage {
     private long gameId;
     private int value;
     private String playerName;
     private DtoType type;
 
-    public RecieveMessageDto() {
+    public ReceiveMessageDto() {
     }
 
-    public RecieveMessageDto(long gameId, int value, String playerName, DtoType type) {
+    public ReceiveMessageDto(long gameId, int value, String playerName, DtoType type) {
         this.gameId = gameId;
         this.value = value;
         this.playerName = playerName;

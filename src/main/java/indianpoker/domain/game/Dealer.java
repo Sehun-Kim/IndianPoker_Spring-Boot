@@ -5,7 +5,7 @@ import indianpoker.domain.game.player.Player;
 import indianpoker.domain.game.player.Winner;
 import indianpoker.dto.ex.GameResultDto;
 import indianpoker.dto.ex.TurnResultDto;
-import indianpoker.exception.GameOverException;
+import indianpoker.exception.BankruptException;
 import indianpoker.vo.Card;
 import indianpoker.vo.Chips;
 
@@ -79,9 +79,9 @@ public class Dealer {
                 .addWinningChips(winningChips);
     }
 
-    public void checkGameOver(Player player1, Player player2) {
+    public void checkBankrupt(Player player1, Player player2) {
         if (player1.isGameOver() || player2.isGameOver())
-            throw new GameOverException("GAME OVER");
+            throw new BankruptException("GAME OVER");
     }
 
     public GameResultDto judgeGameWinner(Player player1, Player player2) {

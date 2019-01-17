@@ -60,6 +60,7 @@ function connectSockJS() {
 
 function receiveMessage(contents) {
     var type = contents.type;
+
     if (type === 'NOTICE') {
         printNotice(contents);
     }
@@ -72,10 +73,14 @@ function receiveMessage(contents) {
         printBetterInfo(contents);
     }
 
+    if (type === 'ERROR') {
+        printError(contents);
+    }
 }
 
 function printNotice(contents) {
     notice.append('<li>' + contents.message + '</li>');
+    gameStart(contents.numberOfPeople, contents.playerInfoDto.name);
 }
 
 function printTurnInfo(contents) {
@@ -154,8 +159,21 @@ function printBetterInfo(contents) {
     }
 }
 
+function printError(contents) {
+    // error message 출력
+    alert(contents.message);
+}
+
 
 // --- Send METHOD ---
+function gameStart(numberOfPeople, name) {
+    if (numberOfPeople === 2 && name === playerName) { // 두 번째 들어온 player가 요청을 한다.
+        var gameStartMessage = {'gameId': gameId, 'type': 'TURN_START', 'value': 0, 'player': playerName};
+        sock.send(JSON.stringify(gameStartMessage));
+    }
+}
+
+
 function callBetting() {
     if (sock.readyState !== 1) return;
     alert("call");

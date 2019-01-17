@@ -7,6 +7,7 @@ import indianpoker.dto.TurnInfoDto;
 import indianpoker.dto.GameInfoDto;
 import indianpoker.dto.BetterInfoDto;
 import indianpoker.dto.ex.BettingChipBoundaryDto;
+import indianpoker.dto.ex.GameResultDto;
 import indianpoker.dto.ex.TurnResultDto;
 import indianpoker.exception.EmptyChipException;
 import indianpoker.vo.BettingCase;
@@ -25,6 +26,7 @@ public class Turn {
     private Player lastPlayer;
     private Dealer dealer;
     private BettingTable bettingTable;
+    private boolean isFirst;
 
 
     public Turn() {
@@ -44,6 +46,7 @@ public class Turn {
     public Turn init() {
         this.dealer.drawPlayerCards(firstPlayer, lastPlayer);
         this.bettingTable = generateTable();
+        this.isFirst = true;
         return this;
     }
 
@@ -54,18 +57,20 @@ public class Turn {
         return this;
     }
 
+    public Turn checkEmptyChipException() {
+        if (this.firstPlayer.showChips().isEmpty() || this.lastPlayer.showChips().isEmpty()) {
+            throw new EmptyChipException("chip is empty"
+                    + System.lineSeparator()
+                    + "firstPlayer :"
+                    + firstPlayer.showChips() + " lastPlayer : " + lastPlayer.showChips());
+        }
+        return this;
+    }
+
     private BettingTable generateTable() {
         BettingTable bettingTable = new BettingTable();
         ChipExtractorUtil.addAllBettingChips(firstPlayer.initTurn(), lastPlayer.initTurn(), bettingTable);
         return bettingTable;
-    }
-
-    public TurnResultDto judgeCallCase() {
-        return this.dealer.judgeCallCase(firstPlayer, lastPlayer, bettingTable.calcWinningChips());
-    }
-
-    public void checkGameOver() {
-        this.dealer.checkGameOver(firstPlayer, lastPlayer);
     }
 
     public boolean firstPlayerIsFirst() {
@@ -90,42 +95,46 @@ public class Turn {
         return new BetterInfoDto(
                 this.bettingTable.toDto(this.firstPlayer),
                 this.dealer.getOtherPlayerCard(firstPlayer),
-                generateBettingBoundary()
+                generateBettingBoundary(),
+                isFirst
         );
-    }
-
-    public void checkEmptyChipException() {
-        if (this.firstPlayer.showChips().isEmpty() || this.lastPlayer.showChips().isEmpty()) {
-            throw new EmptyChipException("chip is empty"
-                    + System.lineSeparator()
-                    + "firstPlayer :"
-                    + firstPlayer.showChips() + " lastPlayer : " + lastPlayer.showChips());
-        }
     }
 
     public BettingChipBoundaryDto generateBettingBoundary() {
         return new BettingChipBoundaryDto(bettingTable.calcDiffChips(), firstPlayer.showChips(), lastPlayer.showChips());
     }
 
-    public boolean lastPlayerChipIsEmpty() {
-        return this.lastPlayer.showChips().isEmpty();
+    public TurnResultDto callBetting() {
+        Chips chips = bettingTable.calcDiffChips();
+        ChipExtractorUtil.addBettingChips(firstPlayer.betting(firstPlayer.payChips(chips), BettingCase.CALL_CASE), bettingTable);
+        return judgeCallCase();
+    }
+
+    public TurnResultDto judgeCallCase() {
+        this.turnCount++;
+        return this.dealer.judgeCallCase(firstPlayer, lastPlayer, bettingTable.calcWinningChips());
     }
 
     public void raiseBetting(Chips inputChip) {
         ChipExtractorUtil.addBettingChips(firstPlayer.betting(firstPlayer.payChips(inputChip), BettingCase.RAISE_CASE), bettingTable);
     }
 
-    public void callBetting() {
-        Chips chips = bettingTable.calcDiffChips();
-        ChipExtractorUtil.addBettingChips(firstPlayer.betting(firstPlayer.payChips(chips), BettingCase.CALL_CASE), bettingTable);
-    }
-
-    public void dieBetting() {
+    public TurnResultDto dieBetting() {
         ChipExtractorUtil.addBettingChips(firstPlayer.betting(Chips.ofZero(), BettingCase.DIE_CASE), bettingTable);
+        return judgeDieCase();
     }
 
     public TurnResultDto judgeDieCase() {
+        this.turnCount++;
         return dealer.judgeDieCase(firstPlayer, lastPlayer, bettingTable.calcWinningChips());
+    }
+
+    public boolean isLastPlayerAllIn() {
+        return this.lastPlayer.showChips().isEmpty();
+    }
+
+    public void checkBankrupt() {
+        this.dealer.checkBankrupt(firstPlayer, lastPlayer);
     }
 
     @Override
@@ -137,5 +146,17 @@ public class Turn {
                 ", dealer=" + dealer +
                 ", bettingTable=" + bettingTable +
                 '}';
+    }
+
+    public boolean makeNotFirst() {
+        return this.isFirst = false;
+    }
+
+    public GameResultDto judgeGameWinner() {
+        return dealer.judgeGameWinner(firstPlayer, lastPlayer);
+    }
+
+    public boolean isGameOver() {
+        return this.turnCount == LAST_TURN_COUNT;
     }
 }

@@ -15,11 +15,6 @@ public class GameInfoDto implements GameMessage {
         this.type = DtoType.GAME_INFO;
     }
 
-    public GameInfoDto makeFirstBetting() {
-        this.betterInfoDto.setFirstBetting(true);
-        return this;
-    }
-
     public String getBetterName() {
         return betterName;
     }

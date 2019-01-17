@@ -11,11 +11,11 @@ public class BetterInfoDto implements GameMessage {
     private boolean firstBetting;
     private DtoType type;
 
-    public BetterInfoDto(BettingTableDto currentTableDto, Card otherPlayerCard, BettingChipBoundaryDto bettingChipBoundaryDto) {
+    public BetterInfoDto(BettingTableDto currentTableDto, Card otherPlayerCard, BettingChipBoundaryDto bettingChipBoundaryDto, boolean firstBetting) {
         this.currentTableDto = currentTableDto;
         this.otherPlayerCard = otherPlayerCard;
         this.bettingChipBoundaryDto = bettingChipBoundaryDto;
-        this.firstBetting = false;
+        this.firstBetting = firstBetting;
         this.type = DtoType.BETTER_INFO;
     }
 
@@ -27,20 +27,17 @@ public class BetterInfoDto implements GameMessage {
         return otherPlayerCard;
     }
 
-    public boolean isFirstBetting() {
-        return firstBetting;
-    }
-
     public BettingChipBoundaryDto getBettingChipBoundaryDto() {
         return bettingChipBoundaryDto;
     }
 
-    public void setFirstBetting(boolean firstBetting) {
-        this.firstBetting = firstBetting;
+    public boolean getFirstBetting() {
+        return firstBetting;
     }
 
     @Override
     public DtoType getType() {
-        return this.type;
+        return type;
     }
+
 }

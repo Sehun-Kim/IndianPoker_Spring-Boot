@@ -1,10 +1,11 @@
 package indianpoker.socket;
 
-import indianpoker.dto.PlayerEnterInfoDto;
-import indianpoker.dto.RecieveMessageDto;
+import indianpoker.dto.ReceiveMessageDto;
 import indianpoker.service.MessageService;
 import indianpoker.socket.sessions.GameSession;
 import indianpoker.socket.sessions.SocketSessions;
+import indianpoker.vo.DtoType;
+import indianpoker.web.session.BettingController;
 import indianpoker.web.session.GameController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,9 @@ public class IndianPokerHandler extends TextWebSocketHandler {
     private GameController gameController;
 
     @Autowired
+    private BettingController bettingController;
+
+    @Autowired
     private MessageService messageService;
 
     private static final Logger logger = LoggerFactory.getLogger(IndianPokerHandler.class);
@@ -33,11 +37,9 @@ public class IndianPokerHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         long gameId = gameIdFromSession(session);
 
-        // 접속한 Session을 저장
-        PlayerEnterInfoDto playerEnterInfoDto = socketSessions.addSession(gameId, session);
-
-        // 게임 시작
-        gameController.initGame(socketSessions.findByGameId(gameId), playerEnterInfoDto);
+        // player Game 입장
+        GameSession gameSession = socketSessions.findByGameId(gameId);
+        gameController.initGame(gameSession, session);
     }
 
     // 메시지를 수신하였을 때 (클라이언트로 메세지 보내기)
@@ -47,9 +49,21 @@ public class IndianPokerHandler extends TextWebSocketHandler {
         logger.info("payload : {}", payload);
 
         long gameId = gameIdFromSession(session);
-        GameSession gameSession = socketSessions.findByGameId(gameId);
-        RecieveMessageDto recieveMessageDto = messageService.recieveMessage(message);
 
+        ReceiveMessageDto receiveMessageDto = messageService.recieveMessage(message);
+        DtoType receiveType = receiveMessageDto.getType();
+        // turn 시작 요청
+        if (receiveType.equals(DtoType.TURN_START)) {
+            turnStart(socketSessions.findByGameId(gameId));
+        }
+
+        // 배팅 요청
+        if (!receiveType.equals(DtoType.TURN_START)) {
+            bettingController.judgeCase(socketSessions.findByGameId(gameId), messageService.recieveMessage(message));
+        }
+
+
+        // 여기서 항시 게임 종료여부를 체크해야 함
 
         /*
          * 여기서 판단을 해야 함
@@ -61,5 +75,8 @@ public class IndianPokerHandler extends TextWebSocketHandler {
 
     }
 
+    void turnStart(GameSession gameSession) {
+        gameController.gameStart(gameSession);
+    }
 
 }

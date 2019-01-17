@@ -1,10 +1,10 @@
 package indianpoker.web.session;
 
-import indianpoker.dto.GameInfoDto;
+import indianpoker.dto.GameMessage;
 import indianpoker.exception.EmptyChipException;
 import indianpoker.service.IndianPokerService;
-import indianpoker.socket.sessions.GameSession;
 import indianpoker.service.MessageService;
+import indianpoker.socket.sessions.GameSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,39 +18,32 @@ public class TurnController {
 
 
     public void buildTurn(GameSession gameSession) {
-        indianPokerService.generateTurn(gameSession.getGameId());
-        start(gameSession);
-    }
-
-    public void start(GameSession gameSession) {
-        GameInfoDto gameInfoDto;
         try {
-            // turn의 첫 베팅 정보
-            gameInfoDto = indianPokerService.turnFirstRun(gameSession.getGameId());
-            // session에 맞는 player에게 betting할 정보를 넘겨줘야 한다.
-            messageService.sendMessage(gameInfoDto, gameSession);
-        } catch (EmptyChipException e) {
-            // 칩을 하나씩 빼고 둘 중 한명이 칩이 바닥나면 그 턴은 바로 승패를 판단한다.
-//            turnResultDto = turn.judgeCallCase();
-            // session에 TurnResult를 모두 뿌린다.
-        } finally {
-//            ResultView.showTurnResult(turnResultDto);
-//            turn.checkGameOver();
+            indianPokerService.generateTurn(gameSession.getGameId());
+            runTurn(gameSession);
+        } catch (EmptyChipException e) { // 칩을 하나씩 빼고 둘 중 한명이 칩이 바닥나면 그 턴은 바로 승패를 판단한다.
+            GameMessage gameMessage = indianPokerService.callBetting(gameSession.getGameId());
+            messageService.sendMessage(gameMessage, gameSession);
+            // turn의 승패를 판단하고 어떤 플레이어가 칩이 없어서 게임이 종료될지 확인
+            indianPokerService.checkBankrupt(gameSession.getGameId());
         }
     }
 
-    // Turn의 첫배팅이 아닌 일반 배팅상황
-    public void run(GameSession gameSession) {
-        //
+    // Turn 배팅할 때 메시지 보내는 부분
+    public void runTurn(GameSession gameSession) {
+        //  turninfo player들한테 보내줌 (first 배팅인지 아닌지 알아서 바꿈)
+        GameMessage gameMessage = indianPokerService.generateGameInfo(gameSession.getGameId());
+        indianPokerService.turnMakeNotFirst(gameSession.getGameId());
+
+        messageService.sendMessage(gameMessage, gameSession);
     }
 
-//    static TurnResultDto run(Turn turn) {
+//    static TurnResultDto runTurn(Turn turn) {
 //        ResultView.showBettingInfo(turn.generateGameInfoDto());
 //        BettingCase bettingCase = InputView.inputBettingCase();
 //
 //        return BettingController.judgeCase(turn, bettingCase);
 //    }
-
 
 
 }

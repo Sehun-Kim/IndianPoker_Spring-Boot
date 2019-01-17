@@ -5,6 +5,8 @@ import indianpoker.domain.poker.IndianPoker;
 import indianpoker.domain.poker.IndianPokerRepository;
 import indianpoker.domain.humanplayer.HumanPlayer;
 import indianpoker.dto.GameInfoDto;
+import indianpoker.dto.ex.GameResultDto;
+import indianpoker.dto.ex.TurnResultDto;
 import indianpoker.exception.CannotEnterGameException;
 import indianpoker.exception.NonExistDataException;
 import indianpoker.vo.GameStatus;
@@ -34,7 +36,9 @@ public class IndianPokerService {
     }
 
     public Turn generateTurn(long gameId) {
-        return findByGameId(gameId).generateTurn();
+        return orderToRun(findByGameId(gameId)
+                .generateTurn())
+                .checkEmptyChipException();
     }
 
     private IndianPoker findByGameId(Long gameId) {
@@ -45,15 +49,45 @@ public class IndianPokerService {
         return findByGameId(gameId).getTurn();
     }
 
-    public GameInfoDto turnFirstRun(Long gameId) {
-        Turn turn = orderToRun(findTurnByGameId(gameId));
-        turn.checkEmptyChipException();
-        return turn.generateGameInfoDto().makeFirstBetting();
+    public GameInfoDto generateGameInfo(Long gameId) {
+        return findTurnByGameId(gameId).generateGameInfoDto();
     }
 
     private Turn orderToRun(Turn turn) {
         if (turn.firstPlayerIsFirst())
             return turn;
         return turn.reverse();
+    }
+
+    public void turnMakeNotFirst(Long gameId) {
+        findTurnByGameId(gameId).makeNotFirst();
+    }
+
+    public TurnResultDto callBetting(Long gameId) {
+        return findByGameId(gameId).getTurn().callBetting();
+    }
+
+    public TurnResultDto dieBetting(Long gameId) {
+        return findByGameId(gameId).getTurn().judgeDieCase();
+    }
+
+    public void checkBankrupt(long gameId) {
+        findTurnByGameId(gameId).checkBankrupt();
+    }
+
+    public GameResultDto judgeGameWinner(Long gameId) {
+        return findTurnByGameId(gameId).judgeGameWinner();
+    }
+
+    public boolean isGameOver(Long gameId) {
+        Turn turn = findTurnByGameId(gameId);
+
+        if (turn == null)
+            return false;
+        return findTurnByGameId(gameId).isGameOver();
+    }
+
+    public boolean isAllIn(Long gameId) {
+        return findTurnByGameId(gameId).isLastPlayerAllIn();
     }
 }

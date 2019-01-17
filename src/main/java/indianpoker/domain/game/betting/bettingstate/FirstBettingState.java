@@ -10,7 +10,7 @@ public class FirstBettingState extends AbstractBettingState {
     public FirstBettingState(Chips chips, BettingCase bettingCase, Player player) {
         super(chips, bettingCase, player);
         if (bettingCase.equals(BettingCase.CALL_CASE))
-            throw new CanNotCallCaseException("첫 베팅은 콜할 수 없습니다.");
+            throw new CanNotCallCaseException("첫 베팅은 콜할 수 없습니다.", player.toDto().getName());
     }
 
     @Override

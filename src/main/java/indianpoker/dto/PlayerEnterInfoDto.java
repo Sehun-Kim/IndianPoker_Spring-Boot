@@ -7,33 +7,39 @@ public class PlayerEnterInfoDto implements GameMessage {
 
     private String message;
     private PlayerInfoDto playerInfoDto;
+    private int numberOfPeople;
     private DtoType type = DtoType.NOTICE;
 
-    public PlayerEnterInfoDto() {
-    }
 
-    public PlayerEnterInfoDto(PlayerInfoDto playerInfoDto) {
+    public PlayerEnterInfoDto(PlayerInfoDto playerInfoDto, int numberOfPeople) {
         this.playerInfoDto = playerInfoDto;
         this.message = playerInfoDto.getName() + ENTER_MESSAGE;
-    }
-
-    @Override
-    public DtoType getType() {
-        return this.type;
+        this.numberOfPeople = numberOfPeople;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public PlayerInfoDto getPlayerInfoDto() {
+        return playerInfoDto;
+    }
+
+    public int getNumberOfPeople() {
+        return numberOfPeople;
+    }
+
+    @Override
+    public DtoType getType() {
+        return type;
     }
 
     @Override
     public String toString() {
         return "PlayerEnterInfoDto{" +
-                ", message='" + message + '\'' +
+                "message='" + message + '\'' +
+                ", playerInfoDto=" + playerInfoDto +
+                ", numberOfPeople=" + numberOfPeople +
                 ", type=" + type +
                 '}';
     }

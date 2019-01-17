@@ -1,5 +1,6 @@
 package indianpoker.socket.sessions;
 
+import indianpoker.dto.PlayerEnterInfoDto;
 import indianpoker.exception.CannotEnterGameException;
 import indianpoker.exception.NonExistPlayerException;
 import org.springframework.web.socket.WebSocketSession;
@@ -24,12 +25,15 @@ public class GameSession {
         return gameId;
     }
 
-    public GameSession addSession(WebSocketSession webSocketSession) {
+    public PlayerEnterInfoDto addSession(WebSocketSession webSocketSession) {
         if (this.sessions.size() == GAME_SESSION_SIZE)
             throw new CannotEnterGameException();
 
         this.sessions.add(webSocketSession);
-        return this;
+        return new PlayerEnterInfoDto(
+                playerFromSession(webSocketSession).toDto(),
+                sessions.size()
+        );
     }
 
     public List<WebSocketSession> getAllSessions() {

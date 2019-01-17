@@ -1,14 +1,17 @@
 package indianpoker.dto.ex;
 
+import indianpoker.dto.GameMessage;
 import indianpoker.dto.PlayerInfoDto;
 import indianpoker.vo.Chips;
+import indianpoker.vo.DtoType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TurnResultDto {
+public class TurnResultDto implements GameMessage {
     private List<PlayerInfoDto> winners;
     private Chips winningChips;
+    private DtoType type;
 
     public static TurnResultDto of() {
         return new TurnResultDto();
@@ -16,6 +19,7 @@ public class TurnResultDto {
 
     private TurnResultDto() {
         this.winners = new ArrayList<>();
+        this.type = DtoType.TURN_RESULT;
     }
 
     public TurnResultDto addWinner(PlayerInfoDto playerInfoDto) {
@@ -32,12 +36,17 @@ public class TurnResultDto {
         return winners;
     }
 
-    public boolean isDraw() {
-        return this.winners.size() == 2;
+    @Override
+    public DtoType getType() {
+        return this.type;
     }
 
     public Chips getWinningChips() {
         return winningChips;
+    }
+
+    public boolean isDraw() {
+        return this.winners.size() == 2;
     }
 
     @Override
