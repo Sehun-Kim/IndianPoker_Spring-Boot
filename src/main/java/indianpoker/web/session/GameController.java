@@ -36,6 +36,7 @@ public class GameController {
             } // 게임할 수 없는 상황이면 그냥 아무런 메세지도 보내지 않는다.
         } catch (BankruptException e) {
             indianPokerService.judgeGameWinner(gameSession.getGameId());
+            // todo
             // 게임 종료할 수 있는 조건으로 turn을 바꾸고 플레이어들에게 메세지를 보냄
         }
     }

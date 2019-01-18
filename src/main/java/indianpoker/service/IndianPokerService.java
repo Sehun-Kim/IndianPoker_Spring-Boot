@@ -5,10 +5,12 @@ import indianpoker.domain.poker.IndianPoker;
 import indianpoker.domain.poker.IndianPokerRepository;
 import indianpoker.domain.humanplayer.HumanPlayer;
 import indianpoker.dto.GameInfoDto;
+import indianpoker.dto.TurnStartInfoDto;
 import indianpoker.dto.ex.GameResultDto;
 import indianpoker.dto.ex.TurnResultDto;
 import indianpoker.exception.CannotEnterGameException;
 import indianpoker.exception.NonExistDataException;
+import indianpoker.vo.Chips;
 import indianpoker.vo.GameStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,10 +37,11 @@ public class IndianPokerService {
                 .orElseThrow(CannotEnterGameException::new);
     }
 
-    public Turn generateTurn(long gameId) {
+    public TurnStartInfoDto generateTurn(long gameId) {
         return orderToRun(findByGameId(gameId)
                 .generateTurn())
-                .checkEmptyChipException();
+                .checkEmptyChipException()
+                .generateTurnStartInfoDto();
     }
 
     private IndianPoker findByGameId(Long gameId) {
@@ -68,7 +71,11 @@ public class IndianPokerService {
     }
 
     public TurnResultDto dieBetting(Long gameId) {
-        return findByGameId(gameId).getTurn().judgeDieCase();
+        return findByGameId(gameId).getTurn().dieBetting();
+    }
+
+    public GameInfoDto raiseBetting(Long gameId, int numberOfChips) {
+        return findTurnByGameId(gameId).raiseBetting(Chips.ofNumberOfChips(numberOfChips));
     }
 
     public void checkBankrupt(long gameId) {
@@ -87,7 +94,4 @@ public class IndianPokerService {
         return findTurnByGameId(gameId).isGameOver();
     }
 
-    public boolean isAllIn(Long gameId) {
-        return findTurnByGameId(gameId).isLastPlayerAllIn();
-    }
 }

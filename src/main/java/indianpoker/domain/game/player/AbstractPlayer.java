@@ -22,7 +22,7 @@ import java.util.Objects;
 public abstract class AbstractPlayer extends AbstractEntity implements Player, Winner, Loser {
     @Size(min = 3, max = 20)
     @Column(unique = true, nullable = false)
-    private String playerName;
+    protected String playerName;
 
     @Transient
     private Deck deck;
@@ -97,15 +97,6 @@ public abstract class AbstractPlayer extends AbstractEntity implements Player, W
     @Override
     public boolean isGameOver() {
         return this.chips.isEmpty();
-    }
-
-
-    protected String getPlayerName() {
-        return playerName;
-    }
-
-    protected void setPlayerName(String playerName) {
-        this.playerName = playerName;
     }
 
     protected void setDeck(Deck deck) {

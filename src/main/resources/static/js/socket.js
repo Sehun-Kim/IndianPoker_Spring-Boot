@@ -65,6 +65,10 @@ function receiveMessage(contents) {
         printNotice(contents);
     }
 
+    if (type === 'TURN_START') {
+        printTurnStart(contents);
+    }
+
     if (type === 'TURN_INFO') {
         printTurnInfo(contents);
     }
@@ -76,6 +80,14 @@ function receiveMessage(contents) {
     if (type === 'ERROR') {
         printError(contents);
     }
+
+    if (type === 'BETTING_RESULT') {
+        printBettingResult(contents);
+    }
+
+    if (type === 'TURN_RESULT') {
+        printTurnResult(contents);
+    }
 }
 
 function printNotice(contents) {
@@ -83,11 +95,13 @@ function printNotice(contents) {
     gameStart(contents.numberOfPeople, contents.playerInfoDto.name);
 }
 
-function printTurnInfo(contents) {
+function printTurnStart(contents) {
     // turnNum 수정
     turnNum.html('[' + contents.turnCount + ']');
-    notice.append('<li>===<strong>Turn' + contents.turnCount +'</strong>이 시작되었습니다.===</li>');
+    notice.append('<li>===== <strong>Turn' + contents.turnCount +'</strong> =====</li>');
+}
 
+function printTurnInfo(contents) {
     // 현재 플레이어들의 보유 칩을 알려줌
     printPlayerInfo(contents.ownPlayerInfoDto);
     printPlayerInfo(contents.otherPlayerInfoDto);
@@ -155,7 +169,7 @@ function printBetterInfo(contents) {
         otherChipsNum = parseInt(chipBoundary.otherChips.numberOfChips);
         betterChipsNum = parseInt(chipBoundary.betterChips.numberOfChips);
 
-        console.log(diffChipsNum + ", " + betterChipsNum + ", " + otherChips);
+        console.log(diffChipsNum + ", " + betterChipsNum + ", " + otherChipsNum);
     }
 }
 
@@ -164,20 +178,39 @@ function printError(contents) {
     alert(contents.message);
 }
 
+function printBettingResult(contents) {
+    notice.append('<li> <strong>' + contents.playerName + '</strong>이(가) [' + contents.bettingCase +'] 하였습니다.</li>')
+}
+
+function printTurnResult(contents) {
+    // 두 플레이어 모두 notice 영역에 승자가 누구인지, 얼마의 칩을 얻었는지 표시한다.
+
+
+    function printWinner() {
+
+    }
+}
 
 // --- Send METHOD ---
+
+// GAME START
 function gameStart(numberOfPeople, name) {
-    if (numberOfPeople === 2 && name === playerName) { // 두 번째 들어온 player가 요청을 한다.
-        var gameStartMessage = {'gameId': gameId, 'type': 'TURN_START', 'value': 0, 'player': playerName};
-        sock.send(JSON.stringify(gameStartMessage));
+    if (numberOfPeople === 2) {
+        notice.append('<li> ++++++++ <strong> [INDIAN-POKER] GAME START </strong> ++++++++ </li>'); // 게임시작을 알려줌
+
+        if (name === playerName) { // 두 번째 들어온 player가 게임시작 요청을 한다.
+            var gameStartMessage = {'gameId': gameId, 'type': 'TURN_START', 'value': 0, 'player': playerName};
+            sock.send(JSON.stringify(gameStartMessage));
+        }
     }
 }
 
 
+// BETTING
 function callBetting() {
     if (sock.readyState !== 1) return;
     alert("call");
-    var betting = {'gameId': gameId, 'type': callBtn.html(), 'value': 0, 'player': playerName};
+    var betting = {'gameId': gameId, 'type': callBtn.html(), 'value': 0, 'playerName': playerName};
     sock.send(JSON.stringify(betting));
 }
 
@@ -189,12 +222,17 @@ function raiseBetting() {
     var message = '칩 수를 입력하세요';
     var value = inputChipsNum(message);
 
-    var betting = {'gameId': gameId, 'type': raiseBtn.html(), 'value': value, 'player': playerName};
+    var betting = {'gameId': gameId, 'type': raiseBtn.html(), 'value': value, 'playerName': playerName};
     sock.send(JSON.stringify(betting));
 
 
     function inputChipsNum(inputMessage) {
         var inputNum = parseInt(prompt("INPUT RAISE CHIPS SIZE : ", inputMessage));
+
+        if (!inputNum) {
+            inputMessage = '값을 제대로 입력하세요.';
+            return inputChipsNum(inputMessage);
+        }
 
         if (inputNum <= diffChipsNum) {
             inputMessage = '최소 ' + diffChipsNum + '초과로 배팅해야 합니다.';
@@ -219,6 +257,6 @@ function dieBetting() {
     if (sock.readyState !== 1) return;
 
     alert("die");
-    var betting = {'gameId': gameId, 'type': dieBtn.html(), 'value': 0, 'player': playerName};
+    var betting = {'gameId': gameId, 'type': dieBtn.html(), 'value': 0, 'playerName': playerName};
     sock.send(JSON.stringify(betting));
 }

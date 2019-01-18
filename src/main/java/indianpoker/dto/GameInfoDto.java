@@ -2,6 +2,7 @@ package indianpoker.dto;
 
 import indianpoker.vo.DtoType;
 
+
 public class GameInfoDto implements GameMessage {
     private String betterName;
     private TurnInfoDto turnInfoDto;

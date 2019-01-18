@@ -25,11 +25,16 @@ public class MessageService {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageService.class);
 
+    // todo
+    // if 제거
     public void sendMessage(GameMessage gameMessage, GameSession sessions) {
         logger.debug("sendMessage : {}", sessions);
 
         if (gameMessage.getType().equals(DtoType.NOTICE))
             sendNotice(gameMessage, sessions);
+
+        if (gameMessage.getType().equals(DtoType.TURN_START))
+            sendTurnStart(gameMessage, sessions);
 
         if (gameMessage.getType().equals(DtoType.GAME_INFO))
             sendBettingInfo(gameMessage, sessions);
@@ -37,14 +42,26 @@ public class MessageService {
         if (gameMessage.getType().equals(DtoType.ERROR))
             sendError(gameMessage, sessions);
 
-        if (gameMessage.getType().equals(DtoType.TURN_RESULT)) {
+        if (gameMessage.getType().equals(DtoType.TURN_RESULT))
             sendTurnResult(gameMessage, sessions);
+
+        if (gameMessage.getType().equals(DtoType.BETTING_RESULT)) {
+            sendBettingResult(gameMessage, sessions);
         }
+    }
+
+    private void sendBettingResult(GameMessage gameMessage, GameSession sessions) {
+        sendToAll(gameMessage, sessions);
+    }
+
+    private void sendTurnStart(GameMessage gameMessage, GameSession sessions) {
+        logger.debug("sendTurnStart : {}", gameMessage);
+        sendToAll(gameMessage, sessions);
     }
 
     private void sendTurnResult(GameMessage gameMessage, GameSession sessions) {
         logger.debug("sendTurnResult : {}", gameMessage);
-
+        sendToAll(gameMessage, sessions);
     }
 
     private void sendNotice(GameMessage gameMessage, GameSession sessions) {
@@ -92,7 +109,7 @@ public class MessageService {
     }
 
 
-    public ReceiveMessageDto recieveMessage(TextMessage message) {
+    public ReceiveMessageDto receiveMessage(TextMessage message) {
         String payload = message.getPayload();
         try {
             return objectMapper.readValue(payload, ReceiveMessageDto.class);

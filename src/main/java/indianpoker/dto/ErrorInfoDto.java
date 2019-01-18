@@ -24,6 +24,6 @@ public class ErrorInfoDto implements GameMessage {
 
     @Override
     public DtoType getType() {
-        return null;
+        return this.type;
     }
 }

@@ -32,7 +32,7 @@ public class HumanPlayer extends AbstractPlayer {
     }
 
     public String getPlayerName() {
-        return super.getPlayerName();
+        return this.playerName;
     }
 
     public HumanPlayer readyToGame(int playerChipsSize, boolean preemptive) {
@@ -43,7 +43,7 @@ public class HumanPlayer extends AbstractPlayer {
     }
 
     public void setPlayerName(String playerName) {
-        super.setPlayerName(playerName);
+        this.playerName = playerName;
     }
 
     public void setPassword(String password) {

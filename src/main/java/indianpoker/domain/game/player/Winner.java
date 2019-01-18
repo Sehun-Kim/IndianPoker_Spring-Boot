@@ -7,4 +7,5 @@ public interface Winner {
     void gainChips(Chips chips);
     void changeFirstBetter();
     PlayerInfoDto toDto();
+    String getPlayerName();
 }

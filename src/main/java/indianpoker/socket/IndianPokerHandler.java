@@ -50,7 +50,7 @@ public class IndianPokerHandler extends TextWebSocketHandler {
 
         long gameId = gameIdFromSession(session);
 
-        ReceiveMessageDto receiveMessageDto = messageService.recieveMessage(message);
+        ReceiveMessageDto receiveMessageDto = messageService.receiveMessage(message);
         DtoType receiveType = receiveMessageDto.getType();
         // turn 시작 요청
         if (receiveType.equals(DtoType.TURN_START)) {
@@ -59,9 +59,8 @@ public class IndianPokerHandler extends TextWebSocketHandler {
 
         // 배팅 요청
         if (!receiveType.equals(DtoType.TURN_START)) {
-            bettingController.judgeCase(socketSessions.findByGameId(gameId), messageService.recieveMessage(message));
+            bettingController.judgeCase(socketSessions.findByGameId(gameId), messageService.receiveMessage(message));
         }
-
 
         // 여기서 항시 게임 종료여부를 체크해야 함
 
@@ -78,5 +77,6 @@ public class IndianPokerHandler extends TextWebSocketHandler {
     void turnStart(GameSession gameSession) {
         gameController.gameStart(gameSession);
     }
+
 
 }

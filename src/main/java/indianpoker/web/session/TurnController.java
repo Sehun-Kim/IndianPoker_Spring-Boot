@@ -1,15 +1,20 @@
 package indianpoker.web.session;
 
 import indianpoker.dto.GameMessage;
+import indianpoker.dto.TurnStartInfoDto;
 import indianpoker.exception.EmptyChipException;
 import indianpoker.service.IndianPokerService;
 import indianpoker.service.MessageService;
 import indianpoker.socket.sessions.GameSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TurnController {
+    private static final Logger logger = LoggerFactory.getLogger(TurnController.class);
+    
     @Autowired
     private MessageService messageService;
 
@@ -19,7 +24,10 @@ public class TurnController {
 
     public void buildTurn(GameSession gameSession) {
         try {
-            indianPokerService.generateTurn(gameSession.getGameId());
+            TurnStartInfoDto turnStartInfoDto = indianPokerService.generateTurn(gameSession.getGameId());
+            logger.debug("turnStartInfo : {}", turnStartInfoDto);
+            messageService.sendMessage(turnStartInfoDto, gameSession);
+
             runTurn(gameSession);
         } catch (EmptyChipException e) { // 칩을 하나씩 빼고 둘 중 한명이 칩이 바닥나면 그 턴은 바로 승패를 판단한다.
             GameMessage gameMessage = indianPokerService.callBetting(gameSession.getGameId());
@@ -37,13 +45,5 @@ public class TurnController {
 
         messageService.sendMessage(gameMessage, gameSession);
     }
-
-//    static TurnResultDto runTurn(Turn turn) {
-//        ResultView.showBettingInfo(turn.generateGameInfoDto());
-//        BettingCase bettingCase = InputView.inputBettingCase();
-//
-//        return BettingController.judgeCase(turn, bettingCase);
-//    }
-
 
 }

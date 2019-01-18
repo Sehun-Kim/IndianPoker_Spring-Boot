@@ -6,6 +6,7 @@ public enum DtoType {
     TURN_START,
     TURN_INFO,
     BETTER_INFO,
+    BETTING_RESULT,
     CALL,
     RAISE,
     DIE,

@@ -6,9 +6,11 @@ import indianpoker.domain.humanplayer.HumanPlayer;
 import indianpoker.dto.TurnInfoDto;
 import indianpoker.dto.GameInfoDto;
 import indianpoker.dto.BetterInfoDto;
+import indianpoker.dto.TurnStartInfoDto;
 import indianpoker.dto.ex.BettingChipBoundaryDto;
 import indianpoker.dto.ex.GameResultDto;
 import indianpoker.dto.ex.TurnResultDto;
+import indianpoker.exception.CannotRaiseException;
 import indianpoker.exception.EmptyChipException;
 import indianpoker.vo.BettingCase;
 import indianpoker.vo.Chips;
@@ -73,19 +75,22 @@ public class Turn {
         return bettingTable;
     }
 
+    public TurnStartInfoDto generateTurnStartInfoDto() {
+        return new TurnStartInfoDto(this.turnCount);
+    }
+
     public boolean firstPlayerIsFirst() {
         return this.firstPlayer.isFirst();
     }
 
     public GameInfoDto generateGameInfoDto() {
-        return new GameInfoDto(this.firstPlayer.toDto().getName(),
+        return new GameInfoDto(this.firstPlayer.getPlayerName(),
                 generateTurnInfoDto(),
                 generateBetterInfoDto());
     }
 
     private TurnInfoDto generateTurnInfoDto() {
         return new TurnInfoDto(
-                this.turnCount,
                 this.firstPlayer.toDto(),
                 this.lastPlayer.toDto()
         );
@@ -110,13 +115,38 @@ public class Turn {
         return judgeCallCase();
     }
 
-    public TurnResultDto judgeCallCase() {
+    private TurnResultDto judgeCallCase() {
         this.turnCount++;
         return this.dealer.judgeCallCase(firstPlayer, lastPlayer, bettingTable.calcWinningChips());
     }
 
-    public void raiseBetting(Chips inputChip) {
-        ChipExtractorUtil.addBettingChips(firstPlayer.betting(firstPlayer.payChips(inputChip), BettingCase.RAISE_CASE), bettingTable);
+    public GameInfoDto raiseBetting(Chips inputChip) {
+        ChipExtractorUtil.addBettingChips(firstPlayer.betting(firstPlayer.payChips(checkRaiseBetting(inputChip)),
+                BettingCase.RAISE_CASE), bettingTable);
+        return reverse().generateGameInfoDto();
+    }
+
+    private Chips checkRaiseBetting(Chips inputChip) {
+        int inputChipsNum = inputChip.getNumberOfChips();
+        int diffChipsNum = bettingTable.calcDiffChips().getNumberOfChips();
+        int betterChipsNum = firstPlayer.showChips().getNumberOfChips();
+        int otherChipsNum = lastPlayer.showChips().getNumberOfChips();
+
+        if(isLastPlayerAllIn())
+            throw new CannotRaiseException("상대가 ALL-IN 하여 RAISE할 수 없습니다.", firstPlayer.getPlayerName());
+
+        if (inputChipsNum <= diffChipsNum)
+            throw new CannotRaiseException("최소 " + diffChipsNum + "개의 칩을 베팅하여야 합니다.",firstPlayer.getPlayerName());
+
+        if (inputChipsNum > (diffChipsNum + otherChipsNum))
+            throw new CannotRaiseException("상대의 칩 이상 베팅할 수 없습니다. 최대 배팅 가능 칩 : " + (diffChipsNum + otherChipsNum),
+                    firstPlayer.getPlayerName());
+
+        if (inputChipsNum > betterChipsNum)
+            throw new CannotRaiseException("칩이 부족합니다. : " + betterChipsNum,
+                    firstPlayer.getPlayerName());
+
+        return inputChip;
     }
 
     public TurnResultDto dieBetting() {
@@ -124,7 +154,7 @@ public class Turn {
         return judgeDieCase();
     }
 
-    public TurnResultDto judgeDieCase() {
+    private TurnResultDto judgeDieCase() {
         this.turnCount++;
         return dealer.judgeDieCase(firstPlayer, lastPlayer, bettingTable.calcWinningChips());
     }
@@ -158,5 +188,9 @@ public class Turn {
 
     public boolean isGameOver() {
         return this.turnCount == LAST_TURN_COUNT;
+    }
+
+    public String findCurrentPlayerName() {
+        return firstPlayer.getPlayerName();
     }
 }
