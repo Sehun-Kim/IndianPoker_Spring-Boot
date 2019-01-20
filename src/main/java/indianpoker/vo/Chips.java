@@ -1,5 +1,7 @@
 package indianpoker.vo;
 
+import indianpoker.exception.EmptyChipException;
+
 import java.util.Objects;
 
 public class Chips implements Comparable<Chips> {
@@ -18,7 +20,7 @@ public class Chips implements Comparable<Chips> {
 
     private Chips(int numberOfChips) {
         if (numberOfChips < 0)
-            throw new IllegalArgumentException("NOT ENOUGH CHIPS");
+            throw new EmptyChipException("NOT ENOUGH CHIPS");
         this.numberOfChips = numberOfChips;
     }
 

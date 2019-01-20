@@ -7,7 +7,8 @@ import indianpoker.dto.GameInfoDto;
 import indianpoker.dto.GameMessage;
 import indianpoker.dto.ReceiveMessageDto;
 import indianpoker.socket.sessions.GameSession;
-import indianpoker.vo.DtoType;
+import indianpoker.vo.MessageType;
+import indianpoker.vo.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,24 +31,31 @@ public class MessageService {
     public void sendMessage(GameMessage gameMessage, GameSession sessions) {
         logger.debug("sendMessage : {}", sessions);
 
-        if (gameMessage.getType().equals(DtoType.NOTICE))
+        if (gameMessage.getType().equals(MessageType.NOTICE))
             sendNotice(gameMessage, sessions);
 
-        if (gameMessage.getType().equals(DtoType.TURN_START))
+        if (gameMessage.getType().equals(MessageType.TURN_START))
             sendTurnStart(gameMessage, sessions);
 
-        if (gameMessage.getType().equals(DtoType.GAME_INFO))
-            sendBettingInfo(gameMessage, sessions);
+        if (gameMessage.getType().equals(MessageType.GAME_INFO))
+            sendGameInfo(gameMessage, sessions);
 
-        if (gameMessage.getType().equals(DtoType.ERROR))
+        if (gameMessage.getType().equals(MessageType.ERROR))
             sendError(gameMessage, sessions);
 
-        if (gameMessage.getType().equals(DtoType.TURN_RESULT))
+        if (gameMessage.getType().equals(MessageType.TURN_RESULT))
             sendTurnResult(gameMessage, sessions);
 
-        if (gameMessage.getType().equals(DtoType.BETTING_RESULT)) {
+        if (gameMessage.getType().equals(MessageType.BETTING_RESULT))
             sendBettingResult(gameMessage, sessions);
-        }
+
+        if (gameMessage.getType().equals(MessageType.GAME_RESULT))
+            sendGameResult(gameMessage, sessions);
+    }
+
+    private void sendGameResult(GameMessage gameMessage, GameSession sessions) {
+        logger.debug("sendGameResult : {}", gameMessage);
+        sendToAll(gameMessage, sessions);
     }
 
     private void sendBettingResult(GameMessage gameMessage, GameSession sessions) {
@@ -69,8 +77,8 @@ public class MessageService {
         sendToAll(gameMessage, sessions);
     }
 
-    private void sendBettingInfo(GameMessage gameMessage, GameSession sessions) {
-        logger.debug("sendBettingInfo : {}", gameMessage);
+    private void sendGameInfo(GameMessage gameMessage, GameSession sessions) {
+        logger.debug("sendGameInfo : {}", gameMessage);
         GameInfoDto gameInfoDto = (GameInfoDto) gameMessage;
 
         // Announce To all
@@ -86,8 +94,10 @@ public class MessageService {
         ErrorInfoDto errorInfoDto = (ErrorInfoDto) gameMessage;
 
         // Announce To better
-        send(errorInfoDto,
-                sessions.getPlayerSession(errorInfoDto.getPlayerName()));
+        if (errorInfoDto.getPoint().equals(Point.BETTING))
+            send(errorInfoDto, sessions.getPlayerSession(errorInfoDto.getPlayerName()));
+        if (errorInfoDto.getPoint().equals(Point.PLAYER_OUT))
+            sendToAll(errorInfoDto, sessions);
     }
 
     private void sendToAll(GameMessage gameMessage, GameSession sessions) {
@@ -98,7 +108,7 @@ public class MessageService {
         logger.debug("send : {}", session);
         try {
             TextMessage message = new TextMessage(objectMapper.writeValueAsString(messageObject));
-            synchronized(session) {
+            synchronized (session) {
                 session.sendMessage(message);
             }
         } catch (JsonProcessingException e) {

@@ -1,14 +1,14 @@
 package indianpoker.dto;
 
-import indianpoker.vo.DtoType;
+import indianpoker.vo.MessageType;
 
 public class TurnStartInfoDto implements GameMessage {
     private int turnCount;
-    private DtoType type;
+    private MessageType type;
 
     public TurnStartInfoDto(int turnCount) {
         this.turnCount = turnCount;
-        this.type = DtoType.TURN_START;
+        this.type = MessageType.TURN_START;
     }
 
     public int getTurnCount() {
@@ -16,7 +16,7 @@ public class TurnStartInfoDto implements GameMessage {
     }
 
     @Override
-    public DtoType getType() {
+    public MessageType getType() {
         return type;
     }
 

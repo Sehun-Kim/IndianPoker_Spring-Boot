@@ -4,13 +4,14 @@ import indianpoker.dto.ReceiveMessageDto;
 import indianpoker.service.MessageService;
 import indianpoker.socket.sessions.GameSession;
 import indianpoker.socket.sessions.SocketSessions;
-import indianpoker.vo.DtoType;
-import indianpoker.web.session.BettingController;
-import indianpoker.web.session.GameController;
+import indianpoker.vo.MessageType;
+import indianpoker.web.game.BettingController;
+import indianpoker.web.game.GameController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -51,14 +52,14 @@ public class IndianPokerHandler extends TextWebSocketHandler {
         long gameId = gameIdFromSession(session);
 
         ReceiveMessageDto receiveMessageDto = messageService.receiveMessage(message);
-        DtoType receiveType = receiveMessageDto.getType();
+        MessageType receiveType = receiveMessageDto.getType();
         // turn 시작 요청
-        if (receiveType.equals(DtoType.TURN_START)) {
-            turnStart(socketSessions.findByGameId(gameId));
+        if (receiveType.equals(MessageType.TURN_START)) {
+            gameController.turnStart(socketSessions.findByGameId(gameId), receiveMessageDto.getValue());
         }
 
         // 배팅 요청
-        if (!receiveType.equals(DtoType.TURN_START)) {
+        if (!receiveType.equals(MessageType.TURN_START)) {
             bettingController.judgeCase(socketSessions.findByGameId(gameId), messageService.receiveMessage(message));
         }
 
@@ -74,9 +75,12 @@ public class IndianPokerHandler extends TextWebSocketHandler {
 
     }
 
-    void turnStart(GameSession gameSession) {
-        gameController.gameStart(gameSession);
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        long gameId = gameIdFromSession(session);
+        GameSession gameSession = socketSessions.findByGameId(gameId);
+
+        gameController.playerOut(gameSession, session);
     }
-
-
 }

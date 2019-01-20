@@ -1,13 +1,13 @@
 package indianpoker.service;
 
 import indianpoker.domain.game.Turn;
+import indianpoker.domain.humanplayer.HumanPlayer;
 import indianpoker.domain.poker.IndianPoker;
 import indianpoker.domain.poker.IndianPokerRepository;
-import indianpoker.domain.humanplayer.HumanPlayer;
 import indianpoker.dto.GameInfoDto;
+import indianpoker.dto.TurnResultDto;
 import indianpoker.dto.TurnStartInfoDto;
-import indianpoker.dto.ex.GameResultDto;
-import indianpoker.dto.ex.TurnResultDto;
+import indianpoker.dto.GameResultDto;
 import indianpoker.exception.CannotEnterGameException;
 import indianpoker.exception.NonExistDataException;
 import indianpoker.vo.Chips;
@@ -23,12 +23,15 @@ public class IndianPokerService {
     @Autowired
     private IndianPokerRepository indianPokerRepository;
 
+    @Autowired
+    private HumanPlayerService humanPlayerService;
+
     public List<IndianPoker> findAllByGameWaits() {
         return indianPokerRepository.findByGameStatus(GameStatus.WAITS_FOR_PLAYER);
     }
 
-    public IndianPoker createGame(int chipsNum, String preemptive) {
-        return indianPokerRepository.save(new IndianPoker(chipsNum, preemptive));
+    public IndianPoker createGame(String gameName, int chipsNum, String preemptive) {
+        return indianPokerRepository.save(new IndianPoker(gameName, chipsNum, preemptive));
     }
 
     public IndianPoker enterPlayer(long indianPoker_id, HumanPlayer loginPlayer) {
@@ -37,9 +40,8 @@ public class IndianPokerService {
                 .orElseThrow(CannotEnterGameException::new);
     }
 
-    public TurnStartInfoDto generateTurn(long gameId) {
-        return orderToRun(findByGameId(gameId)
-                .generateTurn())
+    public TurnStartInfoDto generateTurn(long gameId, int turnCount) {
+        return orderToRun(findByGameId(gameId).generateTurn(turnCount))
                 .checkEmptyChipException()
                 .generateTurnStartInfoDto();
     }
@@ -78,12 +80,11 @@ public class IndianPokerService {
         return findTurnByGameId(gameId).raiseBetting(Chips.ofNumberOfChips(numberOfChips));
     }
 
-    public void checkBankrupt(long gameId) {
-        findTurnByGameId(gameId).checkBankrupt();
-    }
-
     public GameResultDto judgeGameWinner(Long gameId) {
-        return findTurnByGameId(gameId).judgeGameWinner();
+        GameResultDto gameResultDto = findByGameId(gameId).judgeGameWinner();
+
+        humanPlayerService.updateWinCnt(gameResultDto);
+        return gameResultDto;
     }
 
     public boolean isGameOver(Long gameId) {
@@ -91,7 +92,18 @@ public class IndianPokerService {
 
         if (turn == null)
             return false;
-        return findTurnByGameId(gameId).isGameOver();
+        return turn.isGameOver();
     }
 
+    public TurnResultDto judgeCallCase(Long gameId) {
+        return findTurnByGameId(gameId).judgeCallCase();
+    }
+
+    public GameStatus getGameStatus(Long gameId) {
+        return findByGameId(gameId).getGameStatus();
+    }
+
+    public IndianPoker forceQuit(Long gameId) {
+        return findByGameId(gameId).forceQuit();
+    }
 }

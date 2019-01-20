@@ -6,6 +6,8 @@ var sock = null; // socket
 var notice = $("#notice ul"); // 전체 공지 영역
 var turnNum = $('#turnNum span'); // Turn 번호
 
+var cardNum = $('#cardNum');
+
 var bettingTable = $('#bettingTable'); // betting Table
 var bettingBtns = $('#bettingBtns'); // betting buttons
 
@@ -52,9 +54,9 @@ function connectSockJS() {
         };
 
         // connection Closed
-//        sock.onclose = function (event) {
-//            console.log('Info: connection closed.');
-//        };
+        sock.onclose = function (event) {
+            console.log('Info: connection closed.');
+        };
     };
 }
 
@@ -88,17 +90,40 @@ function receiveMessage(contents) {
     if (type === 'TURN_RESULT') {
         printTurnResult(contents);
     }
+
+    if (type === 'GAME_RESULT') {
+        printGameResult(contents);
+    }
+}
+
+// notice 영역
+function addNotice(message) {
+    notice.append('<li>' + message + '</li>');
+    notice.animate({
+        scrollTop: 100000
+    }, 10);
 }
 
 function printNotice(contents) {
-    notice.append('<li>' + contents.message + '</li>');
+    addNotice(contents.message);
     gameStart(contents.numberOfPeople, contents.playerInfoDto.name);
 }
 
 function printTurnStart(contents) {
     // turnNum 수정
-    turnNum.html('[' + contents.turnCount + ']');
-    notice.append('<li>===== <strong>Turn' + contents.turnCount +'</strong> =====</li>');
+    turnNum.html(contents.turnCount);
+    var message = '===== <strong>Turn' + contents.turnCount +'</strong> START =====';
+    addNotice(message);
+}
+
+function hideAndShowTable(ownPlayerName) {
+    if (playerName === ownPlayerName) {
+        cardNum.show();
+        bettingTable.show();
+    } else {
+        cardNum.hide();
+        bettingTable.hide();
+    }
 }
 
 function printTurnInfo(contents) {
@@ -106,20 +131,26 @@ function printTurnInfo(contents) {
     printPlayerInfo(contents.ownPlayerInfoDto);
     printPlayerInfo(contents.otherPlayerInfoDto);
 
-    // 누가 베팅할 차례인지 알려줌
-    printPlayerOrder(contents.ownPlayerInfoDto.name);
+    var ownPlayerName = contents.ownPlayerInfoDto.name;
+
+    // 누가 배팅할 차례인지 알려줌
+    printPlayerOrder(ownPlayerName);
+    hideAndShowTable(ownPlayerName);
 
     function printPlayerInfo(player) {
         var name = player.name;
         var chipsNum = player.remainChips.numberOfChips;
-        notice.append('<li> <strong>' + name + '</strong>의 현재 보유칩 : [' + chipsNum +']</li>')
+        var message = '<strong>' + name + '</strong>의 현재 보유칩 : [' + chipsNum +']';
+        addNotice(message);
         if (playerName === player.name) {
             $('#numberOfChips strong').html(chipsNum);
         }
     }
 
     function printPlayerOrder(name) {
-        notice.append('<li> --> <strong>' + name + '</strong>의 배팅 차례입니다.-</li>');
+        var message = '--> <strong>' + name + '</strong>의 배팅 차례입니다.';
+        addNotice(message);
+
         // detach/attach까지 할 필욘 없다고 생각해서..
         if (playerName === name) {
             bettingBtns.show();
@@ -139,6 +170,9 @@ function printBetterInfo(contents) {
     // 턴의 첫 배팅이라면 call을 하지 못하도록 btn을 없앰
     isTurnFirstBetting(contents.firstBetting);
 
+    // 상대가 올인한 경우 Raise할 수 없게함.
+    isAllIn(contents.allIn);
+
     //Raise할 경우 배팅할 수 있는 chip 바운더리 설정
     setChipsBoundary(contents.bettingChipBoundaryDto);
 
@@ -152,8 +186,8 @@ function printBetterInfo(contents) {
     }
 
     function printOtherPlayerCard(otherCard) {
-        var cardNum = otherCard.card;
-        $('#cardNum').html("[" + cardNum + "]");
+        var card = otherCard.card;
+        cardNum.html("[" + card + "]");
     }
 
     function isTurnFirstBetting(firstBetting) {
@@ -161,6 +195,14 @@ function printBetterInfo(contents) {
             callBtn.hide();
         } else {
             callBtn.show();
+        }
+    }
+
+    function isAllIn(allIn) {
+        if (allIn) {
+            raiseBtn.hide();
+        } else {
+            raiseBtn.show();
         }
     }
 
@@ -175,20 +217,98 @@ function printBetterInfo(contents) {
 
 function printError(contents) {
     // error message 출력
-    alert(contents.message);
+    alert(contents.playerName + contents.message);
+    if (contents.point === 'PLAYER_OUT') {
+        pageOut(playerName);
+    }
 }
 
 function printBettingResult(contents) {
-    notice.append('<li> <strong>' + contents.playerName + '</strong>이(가) [' + contents.bettingCase +'] 하였습니다.</li>')
+    var message = '<strong>' + contents.playerName + '</strong>이(가) [' + contents.bettingCase +'] 하였습니다.';
+    addNotice(message);
 }
 
 function printTurnResult(contents) {
     // 두 플레이어 모두 notice 영역에 승자가 누구인지, 얼마의 칩을 얻었는지 표시한다.
+    var message = '===== <strong>Turn' + contents.turnCount +'</strong> END =====';
+    addNotice(message);
 
+    var resultCards = contents.resultCards;
 
-    function printWinner() {
-
+    // player들의 카드 결과
+    for (const key of Object.keys(resultCards)) {
+        message = '-> ' + key + '의 카드 [' + resultCards[key] + ']';
+        addNotice(message);
     }
+
+    var winners = contents.winnerNames;
+    var winningChipsNum = contents.winningChips.numberOfChips;
+
+    // 다음 턴의 번호
+    var num = parseInt(turnNum.html()) + 1;
+
+    // 비긴 경우와 승리한 경우 메시지는 다르다.
+    if (contents.draw) {
+        for (var i = 0; i < winners.length; i++) {
+            message = '-> <strong>' + winners[i] +'</strong>이(가) 비겨서 [' + winningChipsNum + ']개의 칩을 얻습니다.';
+            addNotice(message);
+
+            if (winners[i] === playerName) {
+                printWinner(contents.draw);
+
+                // 새로운 턴을 시작하라고 서버에 메시지를 보내야 한다.
+                if (i === 1) {
+                    turnStart(num);
+                }
+            }
+        }
+    } else {
+        message = '-> <strong>' + winners[0] +'</strong> 이(가) 승리하여 [' + winningChipsNum + ']개의 칩을 얻습니다.';
+        addNotice(message);
+
+        if (winners[0] === playerName) {
+            printWinner(contents.draw);
+
+            // 새로운 턴을 시작하라고 서버에 메시지를 보내야 한다.
+            turnStart(num);
+        }
+    }
+
+    function printWinner(draw) {
+        if (draw) {
+            alert('TURN DRAW');
+        } else {
+            alert('TURN WIN')
+        }
+    }
+}
+
+function printGameResult(contents) {
+    bettingBtns.hide(); // 더 이상 배팅할 수 없게 버튼 지우기
+    var draw = contents.draw;
+    var winnerNames = contents.winnerNames;
+
+    var message = '******** <strong> [INDIAN-POKER] GAME OVER </strong> *******';
+    addNotice(message);
+
+    if (draw) {
+        message = '-> 비겼습니다!';
+        addNotice(message);
+    } else {
+        message = '-> <strong>' + winnerNames[0] + '</strong>이(가) 승리하였습니다!';
+        addNotice(message);
+    }
+
+    // game 종료 후에 Game 메인 페이지로 이동
+    pageOut(playerName);
+}
+
+function pageOut(playerName) {
+    setTimeout(function() {
+        alert(playerName + '님 게임이 종료되었으므로 페이지를 이동합니다.');
+
+        $(location).attr('href', '/indianpokers');
+        }, 1500);
 }
 
 // --- Send METHOD ---
@@ -196,13 +316,19 @@ function printTurnResult(contents) {
 // GAME START
 function gameStart(numberOfPeople, name) {
     if (numberOfPeople === 2) {
-        notice.append('<li> ++++++++ <strong> [INDIAN-POKER] GAME START </strong> ++++++++ </li>'); // 게임시작을 알려줌
+        var message = '******** <strong> [INDIAN-POKER] GAME START </strong> *******';
+        addNotice(message); // 게임시작을 알려줌
 
-        if (name === playerName) { // 두 번째 들어온 player가 게임시작 요청을 한다.
-            var gameStartMessage = {'gameId': gameId, 'type': 'TURN_START', 'value': 0, 'player': playerName};
-            sock.send(JSON.stringify(gameStartMessage));
+        if (name === playerName) { // 두 번째 들어온 player가 게임 시작 요청을 한다.
+            turnStart(1);
         }
     }
+}
+
+// TURN START
+function turnStart(num) {
+    var gameStartMessage = {'gameId': gameId, 'type': 'TURN_START', 'value': num, 'player': playerName};
+    sock.send(JSON.stringify(gameStartMessage));
 }
 
 

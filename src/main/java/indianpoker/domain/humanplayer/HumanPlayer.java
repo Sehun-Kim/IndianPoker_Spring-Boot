@@ -35,10 +35,10 @@ public class HumanPlayer extends AbstractPlayer {
         return this.playerName;
     }
 
-    public HumanPlayer readyToGame(int playerChipsSize, boolean preemptive) {
+    public HumanPlayer readyToGame(int playerChipsSize, boolean preemptive, Deck deck) {
         super.setChips(Chips.ofNumberOfChips(playerChipsSize));
         super.setFirstBetter(preemptive);
-        super.setDeck(Deck.ofGenerateAuto());
+        super.setDeck(deck);
         return this;
     }
 
@@ -54,8 +54,9 @@ public class HumanPlayer extends AbstractPlayer {
         return password;
     }
 
-    public void setWinCnt(int winCnt) {
-        this.winCnt = winCnt;
+    public HumanPlayer winGame() {
+        this.winCnt++;
+        return this;
     }
 
     public int getWinCnt() {

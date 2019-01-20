@@ -13,7 +13,7 @@
                 {{#games}}
                 <li class="mdl-list__item mdl-list__item--two-line">
                   <span class="mdl-list__item-primary-content">
-                    <a href="/indianpokers/{{id}}"><strong>Enter Game - {{@index_1}} -</strong></a>
+                    <a href="/indianpokers/{{id}}"><strong>{{gameName}}</strong></a>
                     <span class="mdl-list__item-sub-title">
                       {{formattedCreateDate}}
                     </span>
@@ -21,7 +21,7 @@
 
                     <span class="mdl-list__item-secondary-content">
                     <span class="progress-bar">
-                      <span class="progress" style="width:150.0px"> </span>
+                      {{gameStatus}}
                     </span>
                     <span class="mdl-list__item-sub-title" style="font-size:13px; color:#888">
                     created By {{firstPlayer.playerName}}, Win Count : {{firstPlayer.winCnt}}

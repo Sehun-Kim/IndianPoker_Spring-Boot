@@ -2,8 +2,6 @@ package indianpoker.domain.game;
 
 import indianpoker.domain.humanplayer.HumanPlayer;
 import indianpoker.domain.poker.IndianPoker;
-import indianpoker.dto.GameInfoDto;
-import indianpoker.vo.Chips;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -23,15 +21,9 @@ public class TurnTest extends BaseTest {
 
     @Before
     public void setUp() throws Exception {
-        turn = indianPoker.readyToPlayer(player1).readyToPlayer(player2).generateTurn();
-        logger.debug("turn : {}", turn);
     }
 
     @Test
     public void generateBettingInfo() {
-        GameInfoDto gameInfoDto = turn.generateGameInfoDto(1L);
-        softly.assertThat(gameInfoDto.getCurrentTableDto().getOtherChips()).isEqualTo(Chips.ofNumberOfChips(1));
-        logger.debug("otherCard : {}", gameInfoDto.getOtherPlayerCard());
-        softly.assertThat(gameInfoDto.getOwnPlayerInfoDto().getRemainChips()).isEqualTo(Chips.ofNumberOfChips(19));
     }
 }

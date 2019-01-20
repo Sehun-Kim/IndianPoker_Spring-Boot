@@ -124,10 +124,10 @@ public abstract class AbstractPlayer extends AbstractEntity implements Player, W
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AbstractPlayer that = (AbstractPlayer) o;
-        return Objects.equals(playerName, that.playerName);
+        AbstractPlayer other = (AbstractPlayer) o;
+        if (this.playerName.equals(other.playerName))
+            return true;
+        return false;
     }
 
     @Override

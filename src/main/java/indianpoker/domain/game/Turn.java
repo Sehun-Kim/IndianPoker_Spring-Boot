@@ -7,9 +7,9 @@ import indianpoker.dto.TurnInfoDto;
 import indianpoker.dto.GameInfoDto;
 import indianpoker.dto.BetterInfoDto;
 import indianpoker.dto.TurnStartInfoDto;
-import indianpoker.dto.ex.BettingChipBoundaryDto;
-import indianpoker.dto.ex.GameResultDto;
-import indianpoker.dto.ex.TurnResultDto;
+import indianpoker.dto.BettingChipBoundaryDto;
+import indianpoker.dto.GameResultDto;
+import indianpoker.dto.TurnResultDto;
 import indianpoker.exception.CannotRaiseException;
 import indianpoker.exception.EmptyChipException;
 import indianpoker.vo.BettingCase;
@@ -19,10 +19,9 @@ import support.util.ChipExtractorUtil;
 import java.util.List;
 
 public class Turn {
-    public static final int FIRST_TURN_COUNT = 1;
     public static final int LAST_TURN_COUNT = 20;
 
-    private int turnCount = FIRST_TURN_COUNT;
+    private int turnCount;
 
     private Player firstPlayer;
     private Player lastPlayer;
@@ -31,7 +30,8 @@ public class Turn {
     private boolean isFirst;
 
 
-    public Turn() {
+    public Turn(int turnCount) {
+        this.turnCount = turnCount;
     }
 
     public Turn addPlayers(List<HumanPlayer> players) {
@@ -101,7 +101,8 @@ public class Turn {
                 this.bettingTable.toDto(this.firstPlayer),
                 this.dealer.getOtherPlayerCard(firstPlayer),
                 generateBettingBoundary(),
-                isFirst
+                isFirst,
+                isLastPlayerAllIn()
         );
     }
 
@@ -115,9 +116,9 @@ public class Turn {
         return judgeCallCase();
     }
 
-    private TurnResultDto judgeCallCase() {
-        this.turnCount++;
-        return this.dealer.judgeCallCase(firstPlayer, lastPlayer, bettingTable.calcWinningChips());
+    public TurnResultDto judgeCallCase() {
+        return this.dealer.judgeCallCase(firstPlayer, lastPlayer, bettingTable.calcWinningChips())
+                .addTurnCount(this.turnCount);
     }
 
     public GameInfoDto raiseBetting(Chips inputChip) {
@@ -155,8 +156,8 @@ public class Turn {
     }
 
     private TurnResultDto judgeDieCase() {
-        this.turnCount++;
-        return dealer.judgeDieCase(firstPlayer, lastPlayer, bettingTable.calcWinningChips());
+        return dealer.judgeDieCase(firstPlayer, lastPlayer, bettingTable.calcWinningChips())
+                .addTurnCount(this.turnCount);
     }
 
     public boolean isLastPlayerAllIn() {
@@ -187,6 +188,7 @@ public class Turn {
     }
 
     public boolean isGameOver() {
+        checkBankrupt();
         return this.turnCount == LAST_TURN_COUNT;
     }
 

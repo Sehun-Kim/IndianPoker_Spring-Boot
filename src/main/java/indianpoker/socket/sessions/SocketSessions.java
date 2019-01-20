@@ -17,6 +17,4 @@ public class SocketSessions {
         gameSessions.put(gameId, new GameSession(gameId));
         return gameSessions.get(gameId);
     }
-
-
 }

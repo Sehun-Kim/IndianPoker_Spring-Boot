@@ -1,10 +1,10 @@
-package indianpoker.web.session;
+package indianpoker.web.game;
 
 import indianpoker.dto.BettingResultDto;
 import indianpoker.dto.ErrorInfoDto;
 import indianpoker.dto.GameInfoDto;
 import indianpoker.dto.ReceiveMessageDto;
-import indianpoker.dto.ex.TurnResultDto;
+import indianpoker.dto.TurnResultDto;
 import indianpoker.exception.CanNotCallCaseException;
 import indianpoker.exception.CannotRaiseException;
 import indianpoker.service.IndianPokerService;

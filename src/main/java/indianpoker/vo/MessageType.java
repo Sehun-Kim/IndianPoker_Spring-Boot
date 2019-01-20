@@ -1,6 +1,6 @@
 package indianpoker.vo;
 
-public enum DtoType {
+public enum MessageType {
     NOTICE,
     GAME_INFO,
     TURN_START,
@@ -11,6 +11,7 @@ public enum DtoType {
     RAISE,
     DIE,
     TURN_RESULT,
+    TURN_END,
     ERROR,
     GAME_RESULT;
 }

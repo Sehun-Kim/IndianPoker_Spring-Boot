@@ -18,7 +18,7 @@ public class IndianPokerRepository {
         this.indianPokerMap = new HashMap<>();
         // dummy
         ++this.id;
-        IndianPoker indianPoker = new IndianPoker(20, "TRUE");
+        IndianPoker indianPoker = new IndianPoker("dummyGame", 20, "TRUE");
         indianPoker.setId(this.id);
         this.indianPokerMap.put(id, indianPoker);
     }

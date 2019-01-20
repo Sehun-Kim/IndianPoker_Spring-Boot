@@ -1,7 +1,7 @@
 package indianpoker.dto;
 
-import indianpoker.vo.DtoType;
+import indianpoker.vo.MessageType;
 
 public interface GameMessage {
-    DtoType getType();
+    MessageType getType();
 }

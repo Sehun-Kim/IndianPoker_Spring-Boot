@@ -1,17 +1,17 @@
 package indianpoker.dto;
 
-import indianpoker.vo.DtoType;
+import indianpoker.vo.MessageType;
 
 public class ReceiveMessageDto implements GameMessage {
     private long gameId;
     private int value;
     private String playerName;
-    private DtoType type;
+    private MessageType type;
 
     public ReceiveMessageDto() {
     }
 
-    public ReceiveMessageDto(long gameId, int value, String playerName, DtoType type) {
+    public ReceiveMessageDto(long gameId, int value, String playerName, MessageType type) {
         this.gameId = gameId;
         this.value = value;
         this.playerName = playerName;
@@ -43,11 +43,11 @@ public class ReceiveMessageDto implements GameMessage {
     }
 
     @Override
-    public DtoType getType() {
+    public MessageType getType() {
         return type;
     }
 
-    public void setType(DtoType type) {
+    public void setType(MessageType type) {
         this.type = type;
     }
 }

@@ -38,18 +38,19 @@ public class IndianPokerController {
     }
 
     @PostMapping()
-    public String create(@LoginPlayer HumanPlayer loginPlayer, String preemptive, int chipsSize) {
-        IndianPoker indianPoker = indianPokerService.createGame(chipsSize, preemptive);
+    public String create(@LoginPlayer HumanPlayer loginPlayer, String gameName, String preemptive, int chipsSize) {
+        IndianPoker indianPoker = indianPokerService.createGame(gameName, chipsSize, preemptive);
         return "redirect:/indianpokers/" + indianPoker.getId();
     }
 
     @GetMapping("/{id}")
     public String start(@PathVariable("id") long indianPoker_id, @LoginPlayer HumanPlayer loginPlayer, HttpSession session, Model model) {
+        session.removeAttribute(SessionUtil.GAME_ID);
         session.setAttribute(SessionUtil.GAME_ID, indianPoker_id);
+
         model.addAttribute("game", indianPokerService.enterPlayer(indianPoker_id, loginPlayer));
 
         return "indianpoker/game";
     }
-
 
 }

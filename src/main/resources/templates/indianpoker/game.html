@@ -2,9 +2,9 @@
 
 <div class="container">
     {{#loginedPlayer}}
-    <h1 id="gameId">Game No <span>{{gameId}}</span></h1>
+    <h6 id="gameId">Game No <span>{{gameId}}</span></h6>
     <br>
-    <h3 id="turnNum"> Turn <span>[대기]</span></h3>
+    <h3 id="turnNum"> Turn [<span>대기</span>]</h3>
     <div>
         <a>
             <img class="mdl-list__item-avatar" height="48" width="48"
@@ -30,7 +30,7 @@
 </div>
 
 <div class="container">
-    <div id="player">
+    <div>
         <div class="card mb-4 shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
                  preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<script src="/js/socket.js">
+<script src="/js/socket.js"></script>
 {{/partial}}
 
 {{>base}}

@@ -1,16 +1,16 @@
 package indianpoker.dto;
 
-import indianpoker.vo.DtoType;
+import indianpoker.vo.MessageType;
 
 public class TurnInfoDto implements GameMessage {
     private PlayerInfoDto ownPlayerInfoDto;
     private PlayerInfoDto otherPlayerInfoDto;
-    private DtoType type;
+    private MessageType type;
 
     public TurnInfoDto(PlayerInfoDto ownPlayerInfoDto, PlayerInfoDto otherPlayerInfoDto) {
         this.ownPlayerInfoDto = ownPlayerInfoDto;
         this.otherPlayerInfoDto = otherPlayerInfoDto;
-        this.type = DtoType.TURN_INFO;
+        this.type = MessageType.TURN_INFO;
     }
 
     public PlayerInfoDto getOwnPlayerInfoDto() {
@@ -22,7 +22,7 @@ public class TurnInfoDto implements GameMessage {
     }
 
     @Override
-    public DtoType getType() {
+    public MessageType getType() {
         return this.type;
     }
 }

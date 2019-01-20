@@ -1,19 +1,19 @@
 package indianpoker.dto;
 
-import indianpoker.vo.DtoType;
+import indianpoker.vo.MessageType;
 
 
 public class GameInfoDto implements GameMessage {
     private String betterName;
     private TurnInfoDto turnInfoDto;
     private BetterInfoDto betterInfoDto;
-    private DtoType type;
+    private MessageType type;
 
     public GameInfoDto(String betterName, TurnInfoDto turnInfoDto, BetterInfoDto betterInfoDto) {
         this.betterName = betterName;
         this.turnInfoDto = turnInfoDto;
         this.betterInfoDto = betterInfoDto;
-        this.type = DtoType.GAME_INFO;
+        this.type = MessageType.GAME_INFO;
     }
 
     public String getBetterName() {
@@ -29,7 +29,7 @@ public class GameInfoDto implements GameMessage {
     }
 
     @Override
-    public DtoType getType() {
+    public MessageType getType() {
         return this.type;
     }
 }

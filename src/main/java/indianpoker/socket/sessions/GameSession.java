@@ -1,5 +1,6 @@
 package indianpoker.socket.sessions;
 
+import indianpoker.dto.ErrorInfoDto;
 import indianpoker.dto.PlayerEnterInfoDto;
 import indianpoker.exception.CannotEnterGameException;
 import indianpoker.exception.NonExistPlayerException;
@@ -40,10 +41,6 @@ public class GameSession {
         return this.sessions;
     }
 
-    public boolean isStartable() {
-        return this.sessions.size() == GAME_SESSION_SIZE;
-    }
-
     public boolean isEmpty() {
         return this.sessions.isEmpty();
     }
@@ -53,5 +50,11 @@ public class GameSession {
                 .filter(session -> playerFromSession(session).matchPlayerName(name))
                 .findFirst()
                 .orElseThrow(NonExistPlayerException::new);
+    }
+
+    public ErrorInfoDto removeSession(WebSocketSession session) {
+        this.sessions.remove(session);
+        return new ErrorInfoDto("이(가) 게임을 이탈하였습니다.", playerFromSession(session).getPlayerName())
+                .playerOut();
     }
 }

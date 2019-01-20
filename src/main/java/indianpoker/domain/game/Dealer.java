@@ -3,8 +3,8 @@ package indianpoker.domain.game;
 import indianpoker.domain.game.player.Loser;
 import indianpoker.domain.game.player.Player;
 import indianpoker.domain.game.player.Winner;
-import indianpoker.dto.ex.GameResultDto;
-import indianpoker.dto.ex.TurnResultDto;
+import indianpoker.dto.GameResultDto;
+import indianpoker.dto.TurnResultDto;
 import indianpoker.exception.BankruptException;
 import indianpoker.vo.Card;
 import indianpoker.vo.Chips;
@@ -25,11 +25,6 @@ public class Dealer {
 
     public void drawPlayerCards(Player firstPlayer, Player lastPlayer) {
         this.playerCards = receivePlayerCards(firstPlayer, lastPlayer);
-    }
-
-    // for TEST
-    public void drawPlayerCards(Map<Player, Card> playerCards) {
-        this.playerCards = playerCards;
     }
 
     Map<Player, Card> receivePlayerCards(Player firstPlayer, Player lastPlayer) {
@@ -65,8 +60,9 @@ public class Dealer {
         winner2.gainChips(winningChips.halfChips());
 
         return TurnResultDto.of()
-                .addWinner(winner1.toDto())
-                .addWinner(winner2.toDto())
+                .addPlayerCards(getPlayerCards())
+                .addWinner(winner1.getPlayerName())
+                .addWinner(winner2.getPlayerName())
                 .addWinningChips(winningChips.halfChips());
     }
 
@@ -75,7 +71,8 @@ public class Dealer {
         winner.changeFirstBetter();
         loser.changeLastBetter();
         return TurnResultDto.of()
-                .addWinner(winner.toDto())
+                .addPlayerCards(getPlayerCards())
+                .addWinner(winner.getPlayerName())
                 .addWinningChips(winningChips);
     }
 
@@ -97,6 +94,15 @@ public class Dealer {
             gameResultDto.addWinnerName(player2.getPlayerName());
         }
         return gameResultDto;
+    }
+
+    public Map<String, Integer> getPlayerCards() {
+        Map<String, Integer> cards = new HashMap<>();
+        for (Player player : playerCards.keySet()) {
+            cards.put(player.getPlayerName(), getPlayerCard(player).getCard());
+        }
+
+        return cards;
     }
 
 }

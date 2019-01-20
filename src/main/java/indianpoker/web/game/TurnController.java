@@ -1,4 +1,4 @@
-package indianpoker.web.session;
+package indianpoker.web.game;
 
 import indianpoker.dto.GameMessage;
 import indianpoker.dto.TurnStartInfoDto;
@@ -22,18 +22,18 @@ public class TurnController {
     private IndianPokerService indianPokerService;
 
 
-    public void buildTurn(GameSession gameSession) {
+    // todo
+    // 턴이 끝난 후에 한 쪽 칩이 없을때
+    public void buildTurn(GameSession gameSession, int turnCount) {
         try {
-            TurnStartInfoDto turnStartInfoDto = indianPokerService.generateTurn(gameSession.getGameId());
+            TurnStartInfoDto turnStartInfoDto = indianPokerService.generateTurn(gameSession.getGameId(), turnCount);
             logger.debug("turnStartInfo : {}", turnStartInfoDto);
             messageService.sendMessage(turnStartInfoDto, gameSession);
 
             runTurn(gameSession);
         } catch (EmptyChipException e) { // 칩을 하나씩 빼고 둘 중 한명이 칩이 바닥나면 그 턴은 바로 승패를 판단한다.
-            GameMessage gameMessage = indianPokerService.callBetting(gameSession.getGameId());
+            GameMessage gameMessage = indianPokerService.judgeCallCase(gameSession.getGameId());
             messageService.sendMessage(gameMessage, gameSession);
-            // turn의 승패를 판단하고 어떤 플레이어가 칩이 없어서 게임이 종료될지 확인
-            indianPokerService.checkBankrupt(gameSession.getGameId());
         }
     }
 

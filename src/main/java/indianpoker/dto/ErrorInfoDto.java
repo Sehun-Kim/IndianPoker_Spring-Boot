@@ -1,17 +1,24 @@
 package indianpoker.dto;
 
-import indianpoker.vo.DtoType;
+import indianpoker.vo.MessageType;
+import indianpoker.vo.Point;
 
 public class ErrorInfoDto implements GameMessage {
-
     private String playerName;
     private String message;
-    private DtoType type;
+    private Point point;
+    private MessageType type;
 
     public ErrorInfoDto(String message, String playerName) {
         this.message = message;
         this.playerName = playerName;
-        this.type = DtoType.ERROR;
+        this.point = Point.BETTING;
+        this.type = MessageType.ERROR;
+    }
+
+    public ErrorInfoDto playerOut() {
+        this.point = Point.PLAYER_OUT;
+        return this;
     }
 
     public String getMessage() {
@@ -22,8 +29,12 @@ public class ErrorInfoDto implements GameMessage {
         return playerName;
     }
 
+    public Point getPoint() {
+        return point;
+    }
+
     @Override
-    public DtoType getType() {
+    public MessageType getType() {
         return this.type;
     }
 }
