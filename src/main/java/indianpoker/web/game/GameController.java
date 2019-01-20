@@ -28,7 +28,7 @@ public class GameController {
 
     public void initGame(GameSession gameSession, WebSocketSession webSocketSession) {
         // 입장한 session들에게 공지
-        messageService.sendMessage(gameSession.addSession(webSocketSession), gameSession);
+        messageService.sendToAll(gameSession.addSession(webSocketSession), gameSession);
     }
 
     public void turnStart(GameSession gameSession, int turnCount) {
@@ -44,7 +44,7 @@ public class GameController {
 
     private void gameOver(GameSession gameSession) {
         GameResultDto gameResultDto = indianPokerService.judgeGameWinner(gameSession.getGameId());
-        messageService.sendMessage(gameResultDto, gameSession);
+        messageService.sendToAll(gameResultDto, gameSession);
     }
 
     public void playerOut(GameSession gameSession, WebSocketSession session) {
@@ -52,9 +52,9 @@ public class GameController {
         GameStatus gameStatus = indianPokerService.getGameStatus(gameSession.getGameId());
 
         // 정상적인 게임 종료 상황이 아닐 때 플레이어가 이탈했을 경우 에러 메세지를 보낸다.
-        if (gameStatus.equals(GameStatus.IN_PROGRESS)) {
+        if (gameStatus.equals(GameStatus.IN_PROGRESS))
             indianPokerService.forceQuit(gameSession.getGameId());
-            messageService.sendMessage(errorInfoDto, gameSession);
-        }
+            messageService.sendError(errorInfoDto, gameSession);
     }
+
 }

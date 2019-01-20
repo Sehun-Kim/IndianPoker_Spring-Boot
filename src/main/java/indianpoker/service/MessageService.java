@@ -7,7 +7,6 @@ import indianpoker.dto.GameInfoDto;
 import indianpoker.dto.GameMessage;
 import indianpoker.dto.ReceiveMessageDto;
 import indianpoker.socket.sessions.GameSession;
-import indianpoker.vo.MessageType;
 import indianpoker.vo.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,85 +25,25 @@ public class MessageService {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageService.class);
 
-    // todo
-    // if 제거
-    public void sendMessage(GameMessage gameMessage, GameSession sessions) {
-        logger.debug("sendMessage : {}", sessions);
-
-        if (gameMessage.getType().equals(MessageType.NOTICE))
-            sendNotice(gameMessage, sessions);
-
-        if (gameMessage.getType().equals(MessageType.TURN_START))
-            sendTurnStart(gameMessage, sessions);
-
-        if (gameMessage.getType().equals(MessageType.GAME_INFO))
-            sendGameInfo(gameMessage, sessions);
-
-        if (gameMessage.getType().equals(MessageType.ERROR))
-            sendError(gameMessage, sessions);
-
-        if (gameMessage.getType().equals(MessageType.TURN_RESULT))
-            sendTurnResult(gameMessage, sessions);
-
-        if (gameMessage.getType().equals(MessageType.BETTING_RESULT))
-            sendBettingResult(gameMessage, sessions);
-
-        if (gameMessage.getType().equals(MessageType.GAME_RESULT))
-            sendGameResult(gameMessage, sessions);
-    }
-
-    private void sendGameResult(GameMessage gameMessage, GameSession sessions) {
-        logger.debug("sendGameResult : {}", gameMessage);
-        sendToAll(gameMessage, sessions);
-    }
-
-    private void sendBettingResult(GameMessage gameMessage, GameSession sessions) {
-        sendToAll(gameMessage, sessions);
-    }
-
-    private void sendTurnStart(GameMessage gameMessage, GameSession sessions) {
-        logger.debug("sendTurnStart : {}", gameMessage);
-        sendToAll(gameMessage, sessions);
-    }
-
-    private void sendTurnResult(GameMessage gameMessage, GameSession sessions) {
-        logger.debug("sendTurnResult : {}", gameMessage);
-        sendToAll(gameMessage, sessions);
-    }
-
-    private void sendNotice(GameMessage gameMessage, GameSession sessions) {
-        logger.debug("sendNotice : {}", gameMessage);
-        sendToAll(gameMessage, sessions);
-    }
-
-    private void sendGameInfo(GameMessage gameMessage, GameSession sessions) {
-        logger.debug("sendGameInfo : {}", gameMessage);
-        GameInfoDto gameInfoDto = (GameInfoDto) gameMessage;
-
+    public void sendGameInfo(GameInfoDto gameInfoDto, GameSession sessions) {
         // Announce To all
         sendToAll(gameInfoDto.getTurnInfoDto(), sessions);
-
         // Announce To better
-        send(gameInfoDto.getBetterInfoDto(),
-                sessions.getPlayerSession(gameInfoDto.getBetterName()));
+        send(gameInfoDto.getBetterInfoDto(), sessions.getPlayerSession(gameInfoDto.getBetterName()));
     }
 
-    private void sendError(GameMessage gameMessage, GameSession sessions) {
-        logger.debug("sendError : {}", gameMessage);
-        ErrorInfoDto errorInfoDto = (ErrorInfoDto) gameMessage;
-
-        // Announce To better
+    public void sendError(ErrorInfoDto errorInfoDto, GameSession gameSession) {
         if (errorInfoDto.getPoint().equals(Point.BETTING))
-            send(errorInfoDto, sessions.getPlayerSession(errorInfoDto.getPlayerName()));
+            send(errorInfoDto, gameSession.getPlayerSession(errorInfoDto.getPlayerName()));
         if (errorInfoDto.getPoint().equals(Point.PLAYER_OUT))
-            sendToAll(errorInfoDto, sessions);
+            sendToAll(errorInfoDto, gameSession);
     }
 
-    private void sendToAll(GameMessage gameMessage, GameSession sessions) {
+    public void sendToAll(GameMessage gameMessage, GameSession sessions) {
         sessions.getAllSessions().forEach(session -> send(gameMessage, session));
     }
 
-    private <T> void send(T messageObject, WebSocketSession session) {
+    public <T> void send(T messageObject, WebSocketSession session) {
         logger.debug("send : {}", session);
         try {
             TextMessage message = new TextMessage(objectMapper.writeValueAsString(messageObject));
@@ -117,7 +56,6 @@ public class MessageService {
             logger.error(e.getMessage(), e);
         }
     }
-
 
     public ReceiveMessageDto receiveMessage(TextMessage message) {
         String payload = message.getPayload();

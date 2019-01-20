@@ -62,7 +62,6 @@ public class IndianPokerHandler extends TextWebSocketHandler {
             bettingController.judgeCase(socketSessions.findByGameId(gameId), messageService.receiveMessage(message));
     }
 
-
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         long gameId = gameIdFromSession(session);

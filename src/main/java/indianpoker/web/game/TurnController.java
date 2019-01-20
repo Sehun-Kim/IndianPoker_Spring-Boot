@@ -1,6 +1,7 @@
 package indianpoker.web.game;
 
-import indianpoker.dto.GameMessage;
+import indianpoker.dto.GameInfoDto;
+import indianpoker.dto.TurnResultDto;
 import indianpoker.dto.TurnStartInfoDto;
 import indianpoker.exception.EmptyChipException;
 import indianpoker.service.IndianPokerService;
@@ -25,21 +26,21 @@ public class TurnController {
         try {
             TurnStartInfoDto turnStartInfoDto = indianPokerService.generateTurn(gameSession.getGameId(), turnCount);
             logger.debug("turnStartInfo : {}", turnStartInfoDto);
-            messageService.sendMessage(turnStartInfoDto, gameSession);
+            messageService.sendToAll(turnStartInfoDto, gameSession);
 
             runTurn(gameSession);
         } catch (EmptyChipException e) { // 칩을 하나씩 빼고 둘 중 한명이 칩이 바닥나면 그 턴은 바로 승패를 판단한다.
-            GameMessage gameMessage = indianPokerService.judgeCallCase(gameSession.getGameId());
-            messageService.sendMessage(gameMessage, gameSession);
+            TurnResultDto turnResultDto = indianPokerService.judgeCallCase(gameSession.getGameId());
+            messageService.sendToAll(turnResultDto, gameSession);
         }
     }
 
     public void runTurn(GameSession gameSession) {
         //  turninfo player들한테 보내줌 (first 배팅인지 아닌지 알아서 바꿈)
-        GameMessage gameMessage = indianPokerService.generateGameInfo(gameSession.getGameId());
+        GameInfoDto gameInfoDto = indianPokerService.generateGameInfo(gameSession.getGameId());
         indianPokerService.turnMakeNotFirst(gameSession.getGameId());
 
-        messageService.sendMessage(gameMessage, gameSession);
+        messageService.sendGameInfo(gameInfoDto, gameSession);
     }
 
 }

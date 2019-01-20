@@ -41,34 +41,31 @@ public class BettingController {
     }
 
     public void sendBettingResult(GameSession gameSession, BettingCase bettingCase, String playerName) {
-        messageService.sendMessage(new BettingResultDto(playerName, bettingCase), gameSession);
+        messageService.sendToAll(new BettingResultDto(playerName, bettingCase), gameSession);
     }
 
     public void callBettingCase(GameSession gameSession) {
         try {
             TurnResultDto turnResultDto = indianPokerService.callBetting(gameSession.getGameId());
-            logger.debug("CALL : {}", turnResultDto);
-
-            messageService.sendMessage(turnResultDto, gameSession);
+            messageService.sendToAll(turnResultDto, gameSession);
         } catch (CanNotCallCaseException e) {
             ErrorInfoDto errorInfoDto = new ErrorInfoDto(e.getMessage(), e.getPlayerName());
-            messageService.sendMessage(errorInfoDto, gameSession);
+            messageService.sendError(errorInfoDto, gameSession);
         }
     }
 
     public void raiseBettingCase(GameSession gameSession, int numberOfChips) {
-        logger.debug("RAISE, numberOfChips : {}", numberOfChips);
         try {
             GameInfoDto gameInfoDto = indianPokerService.raiseBetting(gameSession.getGameId(), numberOfChips);
-            messageService.sendMessage(gameInfoDto, gameSession);
+            messageService.sendGameInfo(gameInfoDto, gameSession);
         } catch (CannotRaiseException e) {
             ErrorInfoDto errorInfoDto = new ErrorInfoDto(e.getMessage(), e.getPlayerName());
-            messageService.sendMessage(errorInfoDto, gameSession);
+            messageService.sendError(errorInfoDto, gameSession);
         }
     }
 
     public void dieBettingCase(GameSession gameSession) {
         TurnResultDto turnResultDto = indianPokerService.dieBetting(gameSession.getGameId());
-        messageService.sendMessage(turnResultDto, gameSession);
+        messageService.sendToAll(turnResultDto, gameSession);
     }
 }

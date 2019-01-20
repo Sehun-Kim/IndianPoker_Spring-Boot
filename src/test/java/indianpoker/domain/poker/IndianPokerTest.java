@@ -7,7 +7,6 @@ import indianpoker.vo.GameStatus;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import support.fixture.IndianPokerFixture;
 import support.fixture.PlayerFixture;
 import support.test.BaseTest;
 
@@ -19,7 +18,7 @@ public class IndianPokerTest extends BaseTest {
 
     @Test
     public void readyToPlayer_progress() {
-        IndianPoker indianPoker = IndianPokerFixture.getDefaultPoker();
+        IndianPoker indianPoker = new IndianPoker("DUMMY", 20, "TRUE");
         indianPoker.readyToPlayer(player1).readyToPlayer(player2);
         softly.assertThat(indianPoker.getGameStatus()).isEqualTo(GameStatus.IN_PROGRESS);
     }
