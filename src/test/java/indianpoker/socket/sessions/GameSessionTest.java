@@ -30,4 +30,12 @@ public class GameSessionTest extends BaseTest {
         gameSession.addSession(webSocketSession);
         gameSession.addSession(webSocketSession);
     }
+
+    @Test
+    public void isEmpty() {
+        long gameId = 1L;
+        GameSession gameSession = new GameSession(gameId);
+
+        softly.assertThat(gameSession.isEmpty()).isTrue();
+    }
 }

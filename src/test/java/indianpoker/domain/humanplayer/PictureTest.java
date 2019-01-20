@@ -1,6 +1,5 @@
-package indianpoker.domain.user;
+package indianpoker.domain.humanplayer;
 
-import indianpoker.domain.humanplayer.Picture;
 import indianpoker.exception.NotImageDataException;
 import org.junit.Test;
 import support.test.BaseTest;

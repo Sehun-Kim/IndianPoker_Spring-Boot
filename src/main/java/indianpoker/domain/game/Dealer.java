@@ -101,7 +101,6 @@ public class Dealer {
         for (Player player : playerCards.keySet()) {
             cards.put(player.getPlayerName(), getPlayerCard(player).getCard());
         }
-
         return cards;
     }
 

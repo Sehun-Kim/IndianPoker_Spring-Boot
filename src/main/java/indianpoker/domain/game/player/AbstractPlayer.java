@@ -99,6 +99,7 @@ public abstract class AbstractPlayer extends AbstractEntity implements Player, W
         return this.chips.isEmpty();
     }
 
+    // protected method
     protected void setDeck(Deck deck) {
         this.deck = deck;
     }

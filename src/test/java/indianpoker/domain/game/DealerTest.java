@@ -5,6 +5,8 @@ import indianpoker.domain.humanplayer.HumanPlayer;
 import indianpoker.vo.Card;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import support.domain.Deck;
 import support.test.BaseTest;
 
@@ -14,6 +16,8 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class DealerTest extends BaseTest {
+    private static final Logger logger = LoggerFactory.getLogger(DealerTest.class);
+
     Dealer dealer;
 
     @Before
@@ -42,5 +46,14 @@ public class DealerTest extends BaseTest {
         softly.assertThat(player1).isEqualTo(player1);
         softly.assertThat(dealer.getPlayerCard(player1)).isEqualTo(new Card(1));
         softly.assertThat(card).isEqualTo(new Card(5));
+    }
+
+    @Test
+    public void getPlayerCards() {
+        Player player1 = new HumanPlayer("tester1", "1").readyToGame(20, true, Deck.ofGenerateAuto());
+        Player player2 = new HumanPlayer("tester2", "1").readyToGame(20, false, Deck.ofGenerateAuto());
+
+        dealer.drawPlayerCards(player1, player2);
+        logger.debug("playerCards : {}", dealer.getPlayerCards());
     }
 }

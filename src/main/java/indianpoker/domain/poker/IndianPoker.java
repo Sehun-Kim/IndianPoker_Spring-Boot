@@ -37,17 +37,6 @@ public class IndianPoker {
         this.gameStatus = GameStatus.WAITS_FOR_PLAYER;
     }
 
-    public IndianPoker readyToPlayer(HumanPlayer player) {
-        if (players.size() >= MAX_PERSONNEL_SIZE) throw new CannotEnterGameException("잘못된 게임에 접근하였습니다.");
-        if (players.isEmpty()) {
-            this.players.add(player.readyToGame(this.playerChipsSize, this.preemptive, Deck.ofGenerateAuto()));
-            return this;
-        }
-        this.players.add(player.readyToGame(this.playerChipsSize, !this.preemptive, Deck.ofGenerateAuto()));
-        this.gameStatus = GameStatus.IN_PROGRESS;
-        return this;
-    }
-
     public long getId() {
         return id;
     }
@@ -77,6 +66,17 @@ public class IndianPoker {
     }
 
     // domain
+    public IndianPoker readyToPlayer(HumanPlayer player) {
+        if (players.size() >= MAX_PERSONNEL_SIZE) throw new CannotEnterGameException("잘못된 게임에 접근하였습니다.");
+        if (players.isEmpty()) {
+            this.players.add(player.readyToGame(this.playerChipsSize, this.preemptive, Deck.ofGenerateAuto()));
+            return this;
+        }
+        this.players.add(player.readyToGame(this.playerChipsSize, !this.preemptive, Deck.ofGenerateAuto()));
+        this.gameStatus = GameStatus.IN_PROGRESS;
+        return this;
+    }
+
     public boolean isGameStatus(GameStatus gameStatus) {
         return this.gameStatus.equals(gameStatus);
     }
@@ -95,7 +95,7 @@ public class IndianPoker {
         return gameResultDto;
     }
 
-    private GameStatus changeGameStatus(GameResultDto gameResultDto) {
+    public GameStatus changeGameStatus(GameResultDto gameResultDto) {
         if (gameResultDto.isDraw()) {
             return GameStatus.TIE;
         }

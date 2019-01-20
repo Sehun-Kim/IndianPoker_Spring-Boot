@@ -54,25 +54,12 @@ public class IndianPokerHandler extends TextWebSocketHandler {
         ReceiveMessageDto receiveMessageDto = messageService.receiveMessage(message);
         MessageType receiveType = receiveMessageDto.getType();
         // turn 시작 요청
-        if (receiveType.equals(MessageType.TURN_START)) {
+        if (receiveType.equals(MessageType.TURN_START))
             gameController.turnStart(socketSessions.findByGameId(gameId), receiveMessageDto.getValue());
-        }
 
         // 배팅 요청
-        if (!receiveType.equals(MessageType.TURN_START)) {
+        if (!receiveType.equals(MessageType.TURN_START))
             bettingController.judgeCase(socketSessions.findByGameId(gameId), messageService.receiveMessage(message));
-        }
-
-        // 여기서 항시 게임 종료여부를 체크해야 함
-
-        /*
-         * 여기서 판단을 해야 함
-         * NOTICE : 공지
-         * TURNOVER : turn이 끝났다.
-         * GAMEOVER : 게임이 끝났다.
-         * GAME_INFO : 에러가 여기까지 오면 다시 입력하게 메세지를 보낼 것
-         */
-
     }
 
 

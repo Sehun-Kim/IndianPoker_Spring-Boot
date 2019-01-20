@@ -22,13 +22,11 @@ public class Turn {
     public static final int LAST_TURN_COUNT = 20;
 
     private int turnCount;
-
     private Player firstPlayer;
     private Player lastPlayer;
     private Dealer dealer;
     private BettingTable bettingTable;
     private boolean isFirst;
-
 
     public Turn(int turnCount) {
         this.turnCount = turnCount;
@@ -59,6 +57,12 @@ public class Turn {
         return this;
     }
 
+    private BettingTable generateTable() {
+        BettingTable bettingTable = new BettingTable();
+        ChipExtractorUtil.addAllBettingChips(firstPlayer.initTurn(), lastPlayer.initTurn(), bettingTable);
+        return bettingTable;
+    }
+
     public Turn checkEmptyChipException() {
         if (this.firstPlayer.showChips().isEmpty() || this.lastPlayer.showChips().isEmpty()) {
             throw new EmptyChipException("chip is empty"
@@ -69,18 +73,12 @@ public class Turn {
         return this;
     }
 
-    private BettingTable generateTable() {
-        BettingTable bettingTable = new BettingTable();
-        ChipExtractorUtil.addAllBettingChips(firstPlayer.initTurn(), lastPlayer.initTurn(), bettingTable);
-        return bettingTable;
+    public boolean firstPlayerIsFirst() {
+        return this.firstPlayer.isFirst();
     }
 
     public TurnStartInfoDto generateTurnStartInfoDto() {
         return new TurnStartInfoDto(this.turnCount);
-    }
-
-    public boolean firstPlayerIsFirst() {
-        return this.firstPlayer.isFirst();
     }
 
     public GameInfoDto generateGameInfoDto() {
@@ -133,11 +131,11 @@ public class Turn {
         int betterChipsNum = firstPlayer.showChips().getNumberOfChips();
         int otherChipsNum = lastPlayer.showChips().getNumberOfChips();
 
-        if(isLastPlayerAllIn())
+        if (isLastPlayerAllIn())
             throw new CannotRaiseException("상대가 ALL-IN 하여 RAISE할 수 없습니다.", firstPlayer.getPlayerName());
 
         if (inputChipsNum <= diffChipsNum)
-            throw new CannotRaiseException("최소 " + diffChipsNum + "개의 칩을 베팅하여야 합니다.",firstPlayer.getPlayerName());
+            throw new CannotRaiseException("최소 " + diffChipsNum + "개의 칩을 베팅하여야 합니다.", firstPlayer.getPlayerName());
 
         if (inputChipsNum > (diffChipsNum + otherChipsNum))
             throw new CannotRaiseException("상대의 칩 이상 베팅할 수 없습니다. 최대 배팅 가능 칩 : " + (diffChipsNum + otherChipsNum),
@@ -168,6 +166,19 @@ public class Turn {
         this.dealer.checkBankrupt(firstPlayer, lastPlayer);
     }
 
+    public GameResultDto judgeGameWinner() {
+        return dealer.judgeGameWinner(firstPlayer, lastPlayer);
+    }
+
+    public boolean makeNotFirst() {
+        return this.isFirst = false;
+    }
+
+    public boolean isGameOver() {
+        checkBankrupt();
+        return this.turnCount == LAST_TURN_COUNT;
+    }
+
     @Override
     public String toString() {
         return "Turn{" +
@@ -179,20 +190,4 @@ public class Turn {
                 '}';
     }
 
-    public boolean makeNotFirst() {
-        return this.isFirst = false;
-    }
-
-    public GameResultDto judgeGameWinner() {
-        return dealer.judgeGameWinner(firstPlayer, lastPlayer);
-    }
-
-    public boolean isGameOver() {
-        checkBankrupt();
-        return this.turnCount == LAST_TURN_COUNT;
-    }
-
-    public String findCurrentPlayerName() {
-        return firstPlayer.getPlayerName();
-    }
 }

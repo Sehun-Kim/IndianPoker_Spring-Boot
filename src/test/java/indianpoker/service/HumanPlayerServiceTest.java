@@ -1,10 +1,9 @@
-package indianpoker.domain.user;
+package indianpoker.service;
 
 import indianpoker.domain.humanplayer.HumanPlayer;
-import indianpoker.domain.humanplayer.Picture;
 import indianpoker.domain.humanplayer.HumanPlayerRepository;
+import indianpoker.domain.humanplayer.Picture;
 import indianpoker.exception.UnAuthenticationException;
-import indianpoker.service.HumanPlayerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

@@ -21,9 +21,13 @@ public class TurnTest extends BaseTest {
 
     @Before
     public void setUp() throws Exception {
+        indianPoker.readyToPlayer(player1).readyToPlayer(player2);
     }
 
     @Test
-    public void generateBettingInfo() {
+    public void isGameOver() {
+        turn = indianPoker.generateTurn(20);
+        softly.assertThat(turn.isGameOver()).isTrue();
+
     }
 }

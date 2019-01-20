@@ -2,6 +2,8 @@ package indianpoker.socket.sessions;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.web.socket.WebSocketSession;
+import support.fixture.WebSocketSessionFixture;
 import support.test.BaseTest;
 
 public class SocketSessionsTest extends BaseTest {
@@ -10,24 +12,26 @@ public class SocketSessionsTest extends BaseTest {
     @Before
     public void setUp() throws Exception {
         socketSessions = new SocketSessions();
+        WebSocketSession webSocketSession = WebSocketSessionFixture.getDummySession();
+        GameSession gameSession = socketSessions.findByGameId(1L);
+
+        gameSession.addSession(webSocketSession);
     }
 
     @Test
-    public void addSession_single() {
-        long gameId = 1;
-//        WebSocketSession webSocketSession = WebSocketSessionFixture.getDummySession();
-//        socketSessions.addSession(gameId, webSocketSession);
-//        softly.assertThat(socketSessions.findByGameId(gameId).getAllSessions().size()).isEqualTo(1);
+    public void findByGameId_none() {
+        long gameId = 2L;
+        GameSession gameSession = socketSessions.findByGameId(gameId);
+
+        softly.assertThat(gameSession.isEmpty()).isTrue();
     }
 
     @Test
-    public void addSession_double() {
-//        long gameId = 1;
-//        WebSocketSession webSocketSession = WebSocketSessionFixture.getDummySession();
-//        socketSessions.addSession(gameId, webSocketSession);
-//        socketSessions.addSession(gameId, webSocketSession);
-//
-//        softly.assertThat(socketSessions.findByGameId(gameId).getAllSessions().size()).isEqualTo(2);
+    public void findByGameId_exist() {
+        long gameId = 1L;
+        GameSession gameSession = socketSessions.findByGameId(gameId);
+
+        softly.assertThat(gameSession.isEmpty()).isFalse();
     }
 
 }

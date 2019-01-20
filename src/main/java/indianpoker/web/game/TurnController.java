@@ -21,9 +21,6 @@ public class TurnController {
     @Autowired
     private IndianPokerService indianPokerService;
 
-
-    // todo
-    // 턴이 끝난 후에 한 쪽 칩이 없을때
     public void buildTurn(GameSession gameSession, int turnCount) {
         try {
             TurnStartInfoDto turnStartInfoDto = indianPokerService.generateTurn(gameSession.getGameId(), turnCount);
@@ -37,7 +34,6 @@ public class TurnController {
         }
     }
 
-    // Turn 배팅할 때 메시지 보내는 부분
     public void runTurn(GameSession gameSession) {
         //  turninfo player들한테 보내줌 (first 배팅인지 아닌지 알아서 바꿈)
         GameMessage gameMessage = indianPokerService.generateGameInfo(gameSession.getGameId());

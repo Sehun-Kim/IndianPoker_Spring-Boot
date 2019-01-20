@@ -14,8 +14,9 @@ public class GameResultDto implements GameMessage {
         this.type = MessageType.GAME_RESULT;
     }
 
-    public void addWinnerName(String winnerName) {
+    public GameResultDto addWinnerName(String winnerName) {
         winnerNames.add(winnerName);
+        return this;
     }
 
     public boolean isDraw() {

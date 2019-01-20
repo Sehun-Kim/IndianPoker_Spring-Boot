@@ -1,5 +1,6 @@
 package indianpoker.vo;
 
+import indianpoker.exception.EmptyChipException;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,7 @@ public class ChipsTest extends BaseTest {
         logger.debug("chips : {}", chips);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = EmptyChipException.class)
     public void create_chips_fails() {
         Chips.ofNumberOfChips(-1);
     }
