@@ -22,6 +22,10 @@ public class Card implements Comparable<Card>{
         return card;
     }
 
+    public String getDesignCard() {
+        return CardDesign.valueOfCard(card);
+    }
+
     @Override
     public int compareTo(Card other) {
         if(this.card > other.card) return 1;

@@ -186,8 +186,8 @@ function printBetterInfo(contents) {
     }
 
     function printOtherPlayerCard(otherCard) {
-        var card = otherCard.card;
-        cardNum.html("[" + card + "]");
+        var card = otherCard.designCard;
+        cardNum.html(card);
     }
 
     function isTurnFirstBetting(firstBetting) {
