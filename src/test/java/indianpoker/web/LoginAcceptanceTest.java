@@ -1,14 +1,14 @@
 package indianpoker.web;
 
-import indianpoker.domain.user.User;
-import indianpoker.service.UserService;
+import indianpoker.domain.humanplayer.HumanPlayer;
+import indianpoker.service.HumanPlayerService;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import support.fixture.UserFixture;
+import support.fixture.PlayerFixture;
 import support.test.AcceptanceTest;
 import support.test.HtmlFormDataBuilder;
 
@@ -17,7 +17,7 @@ public class LoginAcceptanceTest extends AcceptanceTest {
     private static HtmlFormDataBuilder htmlFormDataBuilder;
 
     @Autowired
-    private UserService userService;
+    private HumanPlayerService humanPlayerService;
 
     @Test
     public void loginForm() {
@@ -28,10 +28,10 @@ public class LoginAcceptanceTest extends AcceptanceTest {
 
     @Test
     public void login() {
-        User user = UserFixture.getDefaultUser();
+        HumanPlayer humanPlayer = PlayerFixture.getDefaultHumanPlayer();
         htmlFormDataBuilder = HtmlFormDataBuilder.urlEncodedForm()
-                .addParameter("userId", user.getUserId())
-                .addParameter("password", user.getPassword());
+                .addParameter("playerName", humanPlayer.getPlayerName())
+                .addParameter("password", humanPlayer.getPassword());
 
         ResponseEntity<String> responseEntity = template().postForEntity("/login", htmlFormDataBuilder.build(), String.class);
         softly.assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.FOUND);

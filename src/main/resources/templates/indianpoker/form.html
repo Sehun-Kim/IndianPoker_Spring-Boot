@@ -1,5 +1,5 @@
 {{#partial "contents"}}
-<form action="/indianpoker/start" method="POST">
+<form action="/indianpokers" method="POST">
     <div class="issues__posts mdl-grid">
         <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
             <div class="mdl-card__title mdl-color-text--grey-50" style="height:100px;">
@@ -12,15 +12,19 @@
             </div>
             <div class="mdl-color-text--primary-contrast" style="padding-top:40px; padding-bottom:40px;">
                 <div class="input-date" style="padding:15px;">
-                    <label for="firstBetter" style="color:#888">First Better</label>
-                    <select name="firstBetter" id="firstBetter" required>
-                        <option value="1" selected>TRUE</option>
-                        <option value="0">FALSE</option>
+                    <label for="gameName" style="color:#888">GAME NAME</label>
+                    <input type="text" name="gameName" id="gameName" required>
+                </div>
+                <div class="input-date" style="padding:15px;">
+                    <label for="preemptive" style="color:#888">FIRST BETTING</label>
+                    <select name="preemptive" id="preemptive" required>
+                        <option value="TRUE" selected>TRUE</option>
+                        <option value="FALSE">FALSE</option>
                     </select>
                 </div>
                 <div class="input-date" style="padding:15px;">
-                    <label for="chipsNum" style="color:#888">Chips</label>
-                    <input type="text" name="chipsNum" id="chipsNum" required>
+                    <label for="chipsNum" style="color:#888">CHIP SIZE</label>
+                    <input type="text" name="chipsSize" id="chipsNum" required>
                 </div>
             </div>
             <div class="mdl-color-text--primary-contrast mdl-card__supporting-text">

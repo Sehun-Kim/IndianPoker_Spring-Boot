@@ -1,6 +1,6 @@
 package indianpoker.service;
 
-import indianpoker.domain.user.Picture;
+import indianpoker.domain.humanplayer.Picture;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

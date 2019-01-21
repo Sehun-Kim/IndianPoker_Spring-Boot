@@ -18,6 +18,10 @@ public class Card implements Comparable<Card>{
         return card;
     }
 
+    public int getCard() {
+        return card;
+    }
+
     @Override
     public int compareTo(Card other) {
         if(this.card > other.card) return 1;
@@ -40,8 +44,10 @@ public class Card implements Comparable<Card>{
 
     @Override
     public String toString() {
-        return "Card{" +
-                "card=" + card +
-                '}';
+        return new StringBuilder()
+                .append("[")
+                .append(card)
+                .append("] ")
+                .toString();
     }
 }

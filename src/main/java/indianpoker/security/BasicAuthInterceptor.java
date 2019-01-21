@@ -1,8 +1,8 @@
 package indianpoker.security;
 
-import indianpoker.domain.user.User;
+import indianpoker.domain.humanplayer.HumanPlayer;
 import indianpoker.exception.UnAuthenticationException;
-import indianpoker.service.UserService;
+import indianpoker.service.HumanPlayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter {
     private static final Logger logger = LoggerFactory.getLogger(BasicAuthInterceptor.class);
 
     @Autowired
-    private UserService userService;
+    private HumanPlayerService humanPlayerService;
 
     // 브라우저에서 컨트롤러로 요청이 가기 전, 컨트롤러에서 처리한 응답이 브라우저에 가기 전
     @Override
@@ -32,14 +32,14 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter {
         String base64Credentials = authorization.substring("Basic".length()).trim(); // Basic과 띄어쓰기를 자른 다음 값
         String credentials = new String(Base64.getDecoder().decode(base64Credentials), Charset.forName("UTF-8")); // Base64로 인코딩되어있는 값을 UTF-8 형식으로 디코딩
         final String[] values = credentials.split(":", 2); // id : password 분리
-        logger.debug("username : {}", values[0]);
+        logger.debug("playerName : {}", values[0]);
         logger.debug("password : {}", values[1]);
 
         // login
         try {
-            User loginedUser = userService.login(values[0], values[1]);
-            logger.debug("loginedUser : {}", loginedUser);
-            request.getSession().setAttribute(SessionUtil.USER_SESSION, loginedUser);
+            HumanPlayer loginedPlayer = humanPlayerService.login(values[0], values[1]);
+            logger.debug("loginedPlayer : {}", loginedPlayer);
+            request.getSession().setAttribute(SessionUtil.PLAYER_SESSION, loginedPlayer);
             return true;
         } catch (UnAuthenticationException e) {
             return true;

@@ -1,14 +1,14 @@
 package indianpoker.security;
 
-import indianpoker.domain.user.User;
-import indianpoker.service.UserService;
+import indianpoker.domain.humanplayer.HumanPlayer;
+import indianpoker.service.HumanPlayerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
-import support.fixture.UserFixture;
+import support.fixture.PlayerFixture;
 import support.test.BaseTest;
 import support.util.SessionUtil;
 
@@ -19,19 +19,19 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class BasicAuthInterceptorTest extends BaseTest {
     @Mock
-    private UserService userService;
+    private HumanPlayerService humanPlayerService;
 
     @InjectMocks
     private BasicAuthInterceptor basicAuthInterceptor;
 
     @Test
     public void preHandle_login_success() throws Exception {
-        User user = UserFixture.getDefaultUser();
-        MockHttpServletRequest request = basicAuthHttpRequest(user.getUserId(), user.getPassword());
-        when(userService.login(user.getUserId(), user.getPassword())).thenReturn(UserFixture.getDefaultUser());
+        HumanPlayer humanPlayer = PlayerFixture.getDefaultHumanPlayer();
+        MockHttpServletRequest request = basicAuthHttpRequest(humanPlayer.getPlayerName(), humanPlayer.getPassword());
+        when(humanPlayerService.login(humanPlayer.getPlayerName(), humanPlayer.getPassword())).thenReturn(PlayerFixture.getDefaultHumanPlayer());
 
         basicAuthInterceptor.preHandle(request, null, null);
-        softly.assertThat(request.getSession().getAttribute(SessionUtil.USER_SESSION)).isEqualTo(UserFixture.getDefaultUser());
+        softly.assertThat(request.getSession().getAttribute(SessionUtil.PLAYER_SESSION)).isEqualTo(PlayerFixture.getDefaultHumanPlayer());
     }
 
     private MockHttpServletRequest basicAuthHttpRequest(String userId, String password) {

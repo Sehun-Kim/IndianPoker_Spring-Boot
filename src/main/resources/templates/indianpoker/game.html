@@ -1,0 +1,64 @@
+{{#partial "contents"}}
+
+<div class="container">
+    {{#loginedPlayer}}
+    <h6 id="gameId">Game No <span>{{gameId}}</span></h6>
+    <br>
+    <h3 id="turnNum"> Turn [<span>대기</span>]</h3>
+    <div>
+        <a>
+            <img class="mdl-list__item-avatar" height="48" width="48"
+                 src="/images/{{picture.fileIdWithExtension}}"
+                 alt="{{picture.originalFileName}}">
+        </a>
+        <a href="/players/{{id}}">
+            <strong id="playerName">{{playerName}}</strong>
+        </a>
+        <span id="numberOfChips">
+            현재 보유 칩 : <strong>20</strong>
+        </span>
+    </div>
+    {{/loginedPlayer}}
+</div>
+
+<div class="container">
+    <div id="notice" class="alert alert-info" role="alert">
+        <ul style="height:100px; overflow:auto;">
+            <!--Game Notice Area-->
+        </ul>
+    </div>
+</div>
+
+<div class="container">
+    <div>
+        <div class="card mb-4 shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
+                 preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+                <rect fill="#55595c" width="100%" height="100%"/>
+                <text id="cardNum" style="font-size: large;" fill="#eceeef" dy=".3em" x="50%" y="50%"></text>
+                <div id="bettingTable" class="card-img-overlay">
+                    <h5 class="card-title">[BettingTable]</h5>
+                    <p id="ownChips" class="card-text">현재 내가 배팅한 칩 : <span></span></p>
+                    <p id="otherChips" class="card-text">현재 상대가 배팅한 칩 : <span></span></p>
+                </div>
+            </svg>
+
+            <div class="card-body">
+                <!--Betting Sellect-->
+                <div class="align-items-center">
+                    <div id="bettingBtns" class="btn-group">
+                        <button id="callBtn" type="button" class="btn btn-secondary btn-lg">CALL</button>
+                        <button id="raiseBtn" type="button" class="btn btn-secondary btn-lg">RAISE</button>
+                        <button id="dieBtn" type="button" class="btn btn-secondary btn-lg">DIE</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/socket.js"></script>
+{{/partial}}
+
+{{>base}}

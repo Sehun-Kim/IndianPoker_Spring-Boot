@@ -1,7 +1,7 @@
 package support.test;
 
-import indianpoker.domain.user.User;
-import indianpoker.domain.user.UserRepository;
+import indianpoker.domain.humanplayer.HumanPlayer;
+import indianpoker.domain.humanplayer.HumanPlayerRepository;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,13 +11,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class AcceptanceTest extends BaseTest{
-    private static final String TESTER = "tester";
+    private static final String TESTER = "tester1";
 
     @Autowired
     private TestRestTemplate template;
 
     @Autowired
-    private UserRepository userRepository;
+    private HumanPlayerRepository humanPlayerRepository;
 
     public TestRestTemplate template() {
         return this.template;
@@ -27,11 +27,11 @@ public abstract class AcceptanceTest extends BaseTest{
         return basicAuthTemplate(defaultUser());
     }
 
-    public TestRestTemplate basicAuthTemplate(User user) {
-        return this.template.withBasicAuth(user.getUserId(), user.getPassword());
+    public TestRestTemplate basicAuthTemplate(HumanPlayer humanPlayer) {
+        return this.template.withBasicAuth(humanPlayer.getPlayerName(), humanPlayer.getPassword());
     }
 
-    protected User defaultUser() {
-        return userRepository.findByUserId(TESTER).get();
+    protected HumanPlayer defaultUser() {
+        return humanPlayerRepository.findByPlayerName(TESTER).get();
     }
 }

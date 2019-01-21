@@ -1,0 +1,28 @@
+{{#partial "contents"}}
+<div class="issues__posts mdl-grid">
+    <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+        {{#humanPlayer}}
+        <div class="mdl-card__title mdl-color-text--grey-50" style="height:100px;">
+            <h4>{{playerName}}</h4>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin:0 auto">
+                <a id="avatar">
+                    <img class="mdl-list__item-avatar" height="100" width="100"
+                         src="/images/{{picture.fileIdWithExtension}}"
+                         alt="{{picture.originalFileName}}">
+                </a>
+            </div>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin:0 auto">
+                승리 횟수 : {{winCnt}}
+            </div>
+        </div>
+        {{/humanPlayer}}
+
+    </div>
+</div>
+{{/partial}}
+
+{{>base}}

@@ -28,13 +28,13 @@ public class SecurityControllerAdvice {
     public String unAuthentication(Model model) {
         logger.debug("UnAuthenticationException is happened!");
         model.addAttribute("errorMessage", "UnAuthentication");
-        return "/user/login";
+        return "/player/login";
     }
 
     @ExceptionHandler(NotImageDataException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public String reTryJoin() {
-        return "/user/join";
+        return "/player/join";
     }
 
 }
