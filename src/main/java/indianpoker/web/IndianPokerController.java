@@ -26,8 +26,8 @@ public class IndianPokerController {
     private IndianPokerService indianPokerService;
 
     @GetMapping
-    public String gamelist(@LoginPlayer HumanPlayer loginPlayer, Model model) {
-        logger.debug("loginPlayer : {}", loginPlayer);
+    public String gamelist(@LoginPlayer HumanPlayer loginPlayer, Model model, HttpSession session) {
+        session.removeAttribute(SessionUtil.GAME_ID);
         model.addAttribute("games", indianPokerService.findAllByGameWaits());
         return "indianpoker/list";
     }
@@ -45,9 +45,7 @@ public class IndianPokerController {
 
     @GetMapping("/{id}")
     public String start(@PathVariable("id") long indianPoker_id, @LoginPlayer HumanPlayer loginPlayer, HttpSession session, Model model) {
-        session.removeAttribute(SessionUtil.GAME_ID);
         session.setAttribute(SessionUtil.GAME_ID, indianPoker_id);
-
         model.addAttribute("game", indianPokerService.enterPlayer(indianPoker_id, loginPlayer));
 
         return "indianpoker/game";
