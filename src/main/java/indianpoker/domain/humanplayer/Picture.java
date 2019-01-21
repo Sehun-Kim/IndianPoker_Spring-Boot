@@ -14,13 +14,13 @@ public class Picture {
     public static final Picture DEFAULT_PICTURE = new DefaultPicture();
 
     @Column
-    private String fileId;
+    protected String fileId;
 
     @Column
-    private String extension;
+    protected String extension;
 
     @Column
-    private String originalFileName;
+    protected String originalFileName;
 
     public Picture() {
     }
@@ -52,16 +52,10 @@ public class Picture {
     }
 
     private static class DefaultPicture extends Picture {
-        private static final String DEFAULT_PICTURE_NAME = "example.jpeg";
-
-        @Override
-        public String getFileIdWithExtension() {
-            return DEFAULT_PICTURE_NAME;
-        }
-
-        @Override
-        public String getOriginalFileName() {
-            return DEFAULT_PICTURE_NAME;
+        DefaultPicture() {
+            this.fileId =  "example";
+            this.extension = "jpeg";
+            this.originalFileName = "example.jpeg";
         }
     }
 }

@@ -176,6 +176,12 @@ function printBetterInfo(contents) {
     //Raise할 경우 배팅할 수 있는 chip 바운더리 설정
     setChipsBoundary(contents.bettingChipBoundaryDto);
 
+    setTimeout(function() {
+        alert('50초가 지나 DIE 합니다.');
+        var betting = {'gameId': gameId, 'type': dieBtn.html(), 'value': 0, 'playerName': playerName};
+        sock.send(JSON.stringify(betting));
+        }, 50000)
+
 
     function printBettingTable(currentTable) {
         var ownChips = currentTable.ownChips.numberOfChips;
