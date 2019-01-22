@@ -36,6 +36,7 @@ public class IndianPokerService {
 
     public IndianPoker enterPlayer(long indianPoker_id, HumanPlayer loginPlayer) {
         return indianPokerRepository.findById(indianPoker_id)
+                .filter(indianPoker -> indianPoker.isGameStatus(GameStatus.WAITS_FOR_PLAYER))
                 .map(i -> i.readyToPlayer(loginPlayer))
                 .orElseThrow(CannotEnterGameException::new);
     }
@@ -105,5 +106,15 @@ public class IndianPokerService {
 
     public IndianPoker forceQuit(Long gameId) {
         return findByGameId(gameId).forceQuit();
+    }
+
+    public IndianPoker remove(Long gameId) {
+        return indianPokerRepository.remove(gameId);
+    }
+
+    public IndianPoker findProgressGameByGameId(long gameId, HumanPlayer loginPlayer) {
+        return indianPokerRepository.findById(gameId)
+                .filter(indianPoker -> indianPoker.hasPlayer(loginPlayer))
+                .orElseThrow(CannotEnterGameException::new);
     }
 }

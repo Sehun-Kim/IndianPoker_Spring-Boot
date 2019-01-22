@@ -38,4 +38,8 @@ public class IndianPokerRepository {
     public Optional<IndianPoker> findById(long indianPoker_id) {
         return Optional.ofNullable(indianPokerMap.get(indianPoker_id));
     }
+
+    public IndianPoker remove(Long gameId) {
+        return indianPokerMap.remove(gameId);
+    }
 }

@@ -52,9 +52,15 @@ public class GameController {
         GameStatus gameStatus = indianPokerService.getGameStatus(gameSession.getGameId());
 
         // 정상적인 게임 종료 상황이 아닐 때 플레이어가 이탈했을 경우 에러 메세지를 보낸다.
-        if (gameStatus.equals(GameStatus.IN_PROGRESS))
+        if (gameStatus.equals(GameStatus.IN_PROGRESS)) {
             indianPokerService.forceQuit(gameSession.getGameId());
             messageService.sendError(errorInfoDto, gameSession);
+        }
+
+        // 방을 만든 플레이어가 대기중에 나갔을 경우 게임 제거
+        if (gameStatus.equals(GameStatus.WAITS_FOR_PLAYER)) {
+            indianPokerService.remove(gameSession.getGameId());
+        }
     }
 
 }

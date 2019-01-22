@@ -2,6 +2,7 @@ package indianpoker.web;
 
 import indianpoker.domain.poker.IndianPoker;
 import indianpoker.domain.humanplayer.HumanPlayer;
+import indianpoker.exception.CannotEnterGameException;
 import indianpoker.security.LoginPlayer;
 import indianpoker.service.IndianPokerService;
 import org.slf4j.Logger;
@@ -44,10 +45,23 @@ public class IndianPokerController {
     }
 
     @GetMapping("/{id}")
-    public String start(@PathVariable("id") long indianPoker_id, @LoginPlayer HumanPlayer loginPlayer, HttpSession session, Model model) {
+    public String gameRule(@PathVariable("id") long indianPoker_id, @LoginPlayer HumanPlayer loginPlayer, HttpSession session, Model model) {
         session.setAttribute(SessionUtil.GAME_ID, indianPoker_id);
-        model.addAttribute("game", indianPokerService.enterPlayer(indianPoker_id, loginPlayer));
+        try {
+            model.addAttribute("game", indianPokerService.enterPlayer(indianPoker_id, loginPlayer));
+        } catch (CannotEnterGameException e) {
+            return "redirect:/indianpokers";
+        }
+        return "indianpoker/rule";
+    }
 
+    @GetMapping("/{id}/start")
+    public String start(@PathVariable("id") long indianPoker_id, @LoginPlayer HumanPlayer loginPlayer, Model model) {
+        try {
+            model.addAttribute("game", indianPokerService.findProgressGameByGameId(indianPoker_id, loginPlayer));
+        } catch (CannotEnterGameException e) {
+            return "redirect:/indianpokers";
+        }
         return "indianpoker/game";
     }
 

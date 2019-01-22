@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IndianPoker {
-    private static int MAX_PERSONNEL_SIZE = 2;
-
     private long id;
     private String gameName;
     private List<HumanPlayer> players;
@@ -67,13 +65,14 @@ public class IndianPoker {
 
     // domain
     public IndianPoker readyToPlayer(HumanPlayer player) {
-        if (players.size() >= MAX_PERSONNEL_SIZE) throw new CannotEnterGameException("잘못된 게임에 접근하였습니다.");
+        if (this.gameStatus.equals(GameStatus.IN_PROGRESS))
+            throw new CannotEnterGameException("잘못된 게임에 접근하였습니다.");
         if (players.isEmpty()) {
             this.players.add(player.readyToGame(this.playerChipsSize, this.preemptive, Deck.ofGenerateAuto()));
             return this;
         }
-        this.players.add(player.readyToGame(this.playerChipsSize, !this.preemptive, Deck.ofGenerateAuto()));
         this.gameStatus = GameStatus.IN_PROGRESS;
+        this.players.add(player.readyToGame(this.playerChipsSize, !this.preemptive, Deck.ofGenerateAuto()));
         return this;
     }
 
@@ -111,5 +110,14 @@ public class IndianPoker {
     public IndianPoker forceQuit() {
         this.gameStatus = GameStatus.ERROR;
         return this;
+    }
+
+    public boolean hasPlayer(HumanPlayer loginPlayer) {
+        for (HumanPlayer player : players) {
+            if(player.matchPlayerName(loginPlayer.getPlayerName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

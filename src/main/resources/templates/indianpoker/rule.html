@@ -1,0 +1,69 @@
+{{#partial "contents"}}
+{{#game}}
+<div class="container">
+    <h1>{{gameName}}을(를) 시작하기 전에 알아두어야 할 것</h1>
+    <br>
+    <div class="container">
+        <h2>GAME RULE</h2>
+        <p>인디언 포커는 매 턴마다 상대의 카드와 상대의 배팅을 보고 내 카드의 크기를 유추하여 배팅하는 게임입니다.</p>
+        <p>턴마다 플레이어는 <strong>상대의 카드</strong>만 볼 수 있습니다. (턴이 종료될 때 서로의 카드를 알 수 있습니다.)</p>
+        <p>턴을 시작할때 각 플레이어는 기본으로 CHIP을 1개 씩 배팅합니다.</p>
+        <p>플레이어들은 1~10사이의 카드가 두 쌍씩 들어있는 덱을 가지고 있습니다. 카드는 랜덤으로 섞여있기 때문에 턴이 진행 될 때 어떤 카드들이 나왔는지 외워 상대의 카드를 유추해야합니다.</p>
+        <p>게임의 최종승자는 칩이 더 많은 사람입니다.</p>
+        <p><strong>칩은 누적되지 않습니다.</strong> 매 게임마다 새로운 칩을 할당 받습니다!</p>
+    </div>
+    <br>
+    <div class="container">
+        <h3>BETTING 조건</h3>
+        <div>
+            <strong>CALL</strong> : TURN동안 내가 배팅한 칩과 상대가 배팅한 칩이 같을 때 할 수 있습니다.
+            <ul>
+                <li>TURN의 첫번째 배팅때는 <strong>CALL</strong>할 수 없습니다.</li>
+                <li>한 쪽이 CALL하게 되면 두 플레이어의 카드 크기를 비교하여, 현재까지 배팅된 칩을 모두 주고, TURN을 종료합니다.</li>
+            </ul>
+        </div>
+
+        <div>
+            <strong>RAISE</strong> : 상대가 배팅한 칩 이상을 배팅할 수 있습니다.
+            <ul>
+                <li>상대가 <strong>ALL-IN</strong>한 경우 RAISE할 수 없습니다.</li>
+                <li>상대의 <strong>남은 칩 이상</strong> RAISE 할 수 없습니다</li>
+                <li>상대가 배팅한 칩 이상 RAISE 해야 합니다.</li>
+            </ul>
+        </div>
+
+        <div>
+            <strong>DIE</strong> : 현재까지 배팅한 칩은 그대로 두고 이번 <strong>배팅을 포기합니다.</strong>
+            <ul>
+                <li>DIE할 경우 <strong>상대 플레이어가 무조건 TURN의 승자가 된다.</strong></li>
+            </ul>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <h3>TURN의 종료 조건</h3>
+        <ul>
+            <li> 플레이어가 <strong>DIE</strong>하게 되면 상대 플레이어가 턴의 승자가 된다.</li>
+            <li> 플레이어가 <strong>CALL</strong>하게 되면 두 플레이어의 카드의 크기를 비교하여, 큰 쪽이 턴의 승자가 된다.</li>
+        </ul>
+    </div>
+    <br>
+    <div class="container">
+        <h3>GAME의 종료 조건</h3>
+        <ul>
+            <li> 총 <strong>'20 TURN'</strong>이 지나면 게임은 종료된다.</li>
+            <li> 한 명의 '플레이어'라도 <strong>'{{playerChipsSize}}개</strong>의 칩이 모두 소진되면 게임은 종료된다.</li>
+            <li> 한명의 '플레이어'라도 게임을 <strong>이탈</strong>하면 게임은 종료된다.</li>
+        </ul>
+    </div>
+    <br>
+    <div class="alert alert-warning" role="alert">
+        <h1>배팅을 하면 취소할 수 없습니다. 신중하게 클릭하십시오.</h1>
+    </div>
+
+    <a href="/indianpokers/{{id}}/start" type="submit" class="btn btn-default">게임 시작</a>
+</div>
+{{/game}}
+{{/partial}}
+
+{{> base }}

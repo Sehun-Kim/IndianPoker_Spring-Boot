@@ -101,11 +101,13 @@ function addNotice(message) {
     notice.append('<li>' + message + '</li>');
     notice.animate({
         scrollTop: 100000
-    }, 10);
+    }, 20);
 }
 
 function printNotice(contents) {
     addNotice(contents.message);
+    // 게임이 시작되기 전에는 버튼 입력을 막는다.
+    bettingBtns.hide();
     gameStart(contents.numberOfPeople, contents.playerInfoDto.name);
 }
 
@@ -175,13 +177,6 @@ function printBetterInfo(contents) {
 
     //Raise할 경우 배팅할 수 있는 chip 바운더리 설정
     setChipsBoundary(contents.bettingChipBoundaryDto);
-
-    setTimeout(function() {
-        alert('50초가 지나 DIE 합니다.');
-        var betting = {'gameId': gameId, 'type': dieBtn.html(), 'value': 0, 'playerName': playerName};
-        sock.send(JSON.stringify(betting));
-        }, 50000)
-
 
     function printBettingTable(currentTable) {
         var ownChips = currentTable.ownChips.numberOfChips;
@@ -341,15 +336,13 @@ function turnStart(num) {
 // BETTING
 function callBetting() {
     if (sock.readyState !== 1) return;
-    alert("call");
+
     var betting = {'gameId': gameId, 'type': callBtn.html(), 'value': 0, 'playerName': playerName};
     sock.send(JSON.stringify(betting));
 }
 
 function raiseBetting() {
     if (sock.readyState !== 1) return;
-
-    alert("raise");
 
     var message = '칩 수를 입력하세요';
     var value = inputChipsNum(message);
@@ -388,7 +381,6 @@ function raiseBetting() {
 function dieBetting() {
     if (sock.readyState !== 1) return;
 
-    alert("die");
     var betting = {'gameId': gameId, 'type': dieBtn.html(), 'value': 0, 'playerName': playerName};
     sock.send(JSON.stringify(betting));
 }
