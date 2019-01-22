@@ -43,6 +43,10 @@ public class IndianPoker {
         this.id = id;
     }
 
+    public List<HumanPlayer> getPlayers() {
+        return players;
+    }
+
     public String getGameName() {
         return gameName;
     }

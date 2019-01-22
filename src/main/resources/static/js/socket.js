@@ -3,6 +3,8 @@ var playerName = null; // 해당 페이지에서 게임하는 player의 이름
 var gameId = null; // 해당 페이지의 게임 id
 var sock = null; // socket
 
+var numberOfChips = $('#numberOfChips strong');
+
 var notice = $("#notice ul"); // 전체 공지 영역
 var turnNum = $('#turnNum span'); // Turn 번호
 
@@ -145,7 +147,7 @@ function printTurnInfo(contents) {
         var message = '<strong>' + name + '</strong>의 현재 보유칩 : [' + chipsNum +']';
         addNotice(message);
         if (playerName === player.name) {
-            $('#numberOfChips strong').html(chipsNum);
+            numberOfChips.html(chipsNum);
         }
     }
 
@@ -175,7 +177,7 @@ function printBetterInfo(contents) {
     // 상대가 올인한 경우 Raise할 수 없게함.
     isAllIn(contents.allIn);
 
-    //Raise할 경우 배팅할 수 있는 chip 바운더리 설정
+    // Raise할 경우 배팅할 수 있는 chip 바운더리 설정
     setChipsBoundary(contents.bettingChipBoundaryDto);
 
     function printBettingTable(currentTable) {
@@ -213,6 +215,14 @@ function printBetterInfo(contents) {
         betterChipsNum = parseInt(chipBoundary.betterChips.numberOfChips);
 
         console.log(diffChipsNum + ", " + betterChipsNum + ", " + otherChipsNum);
+
+        // diffChips와 numberOfChips가 같을 경우 raise 할 수 없음
+        var chipsSize = parseInt(numberOfChips.html());
+
+        console.log(chipsSize);
+        if (chipsSize <= diffChipsNum) {
+            raiseBtn.hide();
+        }
     }
 }
 

@@ -1,7 +1,9 @@
 {{#partial "contents"}}
 {{#game}}
 <div class="container">
-    <h1>{{gameName}}을(를) 시작하기 전에 알아두어야 할 것</h1>
+    {{#loginedPlayer}}
+    <h1>{{playerName}}님이 "{{gameName}}" 게임을 시작하기 전에 알아야 할 것</h1>
+    {{/loginedPlayer}}
     <br>
     <div class="container">
         <h2>GAME RULE</h2>
@@ -10,7 +12,7 @@
         <p>턴을 시작할때 각 플레이어는 기본으로 CHIP을 1개 씩 배팅합니다.</p>
         <p>플레이어들은 1~10사이의 카드가 두 쌍씩 들어있는 덱을 가지고 있습니다. 카드는 랜덤으로 섞여있기 때문에 턴이 진행 될 때 어떤 카드들이 나왔는지 외워 상대의 카드를 유추해야합니다.</p>
         <p>게임의 최종승자는 칩이 더 많은 사람입니다.</p>
-        <p><strong>칩은 누적되지 않습니다.</strong> 매 게임마다 새로운 칩을 할당 받습니다!</p>
+        <p><strong>승리하거나 패해도 칩은 누적되지 않습니다.</strong>매 게임마다 새로운 칩을 할당 받습니다!</p>
     </div>
     <br>
     <div class="container">
