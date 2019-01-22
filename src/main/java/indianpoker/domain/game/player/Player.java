@@ -12,4 +12,6 @@ public interface Player extends Winner, Loser, FirstJudgeable {
     BettingState betting(Chips chips, BettingCase bettingCase);
     Card drawACard();
     boolean isGameOver();
+    Player winGame();
+    Player loseGame();
 }

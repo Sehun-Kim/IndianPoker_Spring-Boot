@@ -83,9 +83,14 @@ public class IndianPokerService {
 
     public GameResultDto judgeGameWinner(Long gameId) {
         GameResultDto gameResultDto = findByGameId(gameId).judgeGameWinner();
+        if (!gameResultDto.isDraw())
+            updateWinOrLose(gameId);
 
-        humanPlayerService.updateWinCnt(gameResultDto);
         return gameResultDto;
+    }
+
+    private void updateWinOrLose(long gameId) {
+        humanPlayerService.updateWinCnt(findByGameId(gameId).getPlayers());
     }
 
     public boolean isGameOver(Long gameId) {

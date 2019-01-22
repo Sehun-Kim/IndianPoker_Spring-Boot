@@ -13,5 +13,6 @@ public enum MessageType {
     TURN_RESULT,
     TURN_END,
     ERROR,
+    CANNOT_ENTER,
     GAME_RESULT;
 }

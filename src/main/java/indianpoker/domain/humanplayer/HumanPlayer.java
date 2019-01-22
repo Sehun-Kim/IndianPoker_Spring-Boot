@@ -16,9 +16,6 @@ public class HumanPlayer extends AbstractPlayer {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private int winCnt = 0;
-
     @Embedded
     private Picture picture;
 
@@ -48,7 +45,11 @@ public class HumanPlayer extends AbstractPlayer {
     }
 
     public int getWinCnt() {
-        return winCnt;
+        return this.winCnt;
+    }
+
+    public int getLoseCnt() {
+        return this.loseCnt;
     }
 
     public Picture getPicture() {
@@ -64,11 +65,6 @@ public class HumanPlayer extends AbstractPlayer {
         super.setChips(Chips.ofNumberOfChips(playerChipsSize));
         super.setFirstBetter(preemptive);
         super.setDeck(deck);
-        return this;
-    }
-
-    public HumanPlayer winGame() {
-        this.winCnt++;
         return this;
     }
 

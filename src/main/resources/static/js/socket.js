@@ -93,6 +93,10 @@ function receiveMessage(contents) {
         printTurnResult(contents);
     }
 
+    if (type === 'CANNOT_ENTER') {
+        printCannotEnter(contents);
+    }
+
     if (type === 'GAME_RESULT') {
         printGameResult(contents);
     }
@@ -292,6 +296,11 @@ function printTurnResult(contents) {
             alert('TURN WIN')
         }
     }
+}
+
+function printCannotEnter(contents) {
+    alert('잘 못된 게임에 접근하였습니다.');
+    $(location).attr('href', '/indianpokers');
 }
 
 function printGameResult(contents) {

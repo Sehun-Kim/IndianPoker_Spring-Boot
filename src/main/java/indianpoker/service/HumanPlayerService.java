@@ -41,12 +41,7 @@ public class HumanPlayerService {
                 .orElseThrow(UnAuthenticationException::new);
     }
 
-    @Transactional
-    public void updateWinCnt(GameResultDto gameResultDto) {
-        for (String winnerName : gameResultDto.getWinnerNames()) {
-            humanPlayerRepository.findByPlayerName(winnerName)
-                    .map(player -> player.winGame())
-                    .orElseThrow(NonExistDataException::new);
-        }
+    public void updateWinCnt(List<HumanPlayer> players) {
+        players.forEach(p -> humanPlayerRepository.save(p));
     }
 }

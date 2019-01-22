@@ -31,4 +31,10 @@ public class HumanPlayerTest extends BaseTest {
         humanPlayer.winGame();
         softly.assertThat(humanPlayer.getWinCnt()).isEqualTo(1);
     }
+
+    @Test
+    public void loseGame() {
+        humanPlayer.loseGame();
+        softly.assertThat(humanPlayer.getLoseCnt()).isEqualTo(1);
+    }
 }

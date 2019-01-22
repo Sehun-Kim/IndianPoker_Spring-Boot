@@ -24,6 +24,12 @@ public abstract class AbstractPlayer extends AbstractEntity implements Player, W
     @Column(unique = true, nullable = false)
     protected String playerName;
 
+    @Column(nullable = false)
+    protected int winCnt = 0;
+
+    @Column(nullable = false)
+    protected int loseCnt = 0;
+
     @Transient
     private Deck deck;
 
@@ -97,6 +103,18 @@ public abstract class AbstractPlayer extends AbstractEntity implements Player, W
     @Override
     public boolean isGameOver() {
         return this.chips.isEmpty();
+    }
+
+    @Override
+    public Player loseGame() {
+        this.loseCnt++;
+        return this;
+    }
+
+    @Override
+    public Player winGame() {
+        this.winCnt++;
+        return this;
     }
 
     // protected method

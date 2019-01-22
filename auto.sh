@@ -10,7 +10,7 @@ git pull
 
 echo "> Build project"
 
-./gradlew build
+./gradlew build -x test
 
 CURRENT_PID=$(pgrep -f indianpokerspring)
 

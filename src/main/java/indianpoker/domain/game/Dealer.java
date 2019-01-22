@@ -83,11 +83,15 @@ public class Dealer {
 
     public GameResultDto judgeGameWinner(Player player1, Player player2) {
         GameResultDto gameResultDto = new GameResultDto();
-        if (player1.showChips().compareTo(player2.showChips()) > COMPARE_STANDARD)
-            gameResultDto.addWinnerName(player1.getPlayerName());
+        if (player1.showChips().compareTo(player2.showChips()) > COMPARE_STANDARD) {
+            gameResultDto.addWinnerName(player1.winGame().getPlayerName());
+            player2.loseGame();
+        }
 
-        if (player1.showChips().compareTo(player2.showChips()) < COMPARE_STANDARD)
-            gameResultDto.addWinnerName(player2.getPlayerName());
+        if (player1.showChips().compareTo(player2.showChips()) < COMPARE_STANDARD) {
+            gameResultDto.addWinnerName(player2.winGame().getPlayerName());
+            player1.winGame();
+        }
 
         if (player1.showChips().compareTo(player2.showChips()) == COMPARE_STANDARD) {
             gameResultDto.addWinnerName(player1.getPlayerName());
