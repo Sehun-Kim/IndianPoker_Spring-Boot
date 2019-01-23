@@ -2,6 +2,7 @@ package indianpoker.web.game;
 
 import indianpoker.dto.ErrorInfoDto;
 import indianpoker.dto.GameResultDto;
+import indianpoker.dto.ReceiveMessageDto;
 import indianpoker.exception.BankruptException;
 import indianpoker.service.IndianPokerService;
 import indianpoker.service.MessageService;
@@ -59,8 +60,12 @@ public class GameController {
 
         // 방을 만든 플레이어가 대기중에 나갔을 경우 게임 제거
         if (gameStatus.equals(GameStatus.WAITS_FOR_PLAYER)) {
-            indianPokerService.remove(gameSession.getGameId());
+            indianPokerService.removeGame(gameSession.getGameId());
         }
+    }
+
+    public void removePlayer(ReceiveMessageDto receiveMessage) {
+        indianPokerService.removePlayer(receiveMessage.getGameId(), receiveMessage.getPlayerName());
     }
 
 }

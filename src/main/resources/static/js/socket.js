@@ -300,6 +300,10 @@ function printTurnResult(contents) {
 
 function printCannotEnter(contents) {
     alert('잘 못된 게임에 접근하였습니다.');
+
+    var playerOutMessage = {'gameId': gameId, 'type': 'WRONG_PLAYER', 'value': 0, 'player': playerName};
+    sock.send(JSON.stringify(playerOutMessage));
+
     $(location).attr('href', '/indianpokers');
 }
 

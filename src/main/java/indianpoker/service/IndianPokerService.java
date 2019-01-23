@@ -113,7 +113,7 @@ public class IndianPokerService {
         return findByGameId(gameId).forceQuit();
     }
 
-    public IndianPoker remove(Long gameId) {
+    public IndianPoker removeGame(Long gameId) {
         return indianPokerRepository.remove(gameId);
     }
 
@@ -121,5 +121,9 @@ public class IndianPokerService {
         return indianPokerRepository.findById(gameId)
                 .filter(indianPoker -> indianPoker.hasPlayer(loginPlayer))
                 .orElseThrow(CannotEnterGameException::new);
+    }
+
+    public void removePlayer(long gameId, String playerName) {
+        findByGameId(gameId).removePlayer(playerName);
     }
 }

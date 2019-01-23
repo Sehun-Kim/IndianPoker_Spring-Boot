@@ -71,4 +71,13 @@ public class IndianPokerTest extends BaseTest {
 
         softly.assertThat(indianPoker.forceQuit().getGameStatus()).isEqualTo(GameStatus.ERROR);
     }
+
+    @Test
+    public void removePlayer() {
+        IndianPoker indianPoker = new IndianPoker("DUMMY", 20, "TRUE");
+        indianPoker.readyToPlayer(player1).readyToPlayer(player2);
+
+        indianPoker.removePlayer(player1.getPlayerName());
+        softly.assertThat(indianPoker.getPlayers().get(0).isFirst()).isTrue();
+    }
 }

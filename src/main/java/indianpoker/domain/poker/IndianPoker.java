@@ -118,10 +118,29 @@ public class IndianPoker {
 
     public boolean hasPlayer(HumanPlayer loginPlayer) {
         for (HumanPlayer player : players) {
-            if(player.matchPlayerName(loginPlayer.getPlayerName())) {
+            if (player.matchPlayerName(loginPlayer.getPlayerName())) {
                 return true;
             }
         }
         return false;
     }
+
+    public void removePlayer(String playerName) {
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).matchPlayerName(playerName)) {
+                changeLastPlayerOrder(i);
+                players.remove(i);
+            }
+        }
+
+        this.gameStatus = GameStatus.WAITS_FOR_PLAYER;
+    }
+
+    private void changeLastPlayerOrder(int i) {
+        if (i == 0) {
+            if (!this.preemptive) players.get(1).changeLastBetter();
+            if (this.preemptive) players.get(1).changeFirstBetter();
+        }
+    }
+
 }

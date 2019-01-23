@@ -63,7 +63,7 @@ public class IndianPokerHandler extends TextWebSocketHandler {
             if (!receiveType.equals(MessageType.TURN_START))
                 bettingController.judgeCase(socketSessions.findByGameId(gameId), messageService.receiveMessage(message));
         } catch (CannotEnterGameException e) {
-            messageService.send(new CannotEnterInfoDto(), session);
+            gameController.removePlayer(messageService.receiveMessage(message));
         }
     }
 

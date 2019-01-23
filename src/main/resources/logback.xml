@@ -7,8 +7,7 @@
         </layout>
     </appender>
 
-    <!--todo info로 바꾸기-->
-    <logger name="indianpoker" level="DEBUG"/>
+    <logger name="indianpoker" level="INFO"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
