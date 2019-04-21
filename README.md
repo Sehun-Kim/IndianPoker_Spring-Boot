@@ -70,3 +70,6 @@
   - Call `베팅`의 경우, (상대 `플레이어`가 총 배팅한 `칩` - 내가 이전까지 배팅한 `칩`) 을 `베팅`해야한다.
   - Die `베팅`의 경우, 상대 `플레이어`가 해당 `턴`의 승자가 된다.
 ```
+
+### Domain Structure
+![Domain Structure](https://raw.githubusercontent.com/Sehun-Kim/IndianPoker_Spring-Boot/master/domain_structure.png)
